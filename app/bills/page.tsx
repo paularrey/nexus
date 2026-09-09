@@ -199,7 +199,7 @@ export default function BillsPage() {
           </div>
         </div>
 
-        <aside className="order-first rounded-[28px] bg-[#0b1f3a] p-4 text-white shadow-[0_20px_50px_rgba(11,31,58,0.18)] md:p-6 lg:order-none lg:sticky lg:top-24 lg:p-8">
+        <aside className="order-first rounded-[28px] bg-gradient-to-br from-[#c45a3c] to-[#e07a5f] p-4 text-white shadow-[0_4px_24px_rgba(224,122,95,0.25)] md:p-6 lg:order-none lg:sticky lg:top-24 lg:p-8">
           <div className="flex items-start justify-between gap-4">
             <div>
               <p className="text-xs uppercase tracking-[0.18em] text-blue-100/65">

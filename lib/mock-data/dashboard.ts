@@ -54,9 +54,9 @@ export const dashboardData = {
       tone: "orange",
     },
     {
-      label: "Marketplace",
+      label: "Bookings",
       description: "Book services",
-      href: "/marketplace",
+      href: "/bookings",
       icon: "store",
       tone: "green",
     },

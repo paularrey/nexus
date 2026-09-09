@@ -48,7 +48,7 @@ export default function WalletPage() {
       </header>
 
       <div className="grid gap-5 lg:grid-cols-[1.1fr_0.9fr]">
-        <section className="relative overflow-hidden rounded-[28px] bg-[#0b1f3a] p-6 text-white shadow-[0_20px_50px_rgba(11,31,58,0.18)] md:p-8">
+        <section className="relative overflow-hidden rounded-[28px] bg-gradient-to-br from-[#c45a3c] to-[#e07a5f] p-6 text-white shadow-[0_4px_24px_rgba(224,122,95,0.25)] md:p-8">
           <div className="absolute -right-20 -top-20 size-64 rotate-45 border border-white/10" />
           <div className="absolute bottom-[-100px] left-[-40px] size-72 rounded-full border border-orange-300/20" />
           <div className="relative">

@@ -97,7 +97,7 @@ export default function MarketplacePage() {
               transition={{ delay: index * 0.05, duration: 0.35 }}
             >
               <Link
-                href={`/marketplace/${listing.id}/book`}
+                href={`/bookings/${listing.id}/book`}
                 className="group block overflow-hidden rounded-[24px] border border-border bg-card transition-all hover:-translate-y-1 hover:border-primary/30 hover:shadow-xl"
               >
                 {/* ── Image placeholder ─────────────── */}

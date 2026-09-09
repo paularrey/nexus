@@ -97,14 +97,14 @@ export function PinModal({
     >
       <Drawer.Portal>
         <Drawer.Overlay className="fixed inset-0 z-40 bg-slate-950/65 backdrop-blur-md" />
-        <Drawer.Content className="!h-auto fixed inset-x-0 bottom-0 z-50 mx-auto max-h-[calc(100dvh-1rem)] w-full max-w-md overflow-hidden rounded-t-[30px] border border-white/15 bg-slate-950/95 p-5 text-white shadow-2xl outline-none md:bottom-auto md:top-1/2 md:-translate-y-1/2 md:rounded-[30px] md:p-7">
-          <div className="mx-auto mb-5 h-1.5 w-12 rounded-full bg-white/20 md:hidden" />
+        <Drawer.Content className="!h-auto fixed inset-x-0 bottom-0 z-50 mx-auto max-h-[calc(100dvh-1rem)] w-full max-w-md overflow-hidden rounded-t-[30px] border border-border bg-card p-5 shadow-2xl outline-none md:bottom-auto md:top-1/2 md:-translate-y-1/2 md:rounded-[30px] md:p-7">
+          <div className="mx-auto mb-5 h-1.5 w-12 rounded-full bg-muted md:hidden" />
           <Button
             variant="ghost"
             size="icon-sm"
             type="button"
             onClick={() => handleOpenChange(false)}
-            className="absolute right-4 top-4 text-white hover:bg-white/10 hover:text-white"
+            className="absolute right-4 top-4 text-muted-foreground hover:bg-muted hover:text-foreground"
             aria-label="Close PIN confirmation"
           >
             <X />
@@ -128,42 +128,42 @@ export function PinModal({
                 <h2 className="mt-6 font-heading text-2xl font-semibold">
                   Payment successful
                 </h2>
-                <p className="mt-2 text-sm text-slate-300">
-                  {title} has been prepared in this demo.
-                </p>
+                  <p className="mt-2 text-sm text-muted-foreground">
+                    {title} has been prepared in this demo.
+                  </p>
                 {amount && (
                   <p className="mt-4 font-heading text-3xl font-semibold text-emerald-300">
                     {amount}
                   </p>
                 )}
                 {receipt && (
-                  <div className="mt-5 rounded-2xl border border-slate-200 bg-white p-4 text-left text-slate-900 shadow-[0_12px_30px_rgba(0,0,0,0.18)]">
-                    <div className="flex items-center justify-between border-b border-dashed border-slate-300 pb-3">
+                  <div className="mt-5 rounded-2xl border border-border bg-card p-4 text-left text-foreground shadow-lg">
+                    <div className="flex items-center justify-between border-b border-dashed border-border pb-3">
                       <span className="flex items-center gap-2 font-heading font-semibold">
                         <ReceiptText className="size-4 text-primary" /> Nexus
                         receipt
                       </span>
-                      <span className="text-[10px] font-semibold uppercase tracking-[0.14em] text-emerald-600">
+                      <span className="text-[10px] font-semibold uppercase tracking-[0.14em] text-success">
                         Paid
                       </span>
                     </div>
                     <div className="py-3 text-center">
-                      <p className="text-xs uppercase tracking-[0.16em] text-slate-500">
+                      <p className="text-xs uppercase tracking-[0.16em] text-muted-foreground">
                         Total paid
                       </p>
                       <p className="mt-1 font-heading text-2xl font-semibold">
                         {amount ?? "-"}
                       </p>
                     </div>
-                    <div className="flex items-center justify-between gap-3 text-xs text-slate-400">
-                      <span className="text-slate-500">Date and time</span>
-                      <span className="text-right text-slate-800">
+                    <div className="flex items-center justify-between gap-3 text-xs text-muted-foreground">
+                      <span>Date and time</span>
+                      <span className="text-right text-foreground">
                         {receipt.timestamp}
                       </span>
                     </div>
                     <div className="mt-2 flex items-center justify-between gap-3 text-xs">
-                      <span className="text-slate-500">Reference</span>
-                      <span className="flex items-center gap-2 font-mono text-slate-800">
+                      <span className="text-muted-foreground">Reference</span>
+                      <span className="flex items-center gap-2 font-mono text-foreground">
                         {receipt.reference}
                         <Copy className="size-3.5" />
                       </span>
@@ -174,7 +174,7 @@ export function PinModal({
                   type="button"
                   variant="ghost"
                   onClick={downloadReceipt}
-                  className="mt-4 h-9 w-full gap-2 text-slate-200 hover:bg-white/10 hover:text-white"
+                  className="mt-4 h-9 w-full gap-2 text-muted-foreground hover:bg-muted hover:text-foreground"
                 >
                   <Download className="size-4" /> Open printable receipt
                 </Button>
@@ -192,13 +192,13 @@ export function PinModal({
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
               >
-                <p className="text-xs uppercase tracking-[0.18em] text-slate-400">
+                <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
                   Nexus secure step
                 </p>
                 <Drawer.Title className="mt-2 font-heading text-2xl font-semibold">
                   {title}
                 </Drawer.Title>
-                <Drawer.Description className="mt-2 text-sm text-slate-300">
+                <Drawer.Description className="mt-2 text-sm text-muted-foreground">
                   Enter your four-digit demo PIN to continue.
                 </Drawer.Description>
                 {amount && (
@@ -213,7 +213,7 @@ export function PinModal({
                   {Array.from({ length: 4 }, (_, index) => (
                     <span
                       key={index}
-                      className={`size-3 rounded-full border ${index < pin.length ? "border-primary bg-primary shadow-[0_0_14px_var(--primary)]" : "border-white/35"}`}
+                      className={`size-3 rounded-full border ${index < pin.length ? "border-primary bg-primary shadow-[0_0_14px_var(--primary)]" : "border-border"}`}
                     />
                   ))}
                 </motion.div>
@@ -229,7 +229,7 @@ export function PinModal({
                         key={digit}
                         type="button"
                         onClick={() => addDigit(digit)}
-                        className="grid h-11 place-items-center rounded-xl border border-white/10 bg-white/8 text-lg font-semibold transition hover:bg-white/15 active:scale-95"
+                        className="grid h-11 place-items-center rounded-xl border border-border bg-muted text-lg font-semibold transition hover:bg-muted/80 active:scale-95"
                       >
                         {digit}
                       </button>
@@ -249,7 +249,7 @@ export function PinModal({
                       setHasError(false);
                       setPin((value) => value.slice(0, -1));
                     }}
-                    className="grid h-11 place-items-center rounded-xl border border-white/10 bg-white/8 transition hover:bg-white/15 active:scale-95"
+                    className="grid h-11 place-items-center rounded-xl border border-border bg-muted transition hover:bg-muted/80 active:scale-95"
                     aria-label="Delete last PIN digit"
                   >
                     <Delete className="size-5" />
@@ -263,7 +263,7 @@ export function PinModal({
                 >
                   {isProcessing ? "Processing..." : "Confirm payment"}
                 </Button>
-                <p className="mt-3 text-center text-xs text-slate-400">
+                <p className="mt-3 text-center text-xs text-muted-foreground">
                   Demo PIN: 1234
                 </p>
               </motion.div>

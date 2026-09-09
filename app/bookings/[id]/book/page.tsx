@@ -4,7 +4,6 @@ import { AnimatePresence, motion } from "framer-motion";
 import {
   ArrowLeft,
   Calendar,
-  Check,
   ChevronDown,
   Clock,
   MapPin,
@@ -53,14 +52,27 @@ export default function BookingReviewPage({
 
   const calendarDays = useMemo(() => generateCalendarDays(), []);
 
+  const total = listing ? listing.price + SERVICE_FEE + BOOKING_FEE : 0;
+
+  const availableSlotsForDate = useMemo(() => {
+    if (!listing) return [];
+    const day = calendarDays[selectedDate];
+    if (!day) return listing.availableSlots;
+    const dayAbbr = day.dayName.slice(0, 3);
+    const matched = listing.availableSlots.filter((slot) =>
+      slot.startsWith(dayAbbr),
+    );
+    return matched.length > 0 ? matched : listing.availableSlots;
+  }, [selectedDate, calendarDays, listing]);
+
   if (!listing) {
     return (
       <div className="mx-auto w-full max-w-5xl space-y-8">
         <Link
-          href="/marketplace"
+          href="/bookings"
           className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground"
         >
-          <ArrowLeft className="size-4" /> Back to marketplace
+          <ArrowLeft className="size-4" /> Back to bookings
         </Link>
         <div className="rounded-[28px] border border-dashed border-border bg-card p-12 text-center">
           <p className="text-lg font-semibold text-muted-foreground">
@@ -74,37 +86,20 @@ export default function BookingReviewPage({
     );
   }
 
-  const total = listing.price + SERVICE_FEE + BOOKING_FEE;
-
-  const availableSlotsForDate = useMemo(() => {
-    const day = calendarDays[selectedDate];
-    if (!day) return listing.availableSlots;
-    // Simple filter: show slots that start with the day abbreviation
-    const dayAbbr = day.dayName.slice(0, 3);
-    const matched = listing.availableSlots.filter((slot) =>
-      slot.startsWith(dayAbbr),
-    );
-    // If no match for this day, show all slots as fallback
-    return matched.length > 0 ? matched : listing.availableSlots;
-  }, [selectedDate, calendarDays, listing.availableSlots]);
-
   const confirmBooking = () => {
     authGate(() => setPinOpen(true));
   };
 
   return (
     <div className="mx-auto w-full max-w-5xl space-y-8">
-      {/* ── Back link ──────────────────────────────── */}
       <Link
-        href="/marketplace"
+        href="/bookings"
         className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground"
       >
-        <ArrowLeft className="size-4" /> Back to marketplace
+        <ArrowLeft className="size-4" /> Back to bookings
       </Link>
 
-      {/* ── Provider hero ──────────────────────────── */}
       <section className="overflow-hidden rounded-[28px] border border-border bg-card">
-        {/* Image placeholder banner */}
         <div className="relative aspect-[21/8] bg-muted md:aspect-[21/6]">
           <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 border-2 border-dashed border-border bg-muted/50 text-muted-foreground">
             <span className="text-sm font-medium">Add your image here</span>
@@ -145,10 +140,8 @@ export default function BookingReviewPage({
         </div>
       </section>
 
-      {/* ── Date & time picker ─────────────────────── */}
       <section className="grid gap-5 lg:grid-cols-[1.1fr_0.9fr]">
         <div className="space-y-6 rounded-[28px] border border-border bg-card p-5 md:p-8">
-          {/* Calendar */}
           <div>
             <div className="flex items-center gap-3">
               <span className="grid size-10 place-items-center rounded-xl bg-secondary text-primary">
@@ -188,7 +181,6 @@ export default function BookingReviewPage({
             </div>
           </div>
 
-          {/* Time slots */}
           <div>
             <div className="flex items-center gap-3">
               <span className="grid size-10 place-items-center rounded-xl bg-secondary text-primary">
@@ -224,16 +216,15 @@ export default function BookingReviewPage({
           </div>
         </div>
 
-        {/* ── Price breakdown sidebar ─────────────── */}
-        <aside className="order-first flex flex-col justify-between rounded-[28px] bg-[#0b1f3a] p-5 text-white shadow-[0_20px_50px_rgba(11,31,58,0.18)] md:p-8 lg:order-none lg:sticky lg:top-24">
+        <aside className="order-first flex flex-col justify-between rounded-[28px] bg-card p-5 shadow-[0_4px_24px_rgba(224,122,95,0.08)] ring-1 ring-border md:p-8 lg:order-none lg:sticky lg:top-24">
           <div>
-            <p className="text-xs uppercase tracking-[0.18em] text-blue-100/65">
+            <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
               Booking summary
             </p>
             <p className="mt-3 font-heading text-3xl font-semibold">
               ₦{total.toLocaleString("en-NG")}
             </p>
-            <p className="mt-2 text-sm text-blue-100/65">
+            <p className="mt-2 text-sm text-muted-foreground">
               {listing.name} ·{" "}
               {selectedSlot
                 ? `${calendarDays[selectedDate]?.label} at ${selectedSlot}`
@@ -241,31 +232,32 @@ export default function BookingReviewPage({
             </p>
           </div>
 
-          <div className="mt-5 rounded-2xl border border-white/10 bg-white/5 p-3">
-            <div className="flex items-center justify-between text-sm text-blue-100/80">
+          <div className="mt-5 rounded-2xl border border-border bg-muted/35 p-3">
+            <div className="flex items-center justify-between text-sm text-muted-foreground">
               <span>Service</span>
-              <span className="font-medium text-white">{listing.name}</span>
+              <span className="font-medium text-foreground">
+                {listing.name}
+              </span>
             </div>
-            <div className="mt-2 flex items-center justify-between text-sm text-blue-100/80">
+            <div className="mt-2 flex items-center justify-between text-sm text-muted-foreground">
               <span>Date</span>
-              <span className="font-medium text-white">
+              <span className="font-medium text-foreground">
                 {calendarDays[selectedDate]?.label ?? "—"}
               </span>
             </div>
-            <div className="mt-2 flex items-center justify-between text-sm text-blue-100/80">
+            <div className="mt-2 flex items-center justify-between text-sm text-muted-foreground">
               <span>Time</span>
-              <span className="font-medium text-white">
+              <span className="font-medium text-foreground">
                 {selectedSlot ?? "—"}
               </span>
             </div>
           </div>
 
-          {/* Fee accordion */}
-          <div className="mt-5 border-y border-white/10 py-3">
+          <div className="mt-5 border-y border-border py-3">
             <button
               type="button"
               onClick={() => setFeeOpen((open) => !open)}
-              className="flex w-full items-center justify-between text-sm text-blue-100/80"
+              className="flex w-full items-center justify-between text-sm text-muted-foreground"
             >
               <span>Fee breakdown</span>
               <ChevronDown
@@ -281,21 +273,21 @@ export default function BookingReviewPage({
                   className="overflow-hidden"
                 >
                   <div className="space-y-2 pt-4 text-sm">
-                    <div className="flex justify-between text-blue-100/65">
+                    <div className="flex justify-between text-muted-foreground">
                       <span>Service fee</span>
                       <span>₦{SERVICE_FEE.toLocaleString("en-NG")}</span>
                     </div>
-                    <div className="flex justify-between text-blue-100/65">
+                    <div className="flex justify-between text-muted-foreground">
                       <span>Booking fee</span>
                       <span>₦{BOOKING_FEE.toLocaleString("en-NG")}</span>
                     </div>
-                    <div className="flex justify-between text-blue-100/65">
+                    <div className="flex justify-between text-muted-foreground">
                       <span>Service price</span>
                       <span>
                         ₦{listing.price.toLocaleString("en-NG")}
                       </span>
                     </div>
-                    <div className="flex justify-between border-t border-white/10 pt-2 font-semibold">
+                    <div className="flex justify-between border-t border-border pt-2 font-semibold">
                       <span>Total</span>
                       <span>₦{total.toLocaleString("en-NG")}</span>
                     </div>
@@ -310,7 +302,7 @@ export default function BookingReviewPage({
             size="lg"
             onClick={confirmBooking}
             disabled={!selectedSlot || pinOpen}
-            className="mt-6 h-12 w-full rounded-2xl bg-accent text-white hover:bg-accent/90"
+            className="mt-6 h-12 w-full rounded-2xl"
           >
             Confirm Booking
           </Button>
