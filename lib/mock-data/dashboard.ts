@@ -2,7 +2,7 @@ export type DashboardShortcut = {
   label: string;
   description: string;
   href: string;
-  icon: "wallet" | "zap" | "bills" | "betting" | "gift" | "more";
+  icon: "wallet" | "zap" | "bills" | "betting" | "gift" | "store" | "more";
   tone: "blue" | "orange" | "green" | "navy";
 };
 
@@ -52,6 +52,13 @@ export const dashboardData = {
       href: "/gift-cards",
       icon: "gift",
       tone: "orange",
+    },
+    {
+      label: "Marketplace",
+      description: "Book services",
+      href: "/marketplace",
+      icon: "store",
+      tone: "green",
     },
     {
       label: "More",

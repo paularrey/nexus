@@ -8,6 +8,7 @@ import {
   Gift,
   MoreHorizontal,
   ReceiptText,
+  Store,
   WalletCards,
   Zap,
 } from "lucide-react";
@@ -27,6 +28,7 @@ const shortcutIcons = {
   bills: ReceiptText,
   betting: ArrowUpRight,
   gift: Gift,
+  store: Store,
   more: MoreHorizontal,
 };
 
@@ -193,7 +195,7 @@ export default function Home() {
             {dashboardData.shortcuts.length} services
           </span>
         </div>
-        <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-6">
+        <div className="grid grid-cols-2 gap-3 md:grid-cols-4 lg:grid-cols-7">
           {dashboardData.shortcuts.map((shortcut, index) => {
             const Icon = shortcutIcons[shortcut.icon];
             return (
