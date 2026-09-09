@@ -5,6 +5,7 @@ export type GiftCardBrandOption = {
   category: string;
   color: string;
   value: string;
+  currency: string;
 };
 
 export const giftCardBrandOptions: GiftCardBrandOption[] = [
@@ -15,6 +16,7 @@ export const giftCardBrandOptions: GiftCardBrandOption[] = [
     category: "Shopping",
     color: "#f59e0b",
     value: "Amazon Gift Card",
+    currency: "USD",
   },
   {
     id: "us-itunes",
@@ -23,6 +25,7 @@ export const giftCardBrandOptions: GiftCardBrandOption[] = [
     category: "Digital",
     color: "#111827",
     value: "Apple Gift Card",
+    currency: "USD",
   },
   {
     id: "us-google",
@@ -31,6 +34,7 @@ export const giftCardBrandOptions: GiftCardBrandOption[] = [
     category: "Digital",
     color: "#16a34a",
     value: "Google Play",
+    currency: "USD",
   },
   {
     id: "us-steam",
@@ -39,8 +43,8 @@ export const giftCardBrandOptions: GiftCardBrandOption[] = [
     category: "Gaming",
     color: "#1d4ed8",
     value: "Steam Wallet",
+    currency: "USD",
   },
-
   {
     id: "uk-amazon",
     name: "Amazon UK",
@@ -48,6 +52,7 @@ export const giftCardBrandOptions: GiftCardBrandOption[] = [
     category: "Shopping",
     color: "#f59e0b",
     value: "Amazon Gift Card",
+    currency: "GBP",
   },
   {
     id: "uk-argos",
@@ -56,6 +61,7 @@ export const giftCardBrandOptions: GiftCardBrandOption[] = [
     category: "Shopping",
     color: "#ef4444",
     value: "Argos Gift Card",
+    currency: "GBP",
   },
   {
     id: "uk-spotify",
@@ -64,6 +70,7 @@ export const giftCardBrandOptions: GiftCardBrandOption[] = [
     category: "Entertainment",
     color: "#22c55e",
     value: "Spotify Credit",
+    currency: "GBP",
   },
   {
     id: "uk-apple",
@@ -72,8 +79,8 @@ export const giftCardBrandOptions: GiftCardBrandOption[] = [
     category: "Digital",
     color: "#111827",
     value: "Apple Gift Card",
+    currency: "GBP",
   },
-
   {
     id: "ca-amazon",
     name: "Amazon Canada",
@@ -81,6 +88,7 @@ export const giftCardBrandOptions: GiftCardBrandOption[] = [
     category: "Shopping",
     color: "#f59e0b",
     value: "Amazon Gift Card",
+    currency: "CAD",
   },
   {
     id: "ca-spotify",
@@ -89,6 +97,7 @@ export const giftCardBrandOptions: GiftCardBrandOption[] = [
     category: "Entertainment",
     color: "#22c55e",
     value: "Spotify Credit",
+    currency: "CAD",
   },
   {
     id: "ca-google",
@@ -97,8 +106,8 @@ export const giftCardBrandOptions: GiftCardBrandOption[] = [
     category: "Digital",
     color: "#16a34a",
     value: "Google Play",
+    currency: "CAD",
   },
-
   {
     id: "de-amazon",
     name: "Amazon Germany",
@@ -106,6 +115,7 @@ export const giftCardBrandOptions: GiftCardBrandOption[] = [
     category: "Shopping",
     color: "#f59e0b",
     value: "Amazon Gift Card",
+    currency: "EUR",
   },
   {
     id: "de-google",
@@ -114,6 +124,7 @@ export const giftCardBrandOptions: GiftCardBrandOption[] = [
     category: "Digital",
     color: "#16a34a",
     value: "Google Play",
+    currency: "EUR",
   },
   {
     id: "de-spotify",
@@ -122,8 +133,8 @@ export const giftCardBrandOptions: GiftCardBrandOption[] = [
     category: "Entertainment",
     color: "#22c55e",
     value: "Spotify Credit",
+    currency: "EUR",
   },
-
   {
     id: "ng-amazon",
     name: "Amazon NG",
@@ -131,6 +142,7 @@ export const giftCardBrandOptions: GiftCardBrandOption[] = [
     category: "Shopping",
     color: "#f59e0b",
     value: "Amazon Gift Card",
+    currency: "NGN",
   },
   {
     id: "ng-apple",
@@ -139,6 +151,7 @@ export const giftCardBrandOptions: GiftCardBrandOption[] = [
     category: "Digital",
     color: "#111827",
     value: "Apple Gift Card",
+    currency: "NGN",
   },
   {
     id: "ng-google",
@@ -147,6 +160,7 @@ export const giftCardBrandOptions: GiftCardBrandOption[] = [
     category: "Digital",
     color: "#16a34a",
     value: "Google Play",
+    currency: "NGN",
   },
   {
     id: "ng-spotify",
@@ -155,5 +169,6 @@ export const giftCardBrandOptions: GiftCardBrandOption[] = [
     category: "Entertainment",
     color: "#22c55e",
     value: "Spotify Credit",
+    currency: "NGN",
   },
 ];
