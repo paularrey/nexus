@@ -227,7 +227,10 @@ export default function GiftCardsPage() {
                     <button
                       key={country.code}
                       type="button"
-                      onClick={() => setSelectedCountryCode(country.code)}
+                      onClick={() => {
+                        setSelectedCountryCode(country.code);
+                        setCountrySearch("");
+                      }}
                       className={`flex items-center gap-2 rounded-xl border px-3 py-2 text-left text-sm transition-colors ${selectedCountryCode === country.code ? "border-primary bg-secondary text-primary" : "border-border hover:border-primary/35"}`}
                     >
                       <span>{country.flag}</span>
@@ -510,10 +513,10 @@ export default function GiftCardsPage() {
 
       <Drawer.Root open={countrySheetOpen} onOpenChange={setCountrySheetOpen}>
         <Drawer.Portal>
-          <Drawer.Overlay className="fixed inset-0 z-40 bg-slate-950/60 backdrop-blur-sm" />
-          <Drawer.Content className="fixed inset-x-0 bottom-0 z-50 mx-auto w-full max-w-md rounded-t-[28px] border border-border bg-card p-4 pb-5 outline-none">
-            <div className="mx-auto mb-3 h-1.5 w-12 rounded-full bg-muted" />
-            <div className="flex items-center gap-2 rounded-xl border border-border bg-background px-3">
+          <Drawer.Overlay className="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm" />
+          <Drawer.Content className="fixed inset-x-0 bottom-0 z-50 mx-auto flex max-h-[85dvh] w-full max-w-md flex-col overflow-hidden rounded-t-[28px] border border-border bg-card outline-none">
+            <div className="mx-auto mb-3 mt-3 h-1.5 w-12 shrink-0 rounded-full bg-muted" />
+            <div className="mx-4 flex shrink-0 items-center gap-2 rounded-xl border border-border bg-background px-3">
               <Search className="size-4 text-muted-foreground" />
               <input
                 value={countrySearch}
@@ -522,7 +525,7 @@ export default function GiftCardsPage() {
                 className="h-11 w-full bg-transparent text-sm outline-none"
               />
             </div>
-            <div className="mt-4 space-y-2">
+            <div className="mt-4 flex-1 space-y-2 overflow-y-auto px-4 pb-4">
               {filteredCountries.map((country) => (
                 <button
                   key={country.code}
@@ -530,6 +533,7 @@ export default function GiftCardsPage() {
                   onClick={() => {
                     setSelectedCountryCode(country.code);
                     setCountrySheetOpen(false);
+                    setCountrySearch("");
                   }}
                   className={`flex w-full items-center justify-between rounded-2xl border px-3 py-3 text-left ${selectedCountryCode === country.code ? "border-primary bg-secondary" : "border-border bg-background"}`}
                 >
@@ -542,6 +546,11 @@ export default function GiftCardsPage() {
                   )}
                 </button>
               ))}
+              {filteredCountries.length === 0 && (
+                <p className="py-8 text-center text-sm text-muted-foreground">
+                  No countries match your search.
+                </p>
+              )}
             </div>
           </Drawer.Content>
         </Drawer.Portal>
