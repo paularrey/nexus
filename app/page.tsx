@@ -3,27 +3,26 @@
 import { AnimatePresence, motion } from "framer-motion";
 import {
   ArrowUpRight,
+  CreditCard,
+  Dot,
   Eye,
   EyeOff,
   Gift,
   MoreHorizontal,
   ReceiptText,
   Store,
-  WalletCards,
   Zap,
 } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
-
-import { Button } from "@/components/ui/button";
+import { useState, useEffect } from "react";
 import { dashboardData } from "@/lib/mock-data/dashboard";
+import { walletData } from "@/lib/mock-data/wallet";
 import {
   translations,
   usePreferences,
 } from "@/lib/context/preferences-context";
 
 const shortcutIcons = {
-  wallet: WalletCards,
   zap: Zap,
   bills: ReceiptText,
   betting: ArrowUpRight,
@@ -36,7 +35,6 @@ const toneClasses = {
   blue: "bg-blue-50 text-primary",
   orange: "bg-orange-50 text-accent",
   green: "bg-emerald-50 text-success",
-  navy: "bg-slate-100 text-slate-700",
 };
 
 const formatBalance = (value: number) =>
@@ -49,12 +47,34 @@ export default function Home() {
   const { language } = usePreferences();
   const labels = translations[language];
 
+  const [currentDate, setCurrentDate] = useState(() => {
+    const now = new Date();
+    return now.toLocaleDateString("en-NG", {
+      weekday: "long",
+      month: "long",
+      day: "numeric",
+    });
+  });
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const now = new Date();
+      const formatted = now.toLocaleDateString("en-NG", {
+        weekday: "long",
+        month: "long",
+        day: "numeric",
+      });
+      setCurrentDate(formatted);
+    }, 60000);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <div className="mx-auto w-full max-w-7xl space-y-8">
       <section className="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
         <div>
           <p className="text-sm font-medium text-primary">
-            Wednesday, August 27
+            {currentDate}
           </p>
           <h1 className="mt-1 font-heading text-3xl font-semibold tracking-tight md:text-4xl">
             {labels.homeTitle}
@@ -63,12 +83,6 @@ export default function Home() {
             {labels.homeDescription}
           </p>
         </div>
-        <Link
-          href="/wallet"
-          className="hidden items-center gap-2 text-sm font-semibold text-primary md:flex"
-        >
-          {labels.viewWallet} <ArrowUpRight className="size-4" />
-        </Link>
       </section>
 
       <section className="grid gap-5 lg:grid-cols-[minmax(0,1.15fr)_minmax(280px,0.85fr)]">
@@ -84,10 +98,10 @@ export default function Home() {
           <div className="relative flex h-full flex-col justify-between">
             <div className="flex items-start justify-between">
               <div>
-                <p className="text-xs font-medium uppercase tracking-[0.2em] text-blue-100/70">
+                <p className="text-xs font-medium uppercase tracking-[0.2em] text-white/60">
                   Nexus
                 </p>
-                <p className="mt-4 text-sm text-blue-100/70">
+                <p className="mt-4 text-sm text-white/60">
                   {labels.availableBalance}
                 </p>
                 <div className="mt-1 flex items-center gap-3">
@@ -107,7 +121,7 @@ export default function Home() {
                   <button
                     type="button"
                     onClick={() => setBalanceVisible((visible) => !visible)}
-                    className="rounded-full p-2 text-blue-100/70 transition-colors hover:bg-white/10 hover:text-white"
+                    className="rounded-full p-2 text-white/60 transition-colors hover:bg-white/10 hover:text-white"
                     aria-label={
                       balanceVisible ? "Hide balance" : "Show balance"
                     }
@@ -126,14 +140,17 @@ export default function Home() {
             </div>
             <div className="flex items-end justify-between">
               <div>
-                <p className="text-sm text-blue-100/70">
+                <p className="text-sm text-white/60">
                   {dashboardData.cardholder}
                 </p>
                 <p className="mt-2 font-mono text-sm tracking-[0.16em] text-white/90">
                   {dashboardData.cardNumber}
                 </p>
+                <p className="mt-1 text-xs text-white/50">
+                  {walletData.bankName} · {walletData.accountNumber}
+                </p>
               </div>
-              <p className="font-mono text-xs text-blue-100/70">
+              <p className="font-mono text-xs text-white/60">
                 VALID {dashboardData.expiry}
               </p>
             </div>
@@ -166,14 +183,14 @@ export default function Home() {
                     key={`${message}-${index}`}
                     className="flex items-center gap-8"
                   >
-                    {message} <span className="text-accent">✦</span>
+                    {message} <span className="text-accent"><Dot className="size-4" /></span>
                   </span>
                 ),
               )}
             </motion.div>
           </div>
           <Link
-            href="/wallet"
+            href="/history"
             className="flex items-center justify-between text-sm font-semibold text-primary"
           >
             {labels.checkActivity} <ArrowUpRight className="size-4" />
@@ -185,10 +202,61 @@ export default function Home() {
         <div className="mb-4 flex items-end justify-between">
           <div>
             <p className="text-sm font-medium text-muted-foreground">
+              {labels.recentTransactions}
+            </p>
+            <h2 className="mt-1 font-heading text-2xl font-semibold tracking-tight">
+              Recent activity
+            </h2>
+          </div>
+          <Link
+            href="/history"
+            className="flex items-center gap-1 text-sm font-semibold text-primary"
+          >
+            View all <ArrowUpRight className="size-3.5" />
+          </Link>
+        </div>
+        <div className="space-y-2">
+          {walletData.transactions.slice(0, 3).map((transaction) => (
+            <div
+              key={transaction.id}
+              className="flex items-center justify-between gap-3 rounded-2xl border border-border bg-card px-3 py-3 md:px-4"
+            >
+              <span className="flex min-w-0 items-center gap-3">
+                <span className="grid size-10 shrink-0 place-items-center rounded-xl bg-secondary text-primary">
+                  <CreditCard className="size-5" />
+                </span>
+                <span className="min-w-0">
+                  <span className="block truncate text-sm font-semibold">
+                    {transaction.title}
+                  </span>
+                  <span className="mt-1 block truncate text-xs text-muted-foreground">
+                    {transaction.description}
+                  </span>
+                </span>
+              </span>
+              <span className="shrink-0 text-right">
+                <span
+                  className={`block text-sm font-semibold ${transaction.amount.startsWith("+") ? "text-success" : "text-foreground"}`}
+                >
+                  {transaction.amount}
+                </span>
+                <span className="mt-1 block text-[11px] text-muted-foreground">
+                  {transaction.date}
+                </span>
+              </span>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section>
+        <div className="mb-4 flex items-end justify-between">
+          <div>
+            <p className="text-sm font-medium text-muted-foreground">
               {labels.quickAccess}
             </p>
             <h2 className="mt-1 font-heading text-2xl font-semibold tracking-tight">
-              What do you need today?
+              {labels.quickAccess}
             </h2>
           </div>
           <span className="text-sm text-muted-foreground">
@@ -225,13 +293,6 @@ export default function Home() {
           })}
         </div>
       </section>
-
-      <div className="flex items-center justify-between rounded-2xl border border-dashed border-primary/30 bg-secondary/40 px-4 py-3 text-sm text-secondary-foreground">
-        <span>{labels.moreServices}</span>
-        <Button asChild variant="link" className="hidden sm:inline-flex">
-          <Link href="/subscriptions">{labels.exploreMore}</Link>
-        </Button>
-      </div>
     </div>
   );
 }

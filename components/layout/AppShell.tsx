@@ -9,6 +9,11 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { AuthModal } from "@/components/AuthModal";
 import { CookieConsent } from "@/components/CookieConsent";
+import {
+  OnboardingModal,
+  shouldShowOnboarding,
+  markOnboardingSeen,
+} from "@/components/OnboardingModal";
 import { useAuth } from "@/lib/context/auth-context";
 import {
   translations,
@@ -28,21 +33,26 @@ export function AppShell({ children }: AppShellProps) {
   const { language } = usePreferences();
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [splashVisible, setSplashVisible] = useState(true);
+  const [onboardingOpen, setOnboardingOpen] = useState(false);
 
   const labels = translations[language];
   const navLabels: Record<string, string> = {
     "/": labels.home,
-    "/wallet": labels.wallet,
     "/bills": labels.bills,
     "/airtime": labels.airtime,
     "/profile": labels.profile,
     "/subscriptions": "Subscriptions",
     "/bookings": "Bookings",
+    "/history": "History",
   };
 
   useEffect(() => {
-    // Clear the timer if the shell unmounts before the intro finishes.
-    const splashTimer = window.setTimeout(() => setSplashVisible(false), 1400);
+    const splashTimer = window.setTimeout(() => {
+      setSplashVisible(false);
+      if (shouldShowOnboarding()) {
+        window.setTimeout(() => setOnboardingOpen(true), 400);
+      }
+    }, 1400);
 
     return () => window.clearTimeout(splashTimer);
   }, []);
@@ -259,6 +269,13 @@ export function AppShell({ children }: AppShellProps) {
 
       <AuthModal />
       <CookieConsent />
+      <OnboardingModal
+        open={onboardingOpen}
+        onOpenChange={(open) => {
+          setOnboardingOpen(open);
+          if (!open) markOnboardingSeen();
+        }}
+      />
     </div>
   );
 }

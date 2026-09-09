@@ -148,11 +148,11 @@ export default function SubscriptionsPage() {
 
         <aside className="flex flex-col justify-between rounded-[28px] bg-gradient-to-br from-[#c45a3c] to-[#e07a5f] p-5 text-white shadow-[0_4px_24px_rgba(224,122,95,0.25)] md:p-8">
           <div>
-            <p className="text-sm text-blue-100/65">Renewal preview</p>
+            <p className="text-sm text-white/60">Renewal preview</p>
             <p className="mt-3 font-heading text-3xl font-semibold">
               ₦{selectedPlan.price.toLocaleString("en-NG")}
             </p>
-            <p className="mt-2 text-sm text-blue-100/65">
+            <p className="mt-2 text-sm text-white/60">
               {selectedProvider.name} · {selectedPlan.name} ·{" "}
               {accountNumber || "Account number needed"}
             </p>

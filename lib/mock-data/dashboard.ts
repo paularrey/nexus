@@ -2,7 +2,7 @@ export type DashboardShortcut = {
   label: string;
   description: string;
   href: string;
-  icon: "wallet" | "zap" | "bills" | "betting" | "gift" | "store" | "more";
+  icon: "zap" | "bills" | "betting" | "gift" | "store" | "more";
   tone: "blue" | "orange" | "green" | "navy";
 };
 
@@ -13,18 +13,11 @@ export const dashboardData = {
   cardNumber: "4821  ••••  ••••  9014",
   expiry: "09/28",
   ticker: [
-    "Keep your everyday payments in one place",
-    "Explore your wallet shortcuts",
-    "More features are coming to Nexus",
+    "All your everyday payments in one place",
+    "Send, pay, and book without switching apps",
+    "Your balance is always ready when you are",
   ],
   shortcuts: [
-    {
-      label: "Wallet",
-      description: "Move money",
-      href: "/wallet",
-      icon: "wallet",
-      tone: "blue",
-    },
     {
       label: "Airtime",
       description: "Top up a line",
@@ -44,7 +37,7 @@ export const dashboardData = {
       description: "Fund a wallet",
       href: "/betting",
       icon: "betting",
-      tone: "navy",
+      tone: "orange",
     },
     {
       label: "Gift cards",
@@ -61,8 +54,8 @@ export const dashboardData = {
       tone: "green",
     },
     {
-      label: "More",
-      description: "See services",
+      label: "Subscriptions",
+      description: "Renew plans",
       href: "/subscriptions",
       icon: "more",
       tone: "blue",

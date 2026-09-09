@@ -202,7 +202,7 @@ export default function BillsPage() {
         <aside className="order-first rounded-[28px] bg-gradient-to-br from-[#c45a3c] to-[#e07a5f] p-4 text-white shadow-[0_4px_24px_rgba(224,122,95,0.25)] md:p-6 lg:order-none lg:sticky lg:top-24 lg:p-8">
           <div className="flex items-start justify-between gap-4">
             <div>
-              <p className="text-xs uppercase tracking-[0.18em] text-blue-100/65">
+              <p className="text-xs uppercase tracking-[0.18em] text-white/60">
                 Payment summary
               </p>
               <p className="mt-3 font-heading text-3xl font-semibold">
@@ -215,13 +215,13 @@ export default function BillsPage() {
           </div>
 
           <div className="mt-5 rounded-2xl border border-white/10 bg-white/5 p-3">
-            <div className="flex items-center justify-between text-sm text-blue-100/80">
+            <div className="flex items-center justify-between text-sm text-white/70">
               <span>Service</span>
               <span className="font-medium text-white">
                 {selectedBiller.name}
               </span>
             </div>
-            <div className="mt-2 flex items-center justify-between text-sm text-blue-100/80">
+            <div className="mt-2 flex items-center justify-between text-sm text-white/70">
               <span>Reference</span>
               <span className="font-medium text-white">
                 {identifier || "Pending"}
@@ -233,7 +233,7 @@ export default function BillsPage() {
             <button
               type="button"
               onClick={() => setFeeOpen((open) => !open)}
-              className="flex w-full items-center justify-between text-sm text-blue-100/80"
+              className="flex w-full items-center justify-between text-sm text-white/70"
             >
               <span>Fee breakdown</span>
               <ChevronDown
@@ -249,7 +249,7 @@ export default function BillsPage() {
                   className="overflow-hidden"
                 >
                   <div className="space-y-2 pt-4 text-sm">
-                    <div className="flex justify-between text-blue-100/65">
+                    <div className="flex justify-between text-white/50">
                       <span>Service fee</span>
                       <span>
                         ₦{billsData.serviceFee.toLocaleString("en-NG")}

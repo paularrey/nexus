@@ -1,10 +1,10 @@
 import type { LucideIcon } from "lucide-react";
 import {
+  Clock,
   House,
   ReceiptText,
   Tv,
   UserRound,
-  WalletCards,
   Zap,
 } from "lucide-react";
 
@@ -16,9 +16,9 @@ export type NavItem = {
 
 export const navItems: NavItem[] = [
   { label: "Home", href: "/", icon: House },
-  { label: "Wallet", href: "/wallet", icon: WalletCards },
   { label: "Airtime & Data", href: "/airtime", icon: Zap },
   { label: "Bills", href: "/bills", icon: ReceiptText },
+  { label: "History", href: "/history", icon: Clock },
   { label: "Profile", href: "/profile", icon: UserRound },
   { label: "Subscriptions", href: "/subscriptions", icon: Tv },
 ];

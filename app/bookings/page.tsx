@@ -64,7 +64,7 @@ export default function MarketplacePage() {
       </div>
 
       {/* ── Category filter chips ──────────────────── */}
-      <div className="flex flex-wrap gap-2">
+      <div className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-1 scrollbar-none sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0">
         {(["All", ...categories] as const).map((category) => {
           const isActive = activeCategory === category;
           return (
@@ -73,7 +73,7 @@ export default function MarketplacePage() {
               type="button"
               whileTap={{ scale: 0.93 }}
               onClick={() => setActiveCategory(category)}
-              className={`rounded-xl border px-4 py-2 text-sm font-medium transition-colors ${
+              className={`shrink-0 rounded-xl border px-4 py-2.5 text-sm font-medium transition-colors ${
                 isActive
                   ? "border-primary bg-primary text-primary-foreground"
                   : "border-border bg-card text-muted-foreground hover:border-primary/40 hover:text-foreground"

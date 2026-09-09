@@ -117,7 +117,7 @@ export default function GiftCardsPage() {
       <section className="overflow-hidden rounded-[28px] bg-gradient-to-br from-[#c45a3c] to-[#e07a5f] p-5 text-white shadow-[0_4px_24px_rgba(224,122,95,0.25)] md:p-8">
         <div className="flex items-center justify-between gap-3">
           <div>
-            <p className="text-xs uppercase tracking-[0.18em] text-blue-100/65">
+            <p className="text-xs uppercase tracking-[0.18em] text-white/60">
               Buy side
             </p>
             <h2 className="mt-2 font-heading text-2xl font-semibold">
@@ -186,7 +186,7 @@ export default function GiftCardsPage() {
         </div>
 
         <div className="mt-5 flex items-center justify-between gap-3 rounded-2xl border border-white/10 bg-white/5 px-3 py-2">
-          <span className="text-sm text-blue-100/70">Selected brand</span>
+          <span className="text-sm text-white/60">Selected brand</span>
           <span className="font-medium text-white">
             {activeBrand.name} · {activeBrand.category}
           </span>
@@ -498,12 +498,12 @@ export default function GiftCardsPage() {
             Sell now
           </Button>
 
-          <div className="mt-4 flex items-center justify-between rounded-xl border border-success/20 bg-success/10 p-3 text-sm text-success">
+          <div className="mt-4 flex items-center justify-between rounded-xl border border-border bg-muted/35 p-3 text-sm text-muted-foreground">
             <span className="flex items-center gap-2">
-              <ShieldCheck className="size-4" />
-              Verified quote preview
+              <ShieldCheck className="size-4 text-primary" />
+              Rate includes service fee
             </span>
-            <span>Ready</span>
+            <span>Live</span>
           </div>
         </aside>
       </section>
