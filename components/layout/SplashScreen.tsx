@@ -21,7 +21,7 @@ export function SplashScreen({ isVisible }: SplashScreenProps) {
       )}
       aria-hidden={!isVisible}
     >
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_42%,rgba(255,87,51,0.15),transparent_42%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_42%,rgba(255,87,51,0.2),transparent_50%)]" />
       <motion.div
         initial={{ opacity: 0, scale: 0.72, rotate: -8 }}
         animate={
@@ -30,15 +30,15 @@ export function SplashScreen({ isVisible }: SplashScreenProps) {
             : { opacity: 0, scale: 1.08, rotate: 4 }
         }
         transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-        className="relative flex flex-col items-center gap-5"
+        className="relative flex flex-col items-center gap-8"
       >
-        <div className="relative grid size-24 place-items-center rounded-[28px] border border-primary/20 bg-gradient-to-br from-[#c44420] to-[#FF5733] shadow-[0_24px_80px_rgba(255,87,51,0.3)]">
-          <div className="absolute inset-2 rounded-[20px] border border-white/15" />
+        <div className="relative grid size-40 place-items-center rounded-[36px] border border-primary/20 bg-gradient-to-br from-[#c44420] to-[#FF5733] shadow-[0_32px_100px_rgba(255,87,51,0.35)]">
+          <div className="absolute inset-3 rounded-[28px] border border-white/15" />
           <Image
             src="/ravelogo512.png"
             alt="Ravecard"
-            width={64}
-            height={64}
+            width={120}
+            height={120}
             className="relative z-10"
             priority
           />
@@ -46,14 +46,14 @@ export function SplashScreen({ isVisible }: SplashScreenProps) {
             initial={{ x: "-140%" }}
             animate={isVisible ? { x: "140%" } : { x: "-140%" }}
             transition={{ delay: 0.35, duration: 0.8, ease: "easeInOut" }}
-            className="absolute inset-y-0 w-8 -skew-x-12 bg-white/25 blur-md"
+            className="absolute inset-y-0 w-10 -skew-x-12 bg-white/25 blur-md"
           />
         </div>
         <div className="text-center">
-          <p className="font-heading text-2xl font-semibold tracking-tight text-foreground">
+          <p className="font-heading text-3xl font-bold tracking-tight text-foreground">
             Ravecard
           </p>
-          <p className="mt-1 text-sm text-muted-foreground">
+          <p className="mt-2 text-base text-muted-foreground">
             Spend Smarter. Live Freer.
           </p>
         </div>
