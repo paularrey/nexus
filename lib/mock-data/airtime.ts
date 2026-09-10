@@ -2,6 +2,7 @@ export type Network = {
   name: string;
   shortName: string;
   color: string;
+  image: string;
   prefixes: string[];
   dataPlans: DataPlan[];
 };
@@ -18,6 +19,7 @@ export const airtimeData = {
       name: "MTN",
       shortName: "MTN",
       color: "#f6c945",
+      image: "/mtn.jfif",
       prefixes: [
         "0803",
         "0806",
@@ -39,6 +41,7 @@ export const airtimeData = {
       name: "Airtel",
       shortName: "A",
       color: "#e52b38",
+      image: "/airtel.jfif",
       prefixes: ["0802", "0808", "0812", "0701", "0708", "0902", "0907"],
       dataPlans: [
         { label: "2 GB", amount: 500, validity: "14 days" },
@@ -51,6 +54,7 @@ export const airtimeData = {
       name: "Glo",
       shortName: "G",
       color: "#75b843",
+      image: "/glo.jfif",
       prefixes: ["0805", "0807", "0811", "0815", "0705", "0905"],
       dataPlans: [
         { label: "2.5 GB", amount: 500, validity: "14 days" },
@@ -63,6 +67,7 @@ export const airtimeData = {
       name: "9mobile",
       shortName: "9",
       color: "#8cc63f",
+      image: "/9mobile.jfif",
       prefixes: ["0809", "0817", "0818", "0908", "0909"],
       dataPlans: [
         { label: "2 GB", amount: 500, validity: "14 days" },

@@ -47,6 +47,13 @@ export function AppShell({ children }: AppShellProps) {
   };
 
   useEffect(() => {
+    // Register service worker for PWA
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("/sw.js").catch(() => {
+        // SW registration failed — app still works, just no offline support
+      });
+    }
+
     const splashTimer = window.setTimeout(() => {
       setSplashVisible(false);
       if (shouldShowOnboarding()) {

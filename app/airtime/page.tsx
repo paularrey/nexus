@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Check, Phone, Smartphone } from "lucide-react";
+import Image from "next/image";
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
 
@@ -90,37 +91,48 @@ export default function AirtimePage() {
             </p>
           </div>
         </div>
-        <div className="mt-6 grid grid-cols-2 gap-3 md:grid-cols-4">
+        <div className="mt-6 grid grid-cols-4 gap-3 sm:max-w-md">
           {airtimeData.networks.map((network) => {
             const isSelected = selectedNetwork.name === network.name;
             return (
               <motion.button
                 key={network.name}
                 type="button"
-                whileTap={{ scale: 0.95 }}
+                whileTap={{ scale: 0.93 }}
                 onClick={() => {
                   setSelectedNetwork(network);
                   setSelectedPlan(network.dataPlans[1]);
                 }}
-                className="relative flex min-h-28 flex-col items-start justify-between overflow-hidden rounded-2xl border p-4 text-left transition-shadow"
-                style={{
-                  borderColor: isSelected ? network.color : undefined,
-                  boxShadow: isSelected
-                    ? `0 0 0 3px ${network.color}25, 0 12px 24px ${network.color}22`
-                    : undefined,
-                }}
+                className="relative flex flex-col items-center gap-2.5"
                 aria-pressed={isSelected}
               >
                 <span
-                  className="grid size-10 place-items-center rounded-xl text-lg font-bold text-slate-900"
-                  style={{ backgroundColor: network.color }}
+                  className={`relative size-16 overflow-hidden rounded-full border-2 transition-colors sm:size-20 ${
+                    isSelected
+                      ? "border-primary shadow-[0_0_0_3px_rgba(224,122,95,0.2)]"
+                      : "border-border"
+                  }`}
                 >
-                  {network.shortName}
+                  <Image
+                    src={network.image}
+                    alt={network.name}
+                    fill
+                    className="object-cover"
+                    sizes="80px"
+                  />
+                  {isSelected && (
+                    <span className="absolute inset-0 flex items-center justify-center bg-black/20">
+                      <Check className="size-5 text-white" />
+                    </span>
+                  )}
                 </span>
-                <span className="font-semibold">{network.name}</span>
-                {isSelected && (
-                  <Check className="absolute right-3 top-3 size-4 text-success" />
-                )}
+                <span
+                  className={`text-xs font-semibold ${
+                    isSelected ? "text-primary" : "text-muted-foreground"
+                  }`}
+                >
+                  {network.name}
+                </span>
               </motion.button>
             );
           })}
@@ -149,10 +161,15 @@ export default function AirtimePage() {
           </label>
           {detectedNetwork && (
             <p className="mt-3 flex items-center gap-2 text-sm text-success">
-              <span
-                className="size-2 rounded-full"
-                style={{ backgroundColor: detectedNetwork.color }}
-              />
+              <span className="relative size-5 overflow-hidden rounded-full">
+                <Image
+                  src={detectedNetwork.image}
+                  alt={detectedNetwork.name}
+                  fill
+                  className="object-cover"
+                  sizes="20px"
+                />
+              </span>
               {detectedNetwork.name} number detected
             </p>
           )}
