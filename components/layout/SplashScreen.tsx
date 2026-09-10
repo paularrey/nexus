@@ -21,7 +21,7 @@ export function SplashScreen({ isVisible }: SplashScreenProps) {
       )}
       aria-hidden={!isVisible}
     >
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_42%,rgba(255,87,51,0.2),transparent_50%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_42%,rgba(201,76,58,0.2),transparent_50%)]" />
       <motion.div
         initial={{ opacity: 0, scale: 0.72, rotate: -8 }}
         animate={
@@ -32,7 +32,7 @@ export function SplashScreen({ isVisible }: SplashScreenProps) {
         transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
         className="relative flex flex-col items-center gap-8"
       >
-        <div className="relative grid size-40 place-items-center rounded-[36px] border border-primary/20 bg-gradient-to-br from-[#c44420] to-[#FF5733] shadow-[0_32px_100px_rgba(255,87,51,0.35)]">
+        <div className="relative grid size-40 place-items-center rounded-[36px] border border-primary/20 bg-gradient-to-br from-[#A63D2C] to-[#C94C3A] shadow-[0_32px_100px_rgba(201,76,58,0.35)]">
           <div className="absolute inset-3 rounded-[28px] border border-white/15" />
           <Image
             src="/ravelogo512.png"

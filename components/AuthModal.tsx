@@ -280,7 +280,7 @@ export function AuthModal() {
               <Button
                 type="submit"
                 size="lg"
-                className="h-11 w-full bg-primary text-base shadow-[0_12px_28px_rgba(255,87,51,0.24)] hover:bg-primary/90 md:h-12"
+                className="h-11 w-full bg-primary text-base shadow-[0_12px_28px_rgba(201,76,58,0.24)] hover:bg-primary/90 md:h-12"
               >
                 {mode === "sign-in" ? "Sign In" : "Create Account"}
               </Button>

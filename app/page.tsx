@@ -90,9 +90,9 @@ export default function Home() {
           whileHover={{ rotateX: 2, rotateY: -3, y: -4 }}
           transition={{ type: "spring", stiffness: 220, damping: 20 }}
           style={{ transformPerspective: 1200 }}
-          className="group relative min-h-[250px] overflow-hidden rounded-[28px] bg-gradient-to-br from-[#c44420] to-[#FF5733] p-6 text-white shadow-[0_4px_24px_rgba(255,87,51,0.25)] md:min-h-[300px] md:p-8"
+          className="group relative min-h-[250px] overflow-hidden rounded-[28px] bg-gradient-to-br from-[#A63D2C] to-[#C94C3A] p-6 text-white shadow-[0_4px_24px_rgba(201,76,58,0.25)] md:min-h-[300px] md:p-8"
         >
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_15%,rgba(255,150,120,0.5),transparent_30%),radial-gradient(circle_at_20%_100%,rgba(255,87,51,0.6),transparent_50%)]" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_15%,rgba(220,140,120,0.5),transparent_30%),radial-gradient(circle_at_20%_100%,rgba(201,76,58,0.6),transparent_50%)]" />
           <div className="absolute -right-16 top-12 size-64 rotate-45 border border-white/15 transition-transform duration-700 group-hover:translate-x-8" />
           <div className="absolute -right-4 top-28 size-44 rotate-45 border border-orange-300/25" />
           <div className="relative flex h-full flex-col justify-between">

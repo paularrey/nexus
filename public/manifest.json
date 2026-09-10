@@ -4,8 +4,8 @@
   "description": "Your wallet for everyday payments. Spend smarter, live freer.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#121212",
-  "theme_color": "#121212",
+  "background_color": "#FAF6F3",
+  "theme_color": "#FAF6F3",
   "orientation": "portrait-primary",
   "categories": ["finance", "utilities"],
   "icons": [
