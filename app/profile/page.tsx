@@ -98,10 +98,10 @@ export default function ProfilePage() {
   const [disableOpen, setDisableOpen] = useState(false);
   const [regenerateOpen, setRegenerateOpen] = useState(false);
   const [backupCodes, setBackupCodes] = useState([
-    "NEXUS-4821",
-    "NEXUS-7314",
-    "NEXUS-9052",
-    "NEXUS-1683",
+    "RC-4821",
+    "RC-7314",
+    "RC-9052",
+    "RC-1683",
   ]);
   const [biometricsEnabled, setBiometricsEnabled] = useState(false);
 
@@ -136,7 +136,7 @@ export default function ProfilePage() {
   };
 
   const copySecret = async () => {
-    await navigator.clipboard.writeText("NEXUS-DEMO-2FA-KEY");
+    await navigator.clipboard.writeText("RAVECARD-DEMO-2FA-KEY");
     toast.success("Secret key copied");
   };
 
@@ -163,7 +163,7 @@ export default function ProfilePage() {
     link.href = URL.createObjectURL(
       new Blob([backupCodes.join("\n")], { type: "text/plain" }),
     );
-    link.download = "nexus-backup-codes.txt";
+    link.download = "ravecard-backup-codes.txt";
     link.click();
     URL.revokeObjectURL(link.href);
     toast.success("Backup codes downloaded");
@@ -177,7 +177,7 @@ export default function ProfilePage() {
           {labels.profileTitle}
         </h1>
         <p className="mt-2 text-muted-foreground">
-          Keep your details and account protection in one place.
+          Keep your details and account protection in one place. Built for how you actually live.
         </p>
       </header>
 
@@ -207,17 +207,17 @@ export default function ProfilePage() {
       ) : (
         <>
           <section className="grid gap-5 lg:grid-cols-[1.1fr_0.9fr]">
-            <div className="rounded-[28px] bg-[#0b1f3a] p-6 text-white shadow-[0_20px_50px_rgba(11,31,58,0.18)] md:p-8">
+            <div className="rounded-[28px] bg-[#1a1a1a] p-6 text-white shadow-[0_20px_50px_rgba(0,0,0,0.3)] md:p-8">
               <div className="flex items-start justify-between gap-4">
                 <div className="flex items-center gap-4">
-                  <div className="grid size-16 place-items-center rounded-2xl bg-orange-400 font-heading text-2xl font-bold text-white">
+                  <div className="grid size-16 place-items-center rounded-2xl bg-primary font-heading text-2xl font-bold text-white">
                     AM
                   </div>
                   <div>
                     <p className="font-heading text-2xl font-semibold">
                       {profileName}
                     </p>
-                    <p className="mt-1 flex items-center gap-2 text-sm text-blue-100/70">
+                    <p className="mt-1 flex items-center gap-2 text-sm text-white/60">
                       <Mail className="size-4" />
                       {profileEmail}
                     </p>
@@ -228,7 +228,7 @@ export default function ProfilePage() {
                 </span>
               </div>
               <div className="mt-8 flex items-center justify-between border-t border-white/10 pt-5 text-sm">
-                <span className="text-blue-100/65">Member since</span>
+                <span className="text-white/50">Member since</span>
                 <span>August 2026</span>
               </div>
             </div>
@@ -452,7 +452,7 @@ export default function ProfilePage() {
                             onClick={copySecret}
                             className="flex min-w-0 items-center gap-2 rounded-lg border border-border bg-background px-3 py-2 text-xs font-mono text-muted-foreground"
                           >
-                            <span className="truncate">NEXUS-DEMO-2FA-KEY</span>
+                            <span className="truncate">RAVECARD-DEMO-2FA-KEY</span>
                             <Copy className="size-3.5 shrink-0" />
                           </button>
                         </div>
@@ -607,10 +607,10 @@ export default function ProfilePage() {
                     className="flex-1"
                     onClick={() => {
                       setBackupCodes([
-                        "NEXUS-2940",
-                        "NEXUS-6178",
-                        "NEXUS-8432",
-                        "NEXUS-5061",
+                        "RC-2940",
+                        "RC-6178",
+                        "RC-8432",
+                        "RC-5061",
                       ]);
                       setRegenerateOpen(false);
                       toast.success("Backup codes regenerated");

@@ -37,8 +37,8 @@ export function AuthModal() {
                 {otpStep
                   ? `Enter the six-digit code for ${otpDestination}.`
                   : mode === "sign-in"
-                    ? "Sign in to continue with Nexus."
-                    : "Set up your Nexus profile to get started."}
+                    ? "Sign in to continue with Ravecard."
+                    : "Set up your Ravecard profile. Built for how you actually live."}
               </Drawer.Description>
             </div>
             <Button
@@ -280,7 +280,7 @@ export function AuthModal() {
               <Button
                 type="submit"
                 size="lg"
-                className="h-11 w-full bg-primary text-base shadow-[0_12px_28px_rgba(21,94,239,0.24)] hover:bg-primary/90 md:h-12"
+                className="h-11 w-full bg-primary text-base shadow-[0_12px_28px_rgba(255,87,51,0.24)] hover:bg-primary/90 md:h-12"
               >
                 {mode === "sign-in" ? "Sign In" : "Create Account"}
               </Button>

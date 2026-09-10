@@ -15,7 +15,7 @@ function LoginContent() {
           href="/"
           className="font-heading text-xl font-bold tracking-tight text-primary"
         >
-          Nexus
+          Ravecard
         </Link>
         <h1 className="mt-10 font-heading text-3xl font-semibold tracking-tight">
           Sign in to continue

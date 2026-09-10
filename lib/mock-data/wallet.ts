@@ -9,9 +9,9 @@ export type WalletTransaction = {
 };
 
 export const walletData = {
-  accountName: "Nexus Wallet",
+  accountName: "Ravecard Wallet",
   accountNumber: "0123456789",
-  bankName: "Nexus Partner Bank",
+  bankName: "Ravecard Partner Bank",
   balance: "₦248,650",
   transactions: [
     {

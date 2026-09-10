@@ -1,29 +1,25 @@
 {
-  "name": "Nexus — Your money, in motion",
-  "short_name": "Nexus",
-  "description": "A unified wallet for everyday payments.",
+  "name": "Ravecard — Spend Smarter. Live Freer.",
+  "short_name": "Ravecard",
+  "description": "Your wallet for everyday payments. Spend smarter, live freer.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#f4f1ec",
-  "theme_color": "#e07a5f",
+  "background_color": "#121212",
+  "theme_color": "#121212",
   "orientation": "portrait-primary",
   "categories": ["finance", "utilities"],
   "icons": [
     {
-      "src": "/icons/icon-192.png",
+      "src": "/ravelogo192.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
     },
     {
-      "src": "/icons/icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png"
-    },
-    {
-      "src": "/icons/icon-512.png",
+      "src": "/ravelogo512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "maskable"
+      "purpose": "any"
     }
   ]
 }

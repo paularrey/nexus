@@ -24,13 +24,13 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Nexus",
-  description: "A unified wallet for everyday payments.",
+  title: "Ravecard",
+  description: "Spend Smarter. Live Freer.",
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
-    statusBarStyle: "default",
-    title: "Nexus",
+    statusBarStyle: "black-translucent",
+    title: "Ravecard",
   },
   formatDetection: {
     telephone: false,
@@ -38,7 +38,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#e07a5f",
+  themeColor: "#121212",
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,
@@ -53,10 +53,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       suppressHydrationWarning
     >
       <head>
-        <link rel="apple-touch-icon" href="/icons/icon-192.png" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-        <meta name="apple-mobile-web-app-title" content="Nexus" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta name="apple-mobile-web-app-title" content="Ravecard" />
       </head>
       <body className="min-h-full flex flex-col">
         <Providers>

@@ -1,8 +1,8 @@
-const CACHE_NAME = "nexus-v1";
+const CACHE_NAME = "ravecard-v1";
 const STATIC_ASSETS = [
   "/",
-  "/icons/icon-192.png",
-  "/icons/icon-512.png",
+  "/ravelogo192.png",
+  "/ravelogo512.png",
   "/manifest.json",
 ];
 

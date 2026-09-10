@@ -9,7 +9,7 @@ export type DashboardShortcut = {
 export const dashboardData = {
   balance: 248650,
   currency: "NGN",
-  cardholder: "Nexus member",
+  cardholder: "Ravecard member",
   cardNumber: "4821  ••••  ••••  9014",
   expiry: "09/28",
   ticker: [

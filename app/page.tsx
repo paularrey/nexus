@@ -32,9 +32,9 @@ const shortcutIcons = {
 };
 
 const toneClasses = {
-  blue: "bg-blue-50 text-primary",
-  orange: "bg-orange-50 text-accent",
-  green: "bg-emerald-50 text-success",
+  blue: "bg-blue-500/15 text-blue-400",
+  orange: "bg-primary/15 text-primary",
+  green: "bg-emerald-500/15 text-emerald-400",
 };
 
 const formatBalance = (value: number) =>
@@ -90,16 +90,16 @@ export default function Home() {
           whileHover={{ rotateX: 2, rotateY: -3, y: -4 }}
           transition={{ type: "spring", stiffness: 220, damping: 20 }}
           style={{ transformPerspective: 1200 }}
-          className="group relative min-h-[250px] overflow-hidden rounded-[28px] bg-gradient-to-br from-[#c45a3c] to-[#e07a5f] p-6 text-white shadow-[0_4px_24px_rgba(224,122,95,0.25)] md:min-h-[300px] md:p-8"
+          className="group relative min-h-[250px] overflow-hidden rounded-[28px] bg-gradient-to-br from-[#c44420] to-[#FF5733] p-6 text-white shadow-[0_4px_24px_rgba(255,87,51,0.25)] md:min-h-[300px] md:p-8"
         >
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_15%,rgba(242,204,143,0.5),transparent_30%),radial-gradient(circle_at_20%_100%,rgba(224,122,95,0.6),transparent_50%)]" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_15%,rgba(255,150,120,0.5),transparent_30%),radial-gradient(circle_at_20%_100%,rgba(255,87,51,0.6),transparent_50%)]" />
           <div className="absolute -right-16 top-12 size-64 rotate-45 border border-white/15 transition-transform duration-700 group-hover:translate-x-8" />
           <div className="absolute -right-4 top-28 size-44 rotate-45 border border-orange-300/25" />
           <div className="relative flex h-full flex-col justify-between">
             <div className="flex items-start justify-between">
               <div>
                 <p className="text-xs font-medium uppercase tracking-[0.2em] text-white/60">
-                  Nexus
+                  Ravecard
                 </p>
                 <p className="mt-4 text-sm text-white/60">
                   {labels.availableBalance}
@@ -135,7 +135,7 @@ export default function Home() {
                 </div>
               </div>
               <div className="grid size-11 place-items-center rounded-2xl border border-white/20 bg-white/10 font-heading text-xl font-bold">
-                N
+                R
               </div>
             </div>
             <div className="flex items-end justify-between">
@@ -161,13 +161,13 @@ export default function Home() {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-xs font-medium uppercase tracking-[0.16em] text-muted-foreground">
-                {labels.nexusNote}
+                {labels.pulseNote}
               </p>
               <h2 className="mt-2 font-heading text-2xl font-semibold tracking-tight">
                 {labels.smallMoves}
               </h2>
             </div>
-            <div className="grid size-11 place-items-center rounded-2xl bg-orange-50 text-accent">
+            <div className="grid size-11 place-items-center rounded-2xl bg-primary/15 text-primary">
               <Zap className="size-5" />
             </div>
           </div>

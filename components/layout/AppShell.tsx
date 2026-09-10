@@ -2,6 +2,7 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import { Bell, Menu, Settings, X } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -73,7 +74,7 @@ export function AppShell({ children }: AppShellProps) {
           href="/"
           className="font-heading text-xl font-bold tracking-tight text-primary"
         >
-          Nexus
+          Ravecard
         </Link>
         <div className="flex items-center gap-2">
           <Button asChild variant="ghost" size="icon-sm" className="relative">
@@ -126,7 +127,7 @@ export function AppShell({ children }: AppShellProps) {
                 exit={{ opacity: 0, x: -8 }}
                 className="overflow-hidden whitespace-nowrap font-heading text-xl font-bold tracking-tight text-sidebar-primary"
               >
-                Nexus
+                Ravecard
               </motion.div>
             ) : (
               <motion.div
@@ -136,7 +137,7 @@ export function AppShell({ children }: AppShellProps) {
                 exit={{ opacity: 0, scale: 0.8 }}
                 className="font-heading text-xl font-bold text-sidebar-primary"
               >
-                N
+                <Image src="/ravelogo192.png" alt="Ravecard" width={32} height={32} />
               </motion.div>
             )}
           </AnimatePresence>

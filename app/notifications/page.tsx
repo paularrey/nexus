@@ -23,10 +23,10 @@ export default function NotificationsPage() {
         <div>
           <p className="text-sm font-medium text-primary">Notifications</p>
           <h1 className="mt-1 font-heading text-3xl font-semibold tracking-tight md:text-4xl">
-            Keep up with Nexus.
+            Keep up with Ravecard.
           </h1>
           <p className="mt-2 text-muted-foreground">
-            Important updates and useful reminders from your wallet.
+            Important updates and reminders to keep you in control.
           </p>
         </div>
         {unreadCount > 0 && (

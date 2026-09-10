@@ -12,5 +12,5 @@ export const bettingData = {
     { name: "BetKing", shortName: "BK", color: "#1b9a59" },
   ] satisfies BettingPlatform[],
   amounts: [1000, 2000, 5000, 10000, 20000],
-  mockAccountName: "Nexus demo account",
+  mockAccountName: "Ravecard demo account",
 };

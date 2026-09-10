@@ -14,49 +14,49 @@ import { useCallback, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 
-const ONBOARDING_KEY = "nexus-onboarding-seen";
+const ONBOARDING_KEY = "ravecard-onboarding-seen";
 
 const steps = [
   {
     icon: Zap,
     title: "Pay for airtime and data",
     description:
-      "Top up any mobile network directly from your Nexus balance. Pick a plan, enter a number, confirm — done.",
-    color: "bg-orange-50 text-accent",
+      "Top up any mobile network directly from your Ravecard balance. Pick a plan, enter a number, confirm — done.",
+    color: "bg-primary/15 text-primary",
   },
   {
     icon: ReceiptText,
     title: "Settle bills without leaving home",
     description:
       "Electricity, internet, cable TV — verify your account, choose an amount, and pay in seconds.",
-    color: "bg-emerald-50 text-success",
+    color: "bg-emerald-500/15 text-emerald-400",
   },
   {
     icon: Gift,
     title: "Buy or sell gift cards at live rates",
     description:
       "Browse brands, see a real-time conversion, and submit your card for instant payout estimation.",
-    color: "bg-orange-50 text-accent",
+    color: "bg-primary/15 text-primary",
   },
   {
     icon: BookOpen,
     title: "Book local services you trust",
     description:
       "Find spas, salons, photographers, and home repair providers. Pick a date, choose a time, and confirm your booking.",
-    color: "bg-emerald-50 text-success",
+    color: "bg-emerald-500/15 text-emerald-400",
   },
   {
     icon: Smartphone,
     title: "Renew subscriptions in one tap",
     description:
       "Netflix, DSTV, Spotify, and more. Select your plan, enter your account number, and renew without hunting for payment pages.",
-    color: "bg-orange-50 text-accent",
+    color: "bg-primary/15 text-primary",
   },
   {
     icon: CreditCard,
     title: "Your balance is always one glance away",
     description:
-      "The home screen shows your available balance, recent activity, and quick access to every service — no digging required.",
+      "The home screen shows your available balance, recent activity, and quick access to every service — your freedom, all in one view.",
     color: "bg-primary/10 text-primary",
   },
 ] as const;

@@ -14,8 +14,8 @@ export type NotificationItem = {
 export const notifications: NotificationItem[] = [
   {
     id: "welcome",
-    title: "Welcome to Nexus",
-    description: "Your unified wallet is ready for everyday payments.",
+    title: "Welcome to Ravecard",
+    description: "Your wallet is ready. Freedom in every transaction.",
     timestamp: "Just now",
     icon: Bell,
     tone: "text-primary bg-secondary",
@@ -36,7 +36,7 @@ export const notifications: NotificationItem[] = [
     description: "Review the latest mock payout estimates in Gift Cards.",
     timestamp: "Yesterday",
     icon: Gift,
-    tone: "text-accent bg-orange-50",
+    tone: "text-primary bg-primary/15",
     unread: false,
   },
   {
@@ -54,7 +54,7 @@ export const notifications: NotificationItem[] = [
     description: "Keep your line connected with a fast airtime or data top-up.",
     timestamp: "Sunday",
     icon: Zap,
-    tone: "text-accent bg-orange-50",
+    tone: "text-primary bg-primary/15",
     unread: false,
   },
 ];

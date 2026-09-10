@@ -101,7 +101,7 @@ export default function SettingsPage() {
 
       <section className="rounded-[28px] border border-border bg-card p-5 md:p-8">
         <div className="flex items-center gap-3">
-          <span className="grid size-10 place-items-center rounded-xl bg-orange-50 text-accent">
+          <span className="grid size-10 place-items-center rounded-xl bg-primary/15 text-primary">
             <Check className="size-5" />
           </span>
           <div>

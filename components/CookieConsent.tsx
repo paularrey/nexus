@@ -5,15 +5,15 @@ import { useSyncExternalStore } from "react";
 
 import { Button } from "@/components/ui/button";
 
-const consentStorageKey = "nexus-cookie-consent";
+const consentStorageKey = "ravecard-cookie-consent";
 
 export function CookieConsent() {
   const visible = useSyncExternalStore(
     (onStoreChange) => {
-      window.addEventListener("nexus-cookie-consent-change", onStoreChange);
+      window.addEventListener("ravecard-cookie-consent-change", onStoreChange);
       return () =>
         window.removeEventListener(
-          "nexus-cookie-consent-change",
+          "ravecard-cookie-consent-change",
           onStoreChange,
         );
     },
@@ -23,7 +23,7 @@ export function CookieConsent() {
 
   const dismiss = (value: "accepted" | "managed") => {
     sessionStorage.setItem(consentStorageKey, value);
-    window.dispatchEvent(new Event("nexus-cookie-consent-change"));
+    window.dispatchEvent(new Event("ravecard-cookie-consent-change"));
   };
 
   if (!visible) return null;
@@ -36,7 +36,7 @@ export function CookieConsent() {
         </span>
         <div className="min-w-0 flex-1">
           <div className="flex items-start justify-between gap-3">
-            <h2 className="font-semibold">Cookies on Nexus</h2>
+            <h2 className="font-semibold">Cookies on Ravecard</h2>
             <Button
               type="button"
               variant="ghost"
