@@ -207,7 +207,7 @@ export default function ProfilePage() {
       ) : (
         <>
           <section className="grid gap-5 lg:grid-cols-[1.1fr_0.9fr]">
-            <div className="rounded-[28px] bg-[#1a1a1a] p-6 text-white shadow-[0_20px_50px_rgba(0,0,0,0.3)] md:p-8">
+            <div className="rounded-[28px] bg-[#2C2118] p-6 text-white shadow-[0_20px_50px_rgba(0,0,0,0.3)] md:p-8">
               <div className="flex items-start justify-between gap-4">
                 <div className="flex items-center gap-4">
                   <div className="grid size-16 place-items-center rounded-2xl bg-primary font-heading text-2xl font-bold text-white">
@@ -523,7 +523,7 @@ export default function ProfilePage() {
 
           <Drawer.Root open={disableOpen} onOpenChange={setDisableOpen}>
             <Drawer.Portal>
-              <Drawer.Overlay className="fixed inset-0 z-40 bg-slate-950/60 backdrop-blur-sm" />
+              <Drawer.Overlay className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm" />
               <Drawer.Content className="fixed inset-x-0 bottom-0 z-50 mx-auto h-fit max-h-[calc(100dvh-1rem)] w-full max-w-md overflow-y-auto rounded-t-[28px] border border-border bg-card p-5 outline-none md:bottom-auto md:top-1/2 md:-translate-y-1/2 md:rounded-[28px]">
                 <div className="mx-auto mb-4 h-1.5 w-12 rounded-full bg-muted md:hidden" />
                 <Drawer.Title className="font-heading text-xl font-semibold">
@@ -584,7 +584,7 @@ export default function ProfilePage() {
 
           <Drawer.Root open={regenerateOpen} onOpenChange={setRegenerateOpen}>
             <Drawer.Portal>
-              <Drawer.Overlay className="fixed inset-0 z-40 bg-slate-950/60 backdrop-blur-sm" />
+              <Drawer.Overlay className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm" />
               <Drawer.Content className="fixed inset-x-0 bottom-0 z-50 mx-auto h-fit max-h-[calc(100dvh-1rem)] w-full max-w-md overflow-y-auto rounded-t-[28px] border border-border bg-card p-5 outline-none md:bottom-auto md:top-1/2 md:-translate-y-1/2 md:rounded-[28px]">
                 <div className="mx-auto mb-4 h-1.5 w-12 rounded-full bg-muted md:hidden" />
                 <Drawer.Title className="font-heading text-xl font-semibold">

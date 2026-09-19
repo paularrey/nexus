@@ -96,7 +96,7 @@ export function PinModal({
       dismissible={!isProcessing}
     >
       <Drawer.Portal>
-        <Drawer.Overlay className="fixed inset-0 z-40 bg-slate-950/65 backdrop-blur-md" />
+        <Drawer.Overlay className="fixed inset-0 z-40 bg-black/65 backdrop-blur-md" />
         <Drawer.Content className="!h-auto fixed inset-x-0 bottom-0 z-50 mx-auto max-h-[calc(100dvh-1rem)] w-full max-w-md overflow-hidden rounded-t-[30px] border border-border bg-card p-5 shadow-2xl outline-none md:bottom-auto md:top-1/2 md:-translate-y-1/2 md:rounded-[30px] md:p-7">
           <div className="mx-auto mb-5 h-1.5 w-12 rounded-full bg-muted md:hidden" />
           <Button
