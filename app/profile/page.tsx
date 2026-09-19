@@ -207,7 +207,7 @@ export default function ProfilePage() {
       ) : (
         <>
           <section className="grid gap-5 lg:grid-cols-[1.1fr_0.9fr]">
-            <div className="rounded-[28px] bg-[#2C2118] p-6 text-white shadow-[0_20px_50px_rgba(0,0,0,0.3)] md:p-8">
+            <div className="rounded-[28px] bg-[#2c2825] p-6 text-white shadow-[0_20px_50px_rgba(0,0,0,0.3)] md:p-8">
               <div className="flex items-start justify-between gap-4">
                 <div className="flex items-center gap-4">
                   <div className="grid size-16 place-items-center rounded-2xl bg-primary font-heading text-2xl font-bold text-white">
