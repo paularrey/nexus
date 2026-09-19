@@ -146,7 +146,7 @@ export default function SubscriptionsPage() {
           </label>
         </div>
 
-        <aside className="flex flex-col justify-between rounded-[28px] bg-[var(--gradient-cta)] p-5 text-white shadow-[0_4px_24px_rgba(196,90,60,0.25)] md:p-8">
+        <aside className="flex flex-col justify-between rounded-[28px] bg-[var(--gradient-cta)] p-5 text-white shadow-[0_4px_24px_rgba(201,76,58,0.25)] md:p-8">
           <div>
             <p className="text-sm text-white/60">Renewal preview</p>
             <p className="mt-3 font-heading text-3xl font-semibold">

@@ -117,7 +117,7 @@ export default function AirtimePage() {
                 <span
                   className={`relative size-16 overflow-hidden rounded-full border-[2.5px] transition-all sm:size-20 ${
                     isSelected
-                      ? "border-primary shadow-[0_0_0_4px_rgba(196,90,60,0.15)]"
+                      ? "border-primary shadow-[0_0_0_4px_rgba(201,76,58,0.15)]"
                       : "border-border hover:border-primary/30"
                   }`}
                 >
@@ -250,7 +250,7 @@ export default function AirtimePage() {
       {/* ── Desktop summary (hidden on mobile) ─────── */}
       {hasSelection && (
         <section className="hidden md:block">
-          <div className="rounded-[28px] bg-[var(--gradient-cta)] p-6 text-white shadow-[0_4px_24px_rgba(196,90,60,0.25)]">
+          <div className="rounded-[28px] bg-[var(--gradient-cta)] p-6 text-white shadow-[0_4px_24px_rgba(201,76,58,0.25)]">
             <p className="text-sm text-white/60">Ready to top up</p>
             <p className="mt-3 font-heading text-3xl font-semibold">
               ₦{amount.toLocaleString("en-NG")}
@@ -340,7 +340,7 @@ export default function AirtimePage() {
                 size="lg"
                 onClick={buyAirtime}
                 disabled={!phone || pinOpen}
-                className="h-12 shrink-0 bg-[var(--gradient-cta)] px-6 text-white shadow-[0_4px_16px_rgba(196,90,60,0.3)] hover:opacity-90"
+                className="h-12 shrink-0 bg-[var(--gradient-cta)] px-6 text-white shadow-[0_4px_16px_rgba(201,76,58,0.3)] hover:opacity-90"
               >
                 {service === "airtime" ? "Buy Airtime" : "Buy Data"}
               </Button>
