@@ -96,7 +96,7 @@ export default function AirtimePage() {
                 <span
                   className={`relative size-16 overflow-hidden rounded-full border-[2.5px] transition-all sm:size-20 ${
                     isSelected
-                      ? "border-primary shadow-[0_0_0_4px_rgba(238,123,96,0.18)]"
+                      ? "border-primary shadow-[0_0_0_4px_rgb(123_126_240_/_0.18)]"
                       : "border-border hover:border-primary/30"
                   }`}
                 >
@@ -212,7 +212,7 @@ export default function AirtimePage() {
                 </span>
                 {typeof preset !== "number" && (
                   <span
-                    className={`mt-1 block text-xs ${isSelected ? "text-white/70" : "text-muted-foreground"}`}
+                    className={`mt-1 block text-xs ${isSelected ? "text-white/80" : "text-muted-foreground"}`}
                   >
                     ₦{formatAmount(preset.amount)} · {preset.validity}
                   </span>
@@ -225,7 +225,7 @@ export default function AirtimePage() {
 
       {hasSelection && (
         <section className="hidden md:block">
-          <div className="rounded-[28px] border border-border bg-surface p-6 text-foreground shadow-[0_4px_24px_rgba(43,33,28,0.06)]">
+          <div className="rounded-[28px] border border-border bg-surface p-6 text-foreground shadow-[0_4px_24px_rgb(46_46_58_/_0.05)]">
             <p className="text-sm text-muted-foreground">Ready to top up</p>
             <p className="mt-3 font-heading text-3xl font-semibold">
               ₦{formatAmount(amount)}
@@ -258,7 +258,7 @@ export default function AirtimePage() {
               size="lg"
               onClick={buyAirtime}
               disabled={!phone || pinOpen}
-              className="mt-5 h-12 w-full bg-primary text-white hover:bg-primary/90"
+              className="mt-5 h-12 w-full rounded-full bg-primary text-primary-foreground hover:bg-primary-hover"
             >
               {service === "airtime" ? "Buy Airtime" : "Buy Data"}
             </Button>
@@ -287,7 +287,7 @@ export default function AirtimePage() {
                 size="lg"
                 onClick={buyAirtime}
                 disabled={!phone || pinOpen}
-                className="h-12 shrink-0 bg-primary px-6 text-white shadow-[0_4px_16px_rgba(238,123,96,0.3)] hover:bg-primary/90"
+                className="h-12 shrink-0 rounded-full bg-primary px-6 text-primary-foreground shadow-[0_4px_16px_rgb(123_126_240_/_0.28)] hover:bg-primary-hover"
               >
                 {service === "airtime" ? "Buy Airtime" : "Buy Data"}
               </Button>

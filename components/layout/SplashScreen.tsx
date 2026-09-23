@@ -32,7 +32,7 @@ export function SplashScreen({ isVisible }: SplashScreenProps) {
         transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
         className="relative flex flex-col items-center gap-8"
       >
-        <div className="relative grid size-40 place-items-center rounded-[36px] border border-primary/20 bg-primary shadow-[0_32px_80px_rgba(238,123,96,0.28)]">
+        <div className="relative grid size-40 place-items-center rounded-[36px] border border-primary/20 bg-primary shadow-[0_32px_80px_rgb(123_126_240_/_0.28)]">
           <div className="absolute inset-3 rounded-[28px] border border-white/25" />
           <Image
             src="/ravelogo512.png"

@@ -131,7 +131,7 @@ export default function BettingPage() {
           </div>
         </div>
 
-        <aside className="flex flex-col justify-between rounded-[28px] border border-border bg-surface p-5 text-foreground shadow-[0_4px_24px_rgba(43,33,28,0.06)] md:p-8">
+        <aside className="flex flex-col justify-between rounded-[28px] border border-border bg-surface p-5 text-foreground shadow-[0_4px_24px_rgb(46_46_58_/_0.05)] md:p-8">
           <div>
             <p className="text-sm text-muted-foreground">Funding preview</p>
             <p className="mt-3 font-heading text-3xl font-semibold">
@@ -146,7 +146,7 @@ export default function BettingPage() {
             size="lg"
             onClick={fundAccount}
             disabled={!userId || !isVerified || pinOpen}
-            className="mt-8 h-12 w-full bg-primary text-white hover:bg-primary/90"
+            className="mt-8 h-12 w-full rounded-full bg-primary text-primary-foreground hover:bg-primary-hover"
           >
             Fund Betting Wallet
           </Button>

@@ -166,10 +166,10 @@ export default function ProfilePage() {
       ) : (
         <>
           <section className="grid gap-5 lg:grid-cols-[1.1fr_0.9fr]">
-            <div className="rounded-[28px] border border-border bg-surface p-6 text-foreground shadow-[0_4px_24px_rgba(43,33,28,0.06)] md:p-8">
+            <div className="rounded-[28px] border border-border bg-surface p-6 text-foreground shadow-[0_4px_24px_rgb(46_46_58_/_0.05)] md:p-8">
               <div className="flex items-start justify-between gap-4">
                 <div className="flex items-center gap-4">
-                  <div className="grid size-16 place-items-center rounded-2xl bg-primary font-heading text-2xl font-bold text-white">
+                  <div className="grid size-16 place-items-center rounded-2xl bg-primary font-heading text-2xl font-bold text-primary-foreground">
                     AM
                   </div>
                   <div>
@@ -482,7 +482,7 @@ export default function ProfilePage() {
 
           <Drawer.Root open={disableOpen} onOpenChange={setDisableOpen}>
             <Drawer.Portal>
-              <Drawer.Overlay className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm" />
+              <Drawer.Overlay className="fixed inset-0 z-40 bg-scrim backdrop-blur-sm" />
               <Drawer.Content className="fixed inset-x-0 bottom-0 z-50 mx-auto h-fit max-h-[calc(100dvh-1rem)] w-full max-w-md overflow-y-auto rounded-t-[28px] border border-border bg-card p-5 outline-none md:bottom-auto md:top-1/2 md:-translate-y-1/2 md:rounded-[28px]">
                 <div className="mx-auto mb-4 h-1.5 w-12 rounded-full bg-muted md:hidden" />
                 <Drawer.Title className="font-heading text-xl font-semibold">
@@ -543,7 +543,7 @@ export default function ProfilePage() {
 
           <Drawer.Root open={regenerateOpen} onOpenChange={setRegenerateOpen}>
             <Drawer.Portal>
-              <Drawer.Overlay className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm" />
+              <Drawer.Overlay className="fixed inset-0 z-40 bg-scrim backdrop-blur-sm" />
               <Drawer.Content className="fixed inset-x-0 bottom-0 z-50 mx-auto h-fit max-h-[calc(100dvh-1rem)] w-full max-w-md overflow-y-auto rounded-t-[28px] border border-border bg-card p-5 outline-none md:bottom-auto md:top-1/2 md:-translate-y-1/2 md:rounded-[28px]">
                 <div className="mx-auto mb-4 h-1.5 w-12 rounded-full bg-muted md:hidden" />
                 <Drawer.Title className="font-heading text-xl font-semibold">
@@ -594,7 +594,7 @@ export default function ProfilePage() {
               type="button"
               variant="destructive"
               onClick={handleLogout}
-              className="h-11 gap-2 transition-shadow hover:shadow-[0_0_22px_rgba(217,45,32,0.35)]"
+              className="h-11 gap-2 transition-shadow hover:shadow-[0_0_22px_rgb(123_126_240_/_0.3)]"
             >
               <LogOut className="size-4" /> Sign out
             </Button>

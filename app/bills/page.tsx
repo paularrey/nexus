@@ -151,7 +151,7 @@ export default function BillsPage() {
           </div>
         </div>
 
-        <aside className="order-first rounded-[28px] border border-border bg-surface p-4 text-foreground shadow-[0_4px_24px_rgba(43,33,28,0.06)] md:p-6 lg:order-none lg:sticky lg:top-24 lg:p-8">
+        <aside className="order-first rounded-[28px] border border-border bg-surface p-4 text-foreground shadow-[0_4px_24px_rgb(46_46_58_/_0.05)] md:p-6 lg:order-none lg:sticky lg:top-24 lg:p-8">
           <div className="flex items-start justify-between gap-4">
             <div>
               <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
@@ -201,7 +201,7 @@ export default function BillsPage() {
             size="lg"
             onClick={payBill}
             disabled={!identifier || !isVerified || pinOpen}
-            className="mt-6 h-12 w-full rounded-2xl bg-primary text-white hover:bg-primary/90"
+            className="mt-6 h-12 w-full rounded-full bg-primary text-primary-foreground hover:bg-primary-hover"
           >
             Pay Bill
           </Button>

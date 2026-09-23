@@ -357,7 +357,7 @@ export default function GiftCardSellPage({ params }: BrandPageProps) {
           </section>
         </div>
 
-        <aside className="order-first flex flex-col justify-between rounded-[28px] bg-card p-5 shadow-[0_4px_24px_rgba(43,33,28,0.06)] ring-1 ring-border md:p-7 lg:order-none lg:sticky lg:top-24">
+        <aside className="order-first flex flex-col justify-between rounded-[28px] bg-card p-5 shadow-[0_4px_24px_rgb(46_46_58_/_0.05)] ring-1 ring-border md:p-7 lg:order-none lg:sticky lg:top-24">
           <div>
             <p className="text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground">
               Payout summary

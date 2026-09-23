@@ -81,7 +81,7 @@ export function AppShell({ children }: AppShellProps) {
               title="Notifications"
             >
               <Bell />
-              <span className="absolute right-1 top-1 grid size-3.5 place-items-center rounded-full bg-accent text-[9px] font-bold text-white">
+              <span className="absolute right-1 top-1 grid size-3.5 place-items-center rounded-full bg-accent text-[9px] font-bold text-accent-foreground">
                 2
               </span>
             </Link>
@@ -203,7 +203,7 @@ export function AppShell({ children }: AppShellProps) {
                 title="Notifications"
               >
                 <Bell />
-                <span className="absolute right-1.5 top-1.5 grid size-4 place-items-center rounded-full bg-accent text-[9px] font-bold text-white">
+                <span className="absolute right-1.5 top-1.5 grid size-4 place-items-center rounded-full bg-accent text-[9px] font-bold text-accent-foreground">
                   2
                 </span>
               </Link>

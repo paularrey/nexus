@@ -193,7 +193,7 @@ export default function BookingReviewPage({ params }: BookingPageProps) {
           </div>
         </div>
 
-        <aside className="order-first flex flex-col justify-between rounded-[28px] bg-card p-5 shadow-[0_4px_24px_rgba(43,33,28,0.06)] ring-1 ring-border md:p-8 lg:order-none lg:sticky lg:top-24">
+        <aside className="order-first flex flex-col justify-between rounded-[28px] bg-card p-5 shadow-[0_4px_24px_rgb(46_46_58_/_0.05)] ring-1 ring-border md:p-8 lg:order-none lg:sticky lg:top-24">
           <div>
             <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
               Booking summary
@@ -259,7 +259,7 @@ export default function BookingReviewPage({ params }: BookingPageProps) {
             size="lg"
             onClick={confirmBooking}
             disabled={!selectedSlot || pinOpen}
-            className="mt-6 h-12 w-full rounded-2xl"
+            className="mt-6 h-12 w-full rounded-full"
           >
             Confirm Booking
           </Button>

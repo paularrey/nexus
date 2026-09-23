@@ -14,12 +14,12 @@ import { formatAmount } from "@/lib/utils/format";
 import type { MarketplaceCategory } from "@/types";
 
 const categoryColors: Record<MarketplaceCategory, string> = {
-  Hair: "#d946ef",
-  Nails: "#f43f5e",
-  Spa: "#8b5cf6",
-  Cleaning: "#06b6d4",
-  "Home Repairs": "#f97316",
-  Photography: "#3b82f6",
+  Hair: "#E0629E",
+  Nails: "#E0629E",
+  Spa: "#7B7EF0",
+  Cleaning: "#4A90D9",
+  "Home Repairs": "#D9A441",
+  Photography: "#4A90D9",
 };
 
 export default function MarketplacePage() {

@@ -21,7 +21,7 @@ export function AuthModal() {
   return (
     <Drawer.Root open={authOpen} onOpenChange={(open) => !open && closeAuth()}>
       <Drawer.Portal>
-        <Drawer.Overlay className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm" />
+        <Drawer.Overlay className="fixed inset-0 z-40 bg-scrim backdrop-blur-sm" />
         <Drawer.Content className="fixed inset-x-0 bottom-0 z-50 mx-auto max-h-[100dvh] w-full overflow-hidden rounded-t-[28px] border border-border bg-card p-4 shadow-2xl outline-none md:bottom-auto md:top-1/2 md:max-w-lg md:-translate-y-1/2 md:rounded-[28px] md:p-8">
           <div className="mx-auto mb-3 h-1.5 w-12 rounded-full bg-muted md:mb-5" />
           <div className="mb-4 flex items-start justify-between gap-4 md:mb-7">
@@ -280,7 +280,7 @@ export function AuthModal() {
               <Button
                 type="submit"
                 size="lg"
-                className="h-11 w-full bg-primary text-base shadow-[0_12px_28px_rgba(204,107,73,0.24)] hover:bg-primary/90 md:h-12"
+                className="h-11 w-full rounded-full bg-primary text-base text-primary-foreground shadow-[0_12px_28px_rgb(123_126_240_/_0.24)] hover:bg-primary-hover md:h-12"
               >
                 {mode === "sign-in" ? "Sign In" : "Create Account"}
               </Button>
