@@ -1,11 +1,11 @@
 {
-  "name": "Ravecard — Spend Smarter. Live Freer.",
+  "name": "Ravecard",
   "short_name": "Ravecard",
-  "description": "Your wallet for everyday payments. Spend smarter, live freer.",
+  "description": "Spend Smarter. Live Freer. Your card for everyday payments.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#FAF6F3",
-  "theme_color": "#FAF6F3",
+  "background_color": "#121212",
+  "theme_color": "#121212",
   "orientation": "portrait-primary",
   "categories": ["finance", "utilities"],
   "icons": [

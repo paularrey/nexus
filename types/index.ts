@@ -2,15 +2,7 @@ import type { LucideIcon } from "lucide-react";
 
 export type AuthMode = "sign-in" | "create-account";
 
-export type Language =
-  | "en"
-  | "fr"
-  | "yo"
-  | "ha"
-  | "ig"
-  | "es"
-  | "ar"
-  | "pt";
+export type Language = "en" | "ig";
 
 export type NavItem = {
   label: string;

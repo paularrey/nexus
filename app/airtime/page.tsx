@@ -96,7 +96,7 @@ export default function AirtimePage() {
                 <span
                   className={`relative size-16 overflow-hidden rounded-full border-[2.5px] transition-all sm:size-20 ${
                     isSelected
-                      ? "border-primary shadow-[0_0_0_4px_rgb(123_126_240_/_0.18)]"
+                      ? "border-primary shadow-[0_0_0_4px_rgb(255_87_51_/_0.18)]"
                       : "border-border hover:border-primary/30"
                   }`}
                 >
@@ -287,7 +287,7 @@ export default function AirtimePage() {
                 size="lg"
                 onClick={buyAirtime}
                 disabled={!phone || pinOpen}
-                className="h-12 shrink-0 rounded-full bg-primary px-6 text-primary-foreground shadow-[0_4px_16px_rgb(123_126_240_/_0.28)] hover:bg-primary-hover"
+                className="h-12 shrink-0 rounded-full bg-primary px-6 text-primary-foreground shadow-[0_4px_16px_rgb(255_87_51_/_0.3)] hover:bg-primary-hover"
               >
                 {service === "airtime" ? "Buy Airtime" : "Buy Data"}
               </Button>

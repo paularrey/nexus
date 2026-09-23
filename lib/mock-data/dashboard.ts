@@ -7,9 +7,9 @@ export const dashboardData = {
   cardNumber: "4821  ••••  ••••  9014",
   expiry: "09/28",
   ticker: [
-    "All your everyday payments in one place",
+    "More than a card. It's your freedom.",
     "Send, pay, and book without switching apps",
-    "Your balance is always ready when you are",
+    "Move money. Move freely.",
   ],
   shortcuts: [
     {

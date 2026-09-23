@@ -25,21 +25,11 @@ import { walletData } from "@/lib/mock-data/wallet";
 import { formatAmount } from "@/lib/utils/format";
 import { translations, usePreferences } from "@/lib/context/preferences-context";
 
-type BadgeTone = "lavender" | "blue" | "pink" | "yellow";
-
 type Service = {
   label: string;
   description: string;
   href: string;
   icon: LucideIcon;
-  badge: BadgeTone;
-};
-
-const badgeClasses: Record<BadgeTone, string> = {
-  lavender: "bg-badge-lavender text-badge-lavender-fg",
-  blue: "bg-badge-blue text-badge-blue-fg",
-  pink: "bg-badge-pink text-badge-pink-fg",
-  yellow: "bg-badge-yellow text-badge-yellow-fg",
 };
 
 const services: Service[] = [
@@ -48,63 +38,54 @@ const services: Service[] = [
     description: "Top up any network in seconds",
     href: "/airtime",
     icon: Zap,
-    badge: "lavender",
   },
   {
     label: "Bills",
     description: "Power, water & more",
     href: "/bills",
     icon: ReceiptText,
-    badge: "blue",
   },
   {
     label: "Gift Cards",
     description: "Buy or sell instantly",
     href: "/gift-cards",
     icon: Gift,
-    badge: "pink",
   },
   {
     label: "Wallet",
     description: "Send money to anyone",
     href: "/profile",
     icon: Send,
-    badge: "yellow",
   },
   {
     label: "Subscriptions",
     description: "Renew your favorite plans",
     href: "/subscriptions",
     icon: RefreshCw,
-    badge: "lavender",
   },
   {
     label: "History",
     description: "Track every naira spent",
     href: "/history",
     icon: Clock,
-    badge: "blue",
   },
   {
     label: "Betting",
     description: "Fund betting wallets",
     href: "/betting",
     icon: Ticket,
-    badge: "pink",
   },
   {
     label: "Bookings",
     description: "Book local services",
     href: "/bookings",
     icon: CalendarDays,
-    badge: "yellow",
   },
   {
     label: "More",
     description: "Alerts, profile & settings",
     href: "/notifications",
     icon: Bell,
-    badge: "lavender",
   },
 ];
 
@@ -138,17 +119,80 @@ export default function Home() {
 
   return (
     <div className="mx-auto w-full max-w-7xl space-y-8">
-      <section className="relative overflow-hidden rounded-[28px] border border-border bg-surface p-6 shadow-[0_4px_24px_rgb(46_46_58_/_0.05)] md:p-8">
-        <div className="absolute inset-x-0 top-0 h-0.5 bg-primary" />
-        <div className="relative flex flex-wrap items-start justify-between gap-6">
+      <section className="relative overflow-hidden rounded-[28px] border border-white/10 bg-gradient-to-br from-[#1f1f1f] via-[#181818] to-[#141414] p-6 shadow-[0_24px_60px_rgb(0_0_0_/_0.45)] md:p-8">
+        <div className="pointer-events-none absolute -right-24 -top-28 size-64 rounded-full bg-primary/15 blur-3xl" />
+        <div className="absolute inset-x-0 top-0 h-0.5 bg-gradient-to-r from-primary via-primary/50 to-transparent" />
+
+        <div className="relative flex items-start justify-between">
+          <svg
+            width="46"
+            height="34"
+            viewBox="0 0 46 34"
+            fill="none"
+            aria-hidden="true"
+          >
+            <rect
+              x="1"
+              y="1"
+              width="44"
+              height="32"
+              rx="6"
+              fill="#FF5733"
+              stroke="rgb(18 18 18 / 0.35)"
+            />
+            <path
+              d="M1 12h14M1 22h14M31 1h-8c-3 0-5 2-5 5v22c0 3 2 5 5 5h8M45 12H31M45 22H31"
+              stroke="#121212"
+              strokeWidth="2"
+            />
+            <rect
+              x="15"
+              y="1"
+              width="16"
+              height="32"
+              stroke="#121212"
+              strokeWidth="2"
+            />
+          </svg>
+          <svg
+            width="28"
+            height="28"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            className="text-foreground/80"
+            aria-hidden="true"
+          >
+            <path d="M8 8a6 6 0 0 1 0 8" />
+            <path d="M12 5.5a10 10 0 0 1 0 13" />
+            <path d="M16 3a14 14 0 0 1 0 17" />
+          </svg>
+        </div>
+
+        <div className="relative mt-6 flex flex-wrap items-start justify-between gap-6">
           <div className="min-w-0">
-            <p className="text-xs font-medium uppercase tracking-[0.2em] text-primary">
-              Ravecard
-            </p>
-            <p className="mt-4 text-sm text-muted-foreground">
-              {labels.availableBalance}
-            </p>
-            <div className="mt-1 flex items-center gap-3">
+            <div className="flex items-center gap-3">
+              <p className="text-sm text-muted-foreground">
+                {labels.availableBalance}
+              </p>
+              <button
+                type="button"
+                onClick={() => setBalanceVisible((visible) => !visible)}
+                className="rounded-full p-1.5 text-muted-foreground transition-colors hover:bg-white/5 hover:text-foreground"
+                aria-label={
+                  balanceVisible ? "Hide balance" : "Show balance"
+                }
+              >
+                {balanceVisible ? (
+                  <Eye className="size-4" />
+                ) : (
+                  <EyeOff className="size-4" />
+                )}
+              </button>
+            </div>
+            <div className="mt-1">
               <AnimatePresence mode="wait">
                 <motion.span
                   key={balanceVisible ? "visible" : "hidden"}
@@ -162,46 +206,50 @@ export default function Home() {
                     : "₦ ••••••"}
                 </motion.span>
               </AnimatePresence>
-              <button
-                type="button"
-                onClick={() => setBalanceVisible((visible) => !visible)}
-                className="rounded-full p-2 text-muted-foreground transition-colors hover:bg-surface-alt hover:text-foreground"
-                aria-label={
-                  balanceVisible ? "Hide balance" : "Show balance"
-                }
-              >
-                {balanceVisible ? (
-                  <Eye className="size-5" />
-                ) : (
-                  <EyeOff className="size-5" />
-                )}
-              </button>
             </div>
             <p className="mt-3 text-sm text-muted-foreground">
               {currentDate}
             </p>
           </div>
-          <div className="flex flex-col items-end gap-3">
-            <div className="grid size-11 place-items-center rounded-2xl bg-badge-lavender font-heading text-xl font-bold text-badge-lavender-fg">
-              R
-            </div>
-            <div className="flex gap-2">
-              <Link
-                href="/profile"
-                className="inline-flex items-center gap-1.5 rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary-hover"
-              >
-                <Send className="size-4" />
-                Send
-              </Link>
-              <Link
-                href="/history"
-                className="inline-flex items-center gap-1.5 rounded-full border border-border bg-surface px-4 py-2 text-sm font-semibold text-foreground transition-colors hover:bg-surface-alt"
-              >
-                <Clock className="size-4" />
-                Activity
-              </Link>
-            </div>
+          <div className="flex gap-2">
+            <Link
+              href="/profile"
+              className="inline-flex items-center gap-1.5 rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary-hover"
+            >
+              <Send className="size-4" />
+              Send
+            </Link>
+            <Link
+              href="/history"
+              className="inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/5 px-4 py-2 text-sm font-semibold text-foreground transition-colors hover:bg-white/10"
+            >
+              <Clock className="size-4" />
+              Activity
+            </Link>
           </div>
+        </div>
+
+        <div className="relative mt-6 flex flex-wrap items-center justify-between gap-3 border-t border-white/10 pt-4">
+          <p className="font-mono text-sm tracking-wider text-foreground/90">
+            {dashboardData.cardNumber}
+          </p>
+          <p className="text-xs text-muted-foreground">
+            {dashboardData.cardholder} · {dashboardData.expiry}
+          </p>
+        </div>
+
+        <div className="relative mt-4 flex items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <span className="grid size-10 place-items-center rounded-xl bg-primary font-heading text-lg font-bold text-primary-foreground">
+              R
+            </span>
+            <span className="font-heading text-lg font-semibold tracking-tight text-foreground">
+              Ravecard
+            </span>
+          </div>
+          <span className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
+            Spend Smarter. Live Freer.
+          </span>
         </div>
       </section>
 
@@ -211,7 +259,7 @@ export default function Home() {
             What do you need today?
           </h2>
           <p className="mt-1 text-sm text-muted-foreground">
-            Pick a service to get started — everything is one tap away.
+            Built for how you actually live.
           </p>
         </div>
         <div className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-4">
@@ -231,7 +279,7 @@ export default function Home() {
                   className="group flex h-full min-h-[148px] flex-col rounded-3xl border border-border bg-surface p-4 transition-all hover:-translate-y-1 hover:border-primary/35 hover:shadow-[0_12px_28px_rgb(46_46_58_/_0.08)] md:p-5"
                 >
                   <span
-                    className={`grid size-12 shrink-0 place-items-center rounded-full ${badgeClasses[service.badge]}`}
+                    className="grid size-12 shrink-0 place-items-center rounded-full bg-primary text-primary-foreground"
                   >
                     <Icon className="size-5" />
                   </span>
@@ -259,7 +307,7 @@ export default function Home() {
                 {labels.smallMoves}
               </h2>
             </div>
-            <div className="grid size-11 place-items-center rounded-2xl bg-badge-lavender text-badge-lavender-fg">
+            <div className="grid size-11 place-items-center rounded-full bg-primary text-primary-foreground">
               <Zap className="size-5" />
             </div>
           </div>

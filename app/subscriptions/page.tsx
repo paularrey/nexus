@@ -37,7 +37,7 @@ export default function SubscriptionsPage() {
       <header>
         <p className="text-sm font-medium text-primary">Subscriptions</p>
         <h1 className="mt-1 font-heading text-3xl font-semibold tracking-tight md:text-4xl">
-          Keep your favourites running.
+          Never miss a renewal.
         </h1>
         <p className="mt-2 max-w-2xl text-muted-foreground">
           Choose a streaming, music, or cable provider and prepare a mock

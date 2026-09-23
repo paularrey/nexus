@@ -13,7 +13,7 @@ export const walletData = {
       amount: "+₦50,000",
       date: "Today, 10:42 AM",
       status: "Completed",
-      reference: "NEX-240827-001",
+      reference: "RCV-240827-001",
     },
     {
       id: "txn-2",
@@ -22,7 +22,7 @@ export const walletData = {
       amount: "-₦5,000",
       date: "Yesterday, 4:18 PM",
       status: "Completed",
-      reference: "NEX-240826-014",
+      reference: "RCV-240826-014",
     },
     {
       id: "txn-3",
@@ -31,7 +31,7 @@ export const walletData = {
       amount: "+₦25,000",
       date: "Aug 24, 9:07 AM",
       status: "Pending",
-      reference: "NEX-240824-006",
+      reference: "RCV-240824-006",
     },
   ] satisfies WalletTransaction[],
 };

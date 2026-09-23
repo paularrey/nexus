@@ -136,7 +136,8 @@ export default function ProfilePage() {
           {labels.profileTitle}
         </h1>
         <p className="mt-2 text-muted-foreground">
-          Keep your details and account protection in one place. Built for how you actually live.
+          Your identity, your security, your rules. Built for how you actually
+          live.
         </p>
       </header>
 
@@ -166,7 +167,7 @@ export default function ProfilePage() {
       ) : (
         <>
           <section className="grid gap-5 lg:grid-cols-[1.1fr_0.9fr]">
-            <div className="rounded-[28px] border border-border bg-surface p-6 text-foreground shadow-[0_4px_24px_rgb(46_46_58_/_0.05)] md:p-8">
+            <div className="rounded-[28px] border border-border bg-surface p-6 text-foreground shadow-[0_4px_24px_rgb(0_0_0_/_0.4)] md:p-8">
               <div className="flex items-start justify-between gap-4">
                 <div className="flex items-center gap-4">
                   <div className="grid size-16 place-items-center rounded-2xl bg-primary font-heading text-2xl font-bold text-primary-foreground">
@@ -594,7 +595,7 @@ export default function ProfilePage() {
               type="button"
               variant="destructive"
               onClick={handleLogout}
-              className="h-11 gap-2 transition-shadow hover:shadow-[0_0_22px_rgb(123_126_240_/_0.3)]"
+              className="h-11 gap-2 transition-shadow hover:shadow-[0_0_22px_rgb(255_87_51_/_0.35)]"
             >
               <LogOut className="size-4" /> Sign out
             </Button>

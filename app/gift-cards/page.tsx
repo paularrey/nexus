@@ -36,8 +36,8 @@ export default function GiftCardsPage() {
           Gift cards
         </h1>
         <p className="mt-2 max-w-xl text-muted-foreground">
-          Sell your unused gift cards for instant cash or buy one for someone
-          special. Your card, your rules.
+          Sell your unused gift cards for instant cash. Your card. Your rules.
+          Your freedom.
         </p>
       </header>
 
@@ -143,8 +143,8 @@ export default function GiftCardsPage() {
             Buy gift cards
           </h2>
           <p className="mt-2 max-w-sm mx-auto text-sm text-muted-foreground">
-            Purchasing gift cards directly from Ravecard is coming soon. For now,
-            you can sell any gift card you already have for instant cash.
+            Buy is coming soon. Until then, sell any gift card you own for
+            instant cash — no waiting around.
           </p>
           <div className="mt-5 inline-flex items-center gap-2 rounded-xl border border-border bg-muted/50 px-4 py-2.5 text-sm text-muted-foreground">
             Coming soon

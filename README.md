@@ -1,6 +1,6 @@
-# Ravecard (Nexus Pay)
+# Ravecard
 
-Frontend-only UI prototype for Ravecard — a warm, friendly lifestyle payments experience. **No backend, no database, no real APIs.** All data is mocked in `lib/mock-data/`.
+Frontend-only UI prototype for Ravecard — a dark, premium freedom-first payments experience. **No backend, no database, no real APIs.** All data is mocked in `lib/mock-data/`.
 
 ## Run locally
 
@@ -55,8 +55,7 @@ public/               # Static assets
 
 ## Theming
 
-- Light theme is the **hard default** on first load (not system preference).
-- Dark theme only applies via the in-app toggle; “System” is available as an explicit choice on Settings.
+- Ravecard has a **single default theme**: Deep Black `#121212` background with Coral Orange `#FF5733` accent. There is no separate light palette.
 - Colors are CSS variables registered in `app/globals.css` under Tailwind’s `@theme` — use utility classes (`bg-card`, `text-primary`, `border-border`, …), never hardcoded hex values.
 
 ## Demo credentials

@@ -52,10 +52,10 @@ const steps = [
   },
   {
     icon: CreditCard,
-    title: "Your balance is always one glance away",
+    title: "More than a card. It's your freedom.",
     description:
       "The home screen shows your available balance, recent activity, and quick access to every service — your freedom, all in one view.",
-    color: "bg-primary/10 text-primary",
+    color: "bg-primary/15 text-primary",
   },
 ] as const;
 

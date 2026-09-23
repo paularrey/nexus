@@ -61,11 +61,11 @@ export default function BrandBuyPage({ params }: BrandPageProps) {
         <h2 className="font-heading text-lg font-semibold">Coming Soon</h2>
 
         <p className="text-sm leading-relaxed text-muted-foreground">
-          Buying {brand.name} gift cards is coming soon. Right now you can{" "}
+          Buy is coming soon. Until then,{" "}
           <Link href={`/gift-cards/${slug}/sell`} className="text-primary underline">
             sell your {brand.name} gift cards
           </Link>{" "}
-          for instant cash.
+          for instant cash — no waiting around.
         </p>
 
         <Link

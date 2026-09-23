@@ -21,7 +21,7 @@ export default function HistoryPage() {
           Transaction history
         </h1>
         <p className="mt-2 text-muted-foreground">
-          Every payment, top-up, and booking in one place.
+          Every payment, top-up, and booking — on the record.
         </p>
       </header>
 

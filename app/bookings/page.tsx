@@ -16,7 +16,7 @@ import type { MarketplaceCategory } from "@/types";
 const categoryColors: Record<MarketplaceCategory, string> = {
   Hair: "#E0629E",
   Nails: "#E0629E",
-  Spa: "#7B7EF0",
+  Spa: "#FF5733",
   Cleaning: "#4A90D9",
   "Home Repairs": "#D9A441",
   Photography: "#4A90D9",

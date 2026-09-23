@@ -43,7 +43,7 @@ export default function SettingsPage() {
           {labels.settingsTitle}
         </h1>
         <p className="mt-2 text-muted-foreground">
-          Choose how the wallet looks and reads for you.
+          Tune Ravecard to how you move.
         </p>
       </header>
 
