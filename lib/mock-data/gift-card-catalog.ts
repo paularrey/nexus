@@ -1,11 +1,4 @@
-export type GiftCardBrand = {
-  slug: string;
-  name: string;
-  image: string;
-  startingPrice: number; // TODO: Connect to real pricing
-  denominations: number[]; // TODO: Connect to real denomination pricing
-  category: string;
-};
+import type { GiftCardBrand } from "@/types";
 
 export const giftCardBrands: GiftCardBrand[] = [
   {
@@ -61,3 +54,13 @@ export const giftCardBrands: GiftCardBrand[] = [
 export function getBrandBySlug(slug: string): GiftCardBrand | undefined {
   return giftCardBrands.find((b) => b.slug === slug);
 }
+
+// TODO: Connect to real exchange rate data
+export const giftCardRates: Record<string, string> = {
+  amazon: "Up to ₦950/$1",
+  apple: "Up to ₦920/$1",
+  "google-play": "Up to ₦900/$1",
+  razer: "Up to ₦880/$1",
+  spotify: "Up to ₦850/$1",
+  steam: "Up to ₦910/$1",
+};

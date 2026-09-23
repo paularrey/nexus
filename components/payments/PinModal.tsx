@@ -6,7 +6,7 @@ import { Check, Copy, Delete, Download, ReceiptText, X } from "lucide-react";
 import { Drawer } from "vaul";
 import { useState } from "react";
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/Button";
 
 type PinModalProps = {
   open: boolean;

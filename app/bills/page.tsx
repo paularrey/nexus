@@ -1,20 +1,20 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import {
-  Check,
-  ChevronDown,
-  FileCheck2,
-  ReceiptText,
-  ShieldCheck,
-} from "lucide-react";
+import { FileCheck2, ReceiptText, ShieldCheck } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
-import { Button } from "@/components/ui/button";
-import { PinModal } from "@/components/PinModal";
-import { useAuthGate } from "@/hooks/useAuthGate";
+import { PinModal } from "@/components/payments/PinModal";
+import { AmountPresets } from "@/components/ui/AmountPresets";
+import { Button } from "@/components/ui/Button";
+import { FeeBreakdown } from "@/components/ui/FeeBreakdown";
+import { ProviderCard } from "@/components/ui/ProviderCard";
+import { SectionHeader } from "@/components/ui/SectionHeader";
+import { useAuthGate } from "@/lib/hooks/useAuthGate";
+import { useMockVerification } from "@/lib/hooks/useMockVerification";
 import { billsData } from "@/lib/mock-data/bills";
+import { formatAmount } from "@/lib/utils/format";
 import {
   translations,
   usePreferences,
@@ -26,23 +26,15 @@ export default function BillsPage() {
   const [selectedBiller, setSelectedBiller] = useState(billsData.billers[0]);
   const [identifier, setIdentifier] = useState("");
   const [amount, setAmount] = useState(5000);
-  const [isVerifying, setIsVerifying] = useState(false);
-  const [isVerified, setIsVerified] = useState(false);
-  const [feeOpen, setFeeOpen] = useState(false);
   const [pinOpen, setPinOpen] = useState(false);
+  const { isVerifying, isVerified, verify, reset } = useMockVerification();
   const authGate = useAuthGate();
 
   const verifyCustomer = () => {
-    if (!identifier.trim()) return;
-    setIsVerifying(true);
-    setIsVerified(false);
-    window.setTimeout(() => {
-      setIsVerifying(false);
-      setIsVerified(true);
-      toast.success("Demo customer verified", {
-        description: `${selectedBiller.name} lookup is simulated for this UI preview.`,
-      });
-    }, 700);
+    verify(Boolean(identifier.trim()), {
+      title: "Demo customer verified",
+      description: `${selectedBiller.name} lookup is simulated for this UI preview.`,
+    });
   };
 
   const payBill = () => {
@@ -64,59 +56,27 @@ export default function BillsPage() {
       </header>
 
       <section className="rounded-[28px] border border-border bg-card p-5 md:p-8">
-        <div className="flex items-center gap-3">
-          <span className="grid size-10 place-items-center rounded-xl bg-secondary text-primary">
-            <ReceiptText className="size-5" />
-          </span>
-          <div>
-            <h2 className="font-heading text-xl font-semibold">
-              Choose a service
-            </h2>
-            <p className="text-sm text-muted-foreground">
-              Available utility types for this preview.
-            </p>
-          </div>
-        </div>
+        <SectionHeader
+          icon={ReceiptText}
+          title="Choose a service"
+          description="Available utility types for this preview."
+        />
         <div className="mt-6 grid gap-3 sm:grid-cols-3">
-          {billsData.billers.map((biller) => {
-            const isSelected = selectedBiller.name === biller.name;
-            return (
-              <motion.button
-                key={biller.name}
-                type="button"
-                whileTap={{ scale: 0.95 }}
-                onClick={() => {
-                  setSelectedBiller(biller);
-                  setIsVerified(false);
-                  setIdentifier("");
-                }}
-                className="relative flex min-h-28 flex-col items-start justify-between rounded-2xl border p-4 text-left transition-shadow"
-                style={{
-                  borderColor: isSelected ? biller.color : undefined,
-                  boxShadow: isSelected
-                    ? `0 0 0 3px ${biller.color}25, 0 12px 24px ${biller.color}22`
-                    : undefined,
-                }}
-                aria-pressed={isSelected}
-              >
-                <span
-                  className="grid size-10 place-items-center rounded-xl text-sm font-bold text-white"
-                  style={{ backgroundColor: biller.color }}
-                >
-                  {biller.shortName}
-                </span>
-                <span>
-                  <span className="block font-semibold">{biller.name}</span>
-                  <span className="text-xs text-muted-foreground">
-                    {biller.description}
-                  </span>
-                </span>
-                {isSelected && (
-                  <Check className="absolute right-3 top-3 size-4 text-success" />
-                )}
-              </motion.button>
-            );
-          })}
+          {billsData.billers.map((biller) => (
+            <ProviderCard
+              key={biller.name}
+              name={biller.name}
+              shortName={biller.shortName}
+              color={biller.color}
+              subtitle={biller.description}
+              isSelected={selectedBiller.name === biller.name}
+              onSelect={() => {
+                setSelectedBiller(biller);
+                reset();
+                setIdentifier("");
+              }}
+            />
+          ))}
         </div>
       </section>
 
@@ -145,7 +105,7 @@ export default function BillsPage() {
                 value={identifier}
                 onChange={(event) => {
                   setIdentifier(event.target.value);
-                  setIsVerified(false);
+                  reset();
                 }}
                 placeholder={`Enter ${selectedBiller.identifierLabel.toLowerCase()}`}
                 className="h-12 min-w-0 flex-1 rounded-xl border border-input bg-background px-3 outline-none transition focus:border-primary focus:ring-3 focus:ring-primary/15"
@@ -183,98 +143,65 @@ export default function BillsPage() {
           </AnimatePresence>
           <div className="mt-8">
             <p className="text-sm font-medium">Payment amount</p>
-            <div className="mt-3 grid grid-cols-2 gap-2 sm:flex sm:flex-wrap">
-              {billsData.amounts.map((preset) => (
-                <motion.button
-                  key={preset}
-                  type="button"
-                  whileTap={{ scale: 0.9 }}
-                  onClick={() => setAmount(preset)}
-                  className={`rounded-xl border px-4 py-2.5 text-sm font-medium transition-colors ${amount === preset ? "border-primary bg-secondary text-primary" : "border-border hover:border-primary/40"}`}
-                >
-                  ₦{preset.toLocaleString("en-NG")}
-                </motion.button>
-              ))}
-            </div>
+            <AmountPresets
+              amounts={billsData.amounts}
+              value={amount}
+              onChange={setAmount}
+            />
           </div>
         </div>
 
-        <aside className="order-first rounded-[28px] bg-[var(--gradient-cta)] p-4 text-white shadow-[0_4px_24px_rgba(201,76,58,0.25)] md:p-6 lg:order-none lg:sticky lg:top-24 lg:p-8">
+        <aside className="order-first rounded-[28px] border border-border bg-surface p-4 text-foreground shadow-[0_4px_24px_rgba(43,33,28,0.06)] md:p-6 lg:order-none lg:sticky lg:top-24 lg:p-8">
           <div className="flex items-start justify-between gap-4">
             <div>
-              <p className="text-xs uppercase tracking-[0.18em] text-white/60">
+              <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
                 Payment summary
               </p>
               <p className="mt-3 font-heading text-3xl font-semibold">
-                ₦{amount.toLocaleString("en-NG")}
+                ₦{formatAmount(amount)}
               </p>
             </div>
-            <div className="grid size-10 place-items-center rounded-xl bg-white/8 text-orange-300">
+            <div className="grid size-10 place-items-center rounded-xl bg-primary/10 text-primary">
               <ReceiptText className="size-5" />
             </div>
           </div>
 
-          <div className="mt-5 rounded-2xl border border-white/10 bg-white/5 p-3">
-            <div className="flex items-center justify-between text-sm text-white/70">
+          <div className="mt-5 rounded-2xl border border-border bg-surface-alt p-3">
+            <div className="flex items-center justify-between text-sm text-muted-foreground">
               <span>Service</span>
-              <span className="font-medium text-white">
+              <span className="font-medium text-foreground">
                 {selectedBiller.name}
               </span>
             </div>
-            <div className="mt-2 flex items-center justify-between text-sm text-white/70">
+            <div className="mt-2 flex items-center justify-between text-sm text-muted-foreground">
               <span>Reference</span>
-              <span className="font-medium text-white">
+              <span className="font-medium text-foreground">
                 {identifier || "Pending"}
               </span>
             </div>
           </div>
 
-          <div className="mt-5 border-y border-white/10 py-3">
-            <button
-              type="button"
-              onClick={() => setFeeOpen((open) => !open)}
-              className="flex w-full items-center justify-between text-sm text-white/70"
-            >
-              <span>Fee breakdown</span>
-              <ChevronDown
-                className={`size-4 transition-transform ${feeOpen ? "rotate-180" : ""}`}
-              />
-            </button>
-            <AnimatePresence initial={false}>
-              {feeOpen && (
-                <motion.div
-                  initial={{ height: 0, opacity: 0 }}
-                  animate={{ height: "auto", opacity: 1 }}
-                  exit={{ height: 0, opacity: 0 }}
-                  className="overflow-hidden"
-                >
-                  <div className="space-y-2 pt-4 text-sm">
-                    <div className="flex justify-between text-white/50">
-                      <span>Service fee</span>
-                      <span>
-                        ₦{billsData.serviceFee.toLocaleString("en-NG")}
-                      </span>
-                    </div>
-                    <div className="flex justify-between font-semibold">
-                      <span>Total</span>
-                      <span>
-                        ₦
-                        {(amount + billsData.serviceFee).toLocaleString(
-                          "en-NG",
-                        )}
-                      </span>
-                    </div>
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
+          <div className="mt-5 border-y border-border py-3">
+            <FeeBreakdown
+              rows={[
+                {
+                  label: "Service fee",
+                  value: `₦${formatAmount(billsData.serviceFee)}`,
+                },
+                {
+                  label: "Total",
+                  value: `₦${formatAmount(amount + billsData.serviceFee)}`,
+                  emphasis: "strong",
+                },
+              ]}
+            />
           </div>
           <Button
             type="button"
             size="lg"
             onClick={payBill}
             disabled={!identifier || !isVerified || pinOpen}
-            className="mt-6 h-12 w-full rounded-2xl bg-accent text-white hover:bg-accent/90"
+            className="mt-6 h-12 w-full rounded-2xl bg-primary text-white hover:bg-primary/90"
           >
             Pay Bill
           </Button>
@@ -289,7 +216,7 @@ export default function BillsPage() {
           })
         }
         title="Confirm bill payment"
-        amount={`₦${amount.toLocaleString("en-NG")}`}
+        amount={`₦${formatAmount(amount)}`}
       />
     </div>
   );

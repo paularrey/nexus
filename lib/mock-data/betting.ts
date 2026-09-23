@@ -1,8 +1,4 @@
-export type BettingPlatform = {
-  name: string;
-  shortName: string;
-  color: string;
-};
+import type { BettingPlatform } from "@/types";
 
 export const bettingData = {
   platforms: [

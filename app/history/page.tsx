@@ -4,8 +4,10 @@ import { Drawer } from "vaul";
 import { CreditCard, X } from "lucide-react";
 import { useState } from "react";
 
-import { Button } from "@/components/ui/button";
-import { walletData, type WalletTransaction } from "@/lib/mock-data/wallet";
+import { Button } from "@/components/ui/Button";
+import { TransactionRow } from "@/components/ui/TransactionRow";
+import { walletData } from "@/lib/mock-data/wallet";
+import type { WalletTransaction } from "@/types";
 
 export default function HistoryPage() {
   const [selectedTransaction, setSelectedTransaction] =
@@ -36,36 +38,11 @@ export default function HistoryPage() {
         </div>
         <div className="space-y-2">
           {walletData.transactions.map((transaction) => (
-            <button
+            <TransactionRow
               key={transaction.id}
-              type="button"
+              transaction={transaction}
               onClick={() => setSelectedTransaction(transaction)}
-              className="flex w-full items-center justify-between gap-3 rounded-2xl border border-border bg-card px-3 py-3 text-left transition-all hover:border-primary/20 hover:bg-muted/30 md:px-4"
-            >
-              <span className="flex min-w-0 items-center gap-3">
-                <span className="grid size-10 shrink-0 place-items-center rounded-xl bg-secondary text-primary">
-                  <CreditCard className="size-5" />
-                </span>
-                <span className="min-w-0">
-                  <span className="block truncate text-sm font-semibold">
-                    {transaction.title}
-                  </span>
-                  <span className="mt-1 block truncate text-xs text-muted-foreground">
-                    {transaction.description}
-                  </span>
-                </span>
-              </span>
-              <span className="shrink-0 text-right">
-                <span
-                  className={`block text-sm font-semibold ${transaction.amount.startsWith("+") ? "text-success" : "text-foreground"}`}
-                >
-                  {transaction.amount}
-                </span>
-                <span className="mt-1 block text-[11px] text-muted-foreground">
-                  {transaction.date}
-                </span>
-              </span>
-            </button>
+            />
           ))}
         </div>
       </section>

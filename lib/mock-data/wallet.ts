@@ -1,12 +1,4 @@
-export type WalletTransaction = {
-  id: string;
-  title: string;
-  description: string;
-  amount: string;
-  date: string;
-  status: "Completed" | "Pending";
-  reference: string;
-};
+import type { WalletTransaction } from "@/types";
 
 export const walletData = {
   accountName: "Ravecard Wallet",

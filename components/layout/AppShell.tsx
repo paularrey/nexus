@@ -7,20 +7,17 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
-import { Button } from "@/components/ui/button";
-import { AuthModal } from "@/components/AuthModal";
-import { CookieConsent } from "@/components/CookieConsent";
-import {
-  OnboardingModal,
-  shouldShowOnboarding,
-  markOnboardingSeen,
-} from "@/components/OnboardingModal";
+import { Button } from "@/components/ui/Button";
+import { AuthModal } from "@/components/auth/AuthModal";
+import { CookieConsent } from "@/components/layout/CookieConsent";
+import { OnboardingModal } from "@/components/layout/OnboardingModal";
 import { useAuth } from "@/lib/context/auth-context";
 import {
   translations,
   usePreferences,
 } from "@/lib/context/preferences-context";
 import { cn } from "@/lib/utils";
+import { markOnboardingSeen, shouldShowOnboarding } from "@/lib/utils/onboarding";
 import { navItems } from "./nav-items";
 import { SplashScreen } from "./SplashScreen";
 

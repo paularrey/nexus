@@ -5,13 +5,14 @@ import { Check, CreditCard, Tv } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
-import { Button } from "@/components/ui/button";
-import { PinModal } from "@/components/PinModal";
-import { useAuthGate } from "@/hooks/useAuthGate";
-import {
-  subscriptionData,
-  type SubscriptionProvider,
-} from "@/lib/mock-data/subscriptions";
+import { PinModal } from "@/components/payments/PinModal";
+import { Button } from "@/components/ui/Button";
+import { ProviderCard } from "@/components/ui/ProviderCard";
+import { SectionHeader } from "@/components/ui/SectionHeader";
+import { useAuthGate } from "@/lib/hooks/useAuthGate";
+import { subscriptionData } from "@/lib/mock-data/subscriptions";
+import { formatAmount } from "@/lib/utils/format";
+import type { SubscriptionProvider } from "@/types";
 
 export default function SubscriptionsPage() {
   const [selectedProvider, setSelectedProvider] =
@@ -45,55 +46,24 @@ export default function SubscriptionsPage() {
       </header>
 
       <section className="rounded-[28px] border border-border bg-card p-5 md:p-8">
-        <div className="flex items-center gap-3">
-          <span className="grid size-10 place-items-center rounded-xl bg-secondary text-primary">
-            <Tv className="size-5" />
-          </span>
-          <div>
-            <h2 className="font-heading text-xl font-semibold">
-              Choose a provider
-            </h2>
-            <p className="text-sm text-muted-foreground">
-              Select the subscription you want to renew.
-            </p>
-          </div>
-        </div>
+        <SectionHeader
+          icon={Tv}
+          title="Choose a provider"
+          description="Select the subscription you want to renew."
+        />
         <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
-          {subscriptionData.providers.map((provider) => {
-            const isSelected = selectedProvider.name === provider.name;
-            return (
-              <motion.button
-                key={provider.name}
-                type="button"
-                whileTap={{ scale: 0.95 }}
-                onClick={() => chooseProvider(provider)}
-                className="relative flex min-h-28 flex-col items-start justify-between rounded-2xl border p-4 text-left transition-shadow"
-                style={{
-                  borderColor: isSelected ? provider.color : undefined,
-                  boxShadow: isSelected
-                    ? `0 0 0 3px ${provider.color}25, 0 12px 24px ${provider.color}22`
-                    : undefined,
-                }}
-                aria-pressed={isSelected}
-              >
-                <span
-                  className="grid size-10 place-items-center rounded-xl text-lg font-bold text-white"
-                  style={{ backgroundColor: provider.color }}
-                >
-                  {provider.shortName}
-                </span>
-                <span>
-                  <span className="block font-semibold">{provider.name}</span>
-                  <span className="text-xs text-muted-foreground">
-                    {provider.category}
-                  </span>
-                </span>
-                {isSelected && (
-                  <Check className="absolute right-3 top-3 size-4 text-success" />
-                )}
-              </motion.button>
-            );
-          })}
+          {subscriptionData.providers.map((provider) => (
+            <ProviderCard
+              key={provider.name}
+              name={provider.name}
+              shortName={provider.shortName}
+              color={provider.color}
+              subtitle={provider.category}
+              shortNameTextSize="lg"
+              isSelected={selectedProvider.name === provider.name}
+              onSelect={() => chooseProvider(provider)}
+            />
+          ))}
         </div>
       </section>
 
@@ -120,7 +90,7 @@ export default function SubscriptionsPage() {
                   {selectedPlanIndex === index && <Check className="size-4" />}
                 </span>
                 <span className="mt-2 block text-xl font-semibold text-foreground">
-                  ₦{plan.price.toLocaleString("en-NG")}
+                  ₦{formatAmount(plan.price)}
                 </span>
                 <span className="mt-1 block text-xs text-muted-foreground">
                   {plan.detail} · {plan.duration}
@@ -146,13 +116,13 @@ export default function SubscriptionsPage() {
           </label>
         </div>
 
-        <aside className="flex flex-col justify-between rounded-[28px] bg-[var(--gradient-cta)] p-5 text-white shadow-[0_4px_24px_rgba(201,76,58,0.25)] md:p-8">
+        <aside className="flex flex-col justify-between rounded-[28px] border border-border bg-surface p-5 text-foreground shadow-[0_4px_24px_rgba(43,33,28,0.06)] md:p-8">
           <div>
-            <p className="text-sm text-white/60">Renewal preview</p>
+            <p className="text-sm text-muted-foreground">Renewal preview</p>
             <p className="mt-3 font-heading text-3xl font-semibold">
-              ₦{selectedPlan.price.toLocaleString("en-NG")}
+              ₦{formatAmount(selectedPlan.price)}
             </p>
-            <p className="mt-2 text-sm text-white/60">
+            <p className="mt-2 text-sm text-muted-foreground">
               {selectedProvider.name} · {selectedPlan.name} ·{" "}
               {accountNumber || "Account number needed"}
             </p>
@@ -162,7 +132,7 @@ export default function SubscriptionsPage() {
             size="lg"
             onClick={confirmSubscription}
             disabled={!accountNumber || pinOpen}
-            className="mt-8 h-12 w-full bg-accent text-white hover:bg-accent/90"
+            className="mt-8 h-12 w-full bg-primary text-white hover:bg-primary/90"
           >
             Confirm renewal
           </Button>
@@ -178,7 +148,7 @@ export default function SubscriptionsPage() {
           })
         }
         title="Confirm subscription renewal"
-        amount={`₦${selectedPlan.price.toLocaleString("en-NG")}`}
+        amount={`₦${formatAmount(selectedPlan.price)}`}
       />
     </div>
   );

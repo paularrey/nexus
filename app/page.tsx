@@ -1,22 +1,14 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import {
-  ArrowUpRight,
-  CreditCard,
-  Dot,
-  Eye,
-  EyeOff,
-  Gift,
-  MoreHorizontal,
-  ReceiptText,
-  Store,
-  Zap,
-} from "lucide-react";
+import { ArrowUpRight, Dot, Eye, EyeOff, Gift, MoreHorizontal, ReceiptText, Store, Zap } from "lucide-react";
 import Link from "next/link";
 import { useState, useEffect } from "react";
+
+import { TransactionRow } from "@/components/ui/TransactionRow";
 import { dashboardData } from "@/lib/mock-data/dashboard";
 import { walletData } from "@/lib/mock-data/wallet";
+import { formatAmount } from "@/lib/utils/format";
 import {
   translations,
   usePreferences,
@@ -32,15 +24,10 @@ const shortcutIcons = {
 };
 
 const toneClasses = {
-  blue: "bg-blue-500/15 text-blue-400",
+  blue: "bg-blue-500/10 text-blue-600",
   orange: "bg-primary/15 text-primary",
-  green: "bg-emerald-500/15 text-emerald-400",
+  green: "bg-success/10 text-success",
 };
-
-const formatBalance = (value: number) =>
-  new Intl.NumberFormat("en-NG", {
-    maximumFractionDigits: 0,
-  }).format(value);
 
 export default function Home() {
   const [balanceVisible, setBalanceVisible] = useState(true);
@@ -90,18 +77,16 @@ export default function Home() {
           whileHover={{ rotateX: 2, rotateY: -3, y: -4 }}
           transition={{ type: "spring", stiffness: 220, damping: 20 }}
           style={{ transformPerspective: 1200 }}
-          className="group relative min-h-[250px] overflow-hidden rounded-[28px] bg-[var(--gradient-cta)] p-6 text-white shadow-[0_4px_24px_rgba(201,76,58,0.25)] md:min-h-[300px] md:p-8"
+          className="group relative min-h-[250px] overflow-hidden rounded-[28px] border border-border bg-surface p-6 text-foreground shadow-[0_4px_24px_rgba(43,33,28,0.06)] md:min-h-[300px] md:p-8"
         >
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_15%,rgba(201,76,58,0.4),transparent_30%),radial-gradient(circle_at_20%_100%,rgba(166,61,44,0.5),transparent_50%)]" />
-          <div className="absolute -right-16 top-12 size-64 rotate-45 border border-white/15 transition-transform duration-700 group-hover:translate-x-8" />
-          <div className="absolute -right-4 top-28 size-44 rotate-45 border border-orange-300/25" />
+          <div className="absolute inset-x-0 top-0 h-1.5 bg-primary" />
           <div className="relative flex h-full flex-col justify-between">
             <div className="flex items-start justify-between">
               <div>
-                <p className="text-xs font-medium uppercase tracking-[0.2em] text-white/60">
+                <p className="text-xs font-medium uppercase tracking-[0.2em] text-primary">
                   Ravecard
                 </p>
-                <p className="mt-4 text-sm text-white/60">
+                <p className="mt-4 text-sm text-muted-foreground">
                   {labels.availableBalance}
                 </p>
                 <div className="mt-1 flex items-center gap-3">
@@ -111,17 +96,17 @@ export default function Home() {
                       initial={{ opacity: 0, y: 8 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -8 }}
-                      className="font-heading text-4xl font-semibold tracking-tight md:text-5xl"
+                      className="font-heading text-4xl font-semibold tracking-tight text-foreground md:text-5xl"
                     >
                       {balanceVisible
-                        ? `₦${formatBalance(dashboardData.balance)}`
+                        ? `₦${formatAmount(dashboardData.balance)}`
                         : "₦ ••••••"}
                     </motion.span>
                   </AnimatePresence>
                   <button
                     type="button"
                     onClick={() => setBalanceVisible((visible) => !visible)}
-                    className="rounded-full p-2 text-white/60 transition-colors hover:bg-white/10 hover:text-white"
+                    className="rounded-full p-2 text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
                     aria-label={
                       balanceVisible ? "Hide balance" : "Show balance"
                     }
@@ -134,23 +119,23 @@ export default function Home() {
                   </button>
                 </div>
               </div>
-              <div className="grid size-11 place-items-center rounded-2xl border border-white/20 bg-white/10 font-heading text-xl font-bold">
+              <div className="grid size-11 place-items-center rounded-2xl bg-primary font-heading text-xl font-bold text-white">
                 R
               </div>
             </div>
             <div className="flex items-end justify-between">
               <div>
-                <p className="text-sm text-white/60">
+                <p className="text-sm text-muted-foreground">
                   {dashboardData.cardholder}
                 </p>
-                <p className="mt-2 font-mono text-sm tracking-[0.16em] text-white/90">
+                <p className="mt-2 font-mono text-sm tracking-[0.16em] text-foreground">
                   {dashboardData.cardNumber}
                 </p>
-                <p className="mt-1 text-xs text-white/50">
+                <p className="mt-1 text-xs text-muted-foreground">
                   {walletData.bankName} · {walletData.accountNumber}
                 </p>
               </div>
-              <p className="font-mono text-xs text-white/60">
+              <p className="font-mono text-xs text-muted-foreground">
                 VALID {dashboardData.expiry}
               </p>
             </div>
@@ -183,7 +168,7 @@ export default function Home() {
                     key={`${message}-${index}`}
                     className="flex items-center gap-8"
                   >
-                    {message} <span className="text-accent"><Dot className="size-4" /></span>
+                    {message} <span className="text-primary"><Dot className="size-4" /></span>
                   </span>
                 ),
               )}
@@ -217,34 +202,7 @@ export default function Home() {
         </div>
         <div className="space-y-2">
           {walletData.transactions.slice(0, 3).map((transaction) => (
-            <div
-              key={transaction.id}
-              className="flex items-center justify-between gap-3 rounded-2xl border border-border bg-card px-3 py-3 md:px-4"
-            >
-              <span className="flex min-w-0 items-center gap-3">
-                <span className="grid size-10 shrink-0 place-items-center rounded-xl bg-secondary text-primary">
-                  <CreditCard className="size-5" />
-                </span>
-                <span className="min-w-0">
-                  <span className="block truncate text-sm font-semibold">
-                    {transaction.title}
-                  </span>
-                  <span className="mt-1 block truncate text-xs text-muted-foreground">
-                    {transaction.description}
-                  </span>
-                </span>
-              </span>
-              <span className="shrink-0 text-right">
-                <span
-                  className={`block text-sm font-semibold ${transaction.amount.startsWith("+") ? "text-success" : "text-foreground"}`}
-                >
-                  {transaction.amount}
-                </span>
-                <span className="mt-1 block text-[11px] text-muted-foreground">
-                  {transaction.date}
-                </span>
-              </span>
-            </div>
+            <TransactionRow key={transaction.id} transaction={transaction} />
           ))}
         </div>
       </section>

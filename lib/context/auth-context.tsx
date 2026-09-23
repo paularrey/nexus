@@ -7,10 +7,11 @@ import {
   useMemo,
   useRef,
   useState,
-  type ReactNode,
 } from "react";
 
-export type AuthMode = "sign-in" | "create-account";
+import type { AuthMode, ChildrenProps } from "@/types";
+
+export type { AuthMode };
 
 type AuthContextValue = {
   isLoggedIn: boolean;
@@ -24,7 +25,7 @@ type AuthContextValue = {
 
 const AuthContext = createContext<AuthContextValue | null>(null);
 
-export function AuthProvider({ children }: { children: ReactNode }) {
+export function AuthProvider({ children }: ChildrenProps) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [authOpen, setAuthOpen] = useState(false);
   const [authMode, setAuthMode] = useState<AuthMode>("sign-in");

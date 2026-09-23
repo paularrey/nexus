@@ -12,9 +12,7 @@ import {
 } from "lucide-react";
 import { useCallback, useState } from "react";
 
-import { Button } from "@/components/ui/button";
-
-const ONBOARDING_KEY = "ravecard-onboarding-seen";
+import { Button } from "@/components/ui/Button";
 
 const steps = [
   {
@@ -29,7 +27,7 @@ const steps = [
     title: "Settle bills without leaving home",
     description:
       "Electricity, internet, cable TV — verify your account, choose an amount, and pay in seconds.",
-    color: "bg-emerald-500/15 text-emerald-400",
+    color: "bg-success/10 text-success",
   },
   {
     icon: Gift,
@@ -43,7 +41,7 @@ const steps = [
     title: "Book local services you trust",
     description:
       "Find spas, salons, photographers, and home repair providers. Pick a date, choose a time, and confirm your booking.",
-    color: "bg-emerald-500/15 text-emerald-400",
+    color: "bg-success/10 text-success",
   },
   {
     icon: Smartphone,
@@ -167,13 +165,4 @@ export function OnboardingModal({ open, onOpenChange }: OnboardingModalProps) {
       </motion.div>
     </div>
   );
-}
-
-export function shouldShowOnboarding(): boolean {
-  if (typeof window === "undefined") return false;
-  return !window.localStorage.getItem(ONBOARDING_KEY);
-}
-
-export function markOnboardingSeen(): void {
-  window.localStorage.setItem(ONBOARDING_KEY, "1");
 }

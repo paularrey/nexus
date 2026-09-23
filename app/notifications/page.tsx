@@ -5,11 +5,11 @@ import { CheckCheck } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
-import { Button } from "@/components/ui/button";
-import { notifications } from "@/lib/mock-data/notifications";
+import { Button } from "@/components/ui/Button";
+import { notificationsData } from "@/lib/mock-data/notifications";
 
 export default function NotificationsPage() {
-  const [items, setItems] = useState(notifications);
+  const [items, setItems] = useState(notificationsData);
   const unreadCount = items.filter((item) => item.unread).length;
 
   const markAllRead = () => {

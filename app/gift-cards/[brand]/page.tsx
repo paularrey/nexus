@@ -7,12 +7,9 @@ import Link from "next/link";
 import { use } from "react";
 
 import { getBrandBySlug } from "@/lib/mock-data/gift-card-catalog";
+import type { BrandPageProps } from "@/types";
 
-export default function BrandBuyPage({
-  params,
-}: {
-  params: Promise<{ brand: string }>;
-}) {
+export default function BrandBuyPage({ params }: BrandPageProps) {
   const { brand: slug } = use(params);
   const brand = getBrandBySlug(slug);
 
@@ -29,18 +26,18 @@ export default function BrandBuyPage({
 
   return (
     <main className="flex flex-col pb-28">
-      <header className="relative overflow-hidden border-b border-border bg-[var(--color-card)] px-5 pb-6 pt-4">
+      <header className="relative overflow-hidden border-b border-border bg-card px-5 pb-6 pt-4">
         <div className="mb-5 flex items-center gap-3">
           <Link
             href="/gift-cards"
-            className="flex size-10 shrink-0 items-center justify-center rounded-full bg-white/60"
+            className="flex size-10 shrink-0 items-center justify-center rounded-full bg-secondary"
           >
             <ArrowLeft className="size-5 text-foreground" />
           </Link>
           <h1 className="font-heading text-xl font-semibold">Buy {brand.name}</h1>
         </div>
 
-        <div className="relative mx-auto size-24 overflow-hidden rounded-full border border-border bg-white">
+        <div className="relative mx-auto size-24 overflow-hidden rounded-full border border-border bg-surface">
           <Image
             src={brand.image}
             alt={brand.name}
@@ -57,7 +54,7 @@ export default function BrandBuyPage({
         animate={{ opacity: 1, y: 0 }}
         className="mx-auto mt-10 w-full max-w-md space-y-4 px-5 text-center"
       >
-        <div className="mx-auto flex size-16 items-center justify-center rounded-full bg-[var(--color-muted)]">
+        <div className="mx-auto flex size-16 items-center justify-center rounded-full bg-muted">
           <Clock className="size-7 text-muted-foreground" />
         </div>
 
@@ -73,7 +70,7 @@ export default function BrandBuyPage({
 
         <Link
           href="/gift-cards"
-          className="mt-4 inline-flex items-center gap-2 rounded-full border border-border px-5 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-[var(--color-muted)]"
+          className="mt-4 inline-flex items-center gap-2 rounded-full border border-border px-5 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted"
         >
           <Store className="size-4" />
           Browse all brands

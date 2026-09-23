@@ -3,7 +3,7 @@
 import { Cookie, Settings2, X } from "lucide-react";
 import { useSyncExternalStore } from "react";
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/Button";
 
 const consentStorageKey = "ravecard-cookie-consent";
 

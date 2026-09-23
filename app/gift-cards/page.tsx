@@ -1,27 +1,18 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowRight, Search, Store } from "lucide-react";
+import { ArrowRight, Store } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 
-import { giftCardBrands } from "@/lib/mock-data/gift-card-catalog";
-
-const formatPrice = (value: number) =>
-  new Intl.NumberFormat("en-NG", {
-    maximumFractionDigits: 0,
-  }).format(value);
-
-// TODO: Connect to real exchange rate data
-const mockRates: Record<string, string> = {
-  amazon: "Up to ₦950/$1",
-  apple: "Up to ₦920/$1",
-  "google-play": "Up to ₦900/$1",
-  razer: "Up to ₦880/$1",
-  spotify: "Up to ₦850/$1",
-  steam: "Up to ₦910/$1",
-};
+import { SearchInput } from "@/components/ui/SearchInput";
+import { SegmentedToggle } from "@/components/ui/SegmentedToggle";
+import {
+  giftCardBrands,
+  giftCardRates,
+} from "@/lib/mock-data/gift-card-catalog";
+import { formatAmount } from "@/lib/utils/format";
 
 export default function GiftCardsPage() {
   const [mode, setMode] = useState<"sell" | "buy">("sell");
@@ -50,41 +41,22 @@ export default function GiftCardsPage() {
         </p>
       </header>
 
-      {/* ── Sell / Buy toggle ─────────────────────── */}
-      <div className="grid grid-cols-2 rounded-2xl bg-muted p-1 sm:max-w-md">
-        {(["sell", "buy"] as const).map((option) => (
-          <button
-            key={option}
-            type="button"
-            onClick={() => setMode(option)}
-            className={`rounded-xl px-4 py-3 text-sm font-semibold capitalize transition-colors ${
-              mode === option
-                ? "bg-card text-foreground shadow-sm"
-                : "text-muted-foreground hover:text-foreground"
-            }`}
-            aria-pressed={mode === option}
-          >
-            {option === "sell" ? "Sell" : "Buy"}
-          </button>
-        ))}
-      </div>
+      <SegmentedToggle
+        options={["sell", "buy"] as const}
+        value={mode}
+        onChange={setMode}
+        className="sm:max-w-md"
+      />
 
-      {/* ── Sell tab ──────────────────────────────── */}
       {mode === "sell" && (
         <>
-          {/* Search bar */}
-          <div className="relative">
-            <Search className="pointer-events-none absolute left-4 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
-            <input
-              type="text"
-              value={search}
-              onChange={(event) => setSearch(event.target.value)}
-              placeholder="Search for a gift card brand"
-              className="h-12 w-full rounded-2xl border border-border bg-card pl-11 pr-4 text-sm outline-none transition focus:border-primary focus:ring-3 focus:ring-primary/15"
-            />
-          </div>
+          <SearchInput
+            value={search}
+            onChange={setSearch}
+            placeholder="Search for a gift card brand"
+            aria-label="Search gift card brands"
+          />
 
-          {/* Quick brand rail */}
           <div className="-mx-4 flex gap-3 overflow-x-auto px-4 pb-1 scrollbar-none sm:mx-0 sm:px-0">
             {giftCardBrands.map((brand) => (
               <Link
@@ -108,7 +80,6 @@ export default function GiftCardsPage() {
             ))}
           </div>
 
-          {/* Brand list */}
           <section>
             {filteredBrands.length === 0 && (
               <div className="rounded-[28px] border border-dashed border-border bg-card p-12 text-center">
@@ -147,11 +118,12 @@ export default function GiftCardsPage() {
                         {brand.name}
                       </p>
                       <p className="text-xs text-muted-foreground">
-                        {mockRates[brand.slug] ?? "Rate updating"} · {brand.category}
+                        {giftCardRates[brand.slug] ?? "Rate updating"} ·{" "}
+                        {brand.category}
                       </p>
                     </div>
                     <span className="text-sm font-semibold text-primary">
-                      From ₦{formatPrice(brand.startingPrice)}
+                      From ₦{formatAmount(brand.startingPrice)}
                     </span>
                     <ArrowRight className="size-4 shrink-0 text-muted-foreground transition-colors group-hover:text-primary" />
                   </Link>
@@ -162,7 +134,6 @@ export default function GiftCardsPage() {
         </>
       )}
 
-      {/* ── Buy tab: Coming soon ──────────────────── */}
       {mode === "buy" && (
         <section className="rounded-[28px] border border-dashed border-border bg-card p-12 text-center">
           <div className="mx-auto grid size-14 place-items-center rounded-2xl bg-muted">

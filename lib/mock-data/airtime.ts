@@ -1,17 +1,4 @@
-export type Network = {
-  name: string;
-  shortName: string;
-  color: string;
-  image: string;
-  prefixes: string[];
-  dataPlans: DataPlan[];
-};
-
-export type DataPlan = {
-  label: string;
-  amount: number;
-  validity: string;
-};
+import type { Network } from "@/types";
 
 export const airtimeData = {
   networks: [

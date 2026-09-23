@@ -7,10 +7,11 @@ import {
   useEffect,
   useMemo,
   useSyncExternalStore,
-  type ReactNode,
 } from "react";
 
-export type Language = "en" | "fr" | "yo" | "ha" | "ig" | "es" | "ar" | "pt";
+import type { ChildrenProps, Language } from "@/types";
+
+export type { Language };
 
 export const languageOptions = [
   { label: "English", value: "en" },
@@ -369,7 +370,7 @@ type PreferencesContextValue = {
 
 const PreferencesContext = createContext<PreferencesContextValue | null>(null);
 
-export function PreferencesProvider({ children }: { children: ReactNode }) {
+export function PreferencesProvider({ children }: ChildrenProps) {
   const language = useSyncExternalStore<Language>(
     (onStoreChange) => {
       window.addEventListener("ravecard-language-change", onStoreChange);

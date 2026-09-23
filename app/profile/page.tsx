@@ -21,7 +21,8 @@ import Link from "next/link";
 import { useState } from "react";
 import { toast } from "sonner";
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/Button";
+import { SettingToggle } from "@/components/ui/SettingToggle";
 import { useAuth } from "@/lib/context/auth-context";
 import {
   translations,
@@ -31,48 +32,6 @@ import {
 const profileName = "Alex Morgan";
 const profileEmail = "alex@example.com";
 const kycProgress = 72;
-
-function SettingToggle({
-  label,
-  description,
-  icon: Icon,
-  enabled,
-  onChange,
-}: {
-  label: string;
-  description: string;
-  icon: typeof ShieldCheck;
-  enabled: boolean;
-  onChange: () => void;
-}) {
-  return (
-    <div className="flex items-center justify-between gap-4 border-b border-border py-4 last:border-b-0">
-      <div className="flex min-w-0 items-center gap-3">
-        <span className="grid size-10 shrink-0 place-items-center rounded-xl bg-secondary text-primary">
-          <Icon className="size-5" />
-        </span>
-        <div className="min-w-0">
-          <p className="font-medium">{label}</p>
-          <p className="mt-1 text-sm text-muted-foreground">{description}</p>
-        </div>
-      </div>
-      <button
-        type="button"
-        role="switch"
-        aria-checked={enabled}
-        aria-label={`${label}: ${enabled ? "on" : "off"}`}
-        onClick={onChange}
-        className={`relative h-7 w-12 shrink-0 rounded-full p-1 transition-colors ${enabled ? "bg-primary" : "bg-muted"}`}
-      >
-        <motion.span
-          layout
-          transition={{ type: "spring", stiffness: 520, damping: 30 }}
-          className={`block size-5 rounded-full bg-white shadow-sm ${enabled ? "ml-5" : "ml-0"}`}
-        />
-      </button>
-    </div>
-  );
-}
 
 export default function ProfilePage() {
   const { isLoggedIn, openAuth, logout } = useAuth();
@@ -207,7 +166,7 @@ export default function ProfilePage() {
       ) : (
         <>
           <section className="grid gap-5 lg:grid-cols-[1.1fr_0.9fr]">
-            <div className="rounded-[28px] bg-[#2C2118] p-6 text-white shadow-[0_20px_50px_rgba(0,0,0,0.3)] md:p-8">
+            <div className="rounded-[28px] border border-border bg-surface p-6 text-foreground shadow-[0_4px_24px_rgba(43,33,28,0.06)] md:p-8">
               <div className="flex items-start justify-between gap-4">
                 <div className="flex items-center gap-4">
                   <div className="grid size-16 place-items-center rounded-2xl bg-primary font-heading text-2xl font-bold text-white">
@@ -217,19 +176,19 @@ export default function ProfilePage() {
                     <p className="font-heading text-2xl font-semibold">
                       {profileName}
                     </p>
-                    <p className="mt-1 flex items-center gap-2 text-sm text-white/60">
+                    <p className="mt-1 flex items-center gap-2 text-sm text-muted-foreground">
                       <Mail className="size-4" />
                       {profileEmail}
                     </p>
                   </div>
                 </div>
-                <span className="rounded-full bg-success/20 px-3 py-1 text-xs font-semibold text-emerald-200">
+                <span className="rounded-full bg-success/10 px-3 py-1 text-xs font-semibold text-success">
                   Active
                 </span>
               </div>
-              <div className="mt-8 flex items-center justify-between border-t border-white/10 pt-5 text-sm">
-                <span className="text-white/50">Member since</span>
-                <span>August 2026</span>
+              <div className="mt-8 flex items-center justify-between border-t border-border pt-5 text-sm">
+                <span className="text-muted-foreground">Member since</span>
+                <span className="text-foreground">August 2026</span>
               </div>
             </div>
 

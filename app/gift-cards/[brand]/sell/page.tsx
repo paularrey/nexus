@@ -1,10 +1,9 @@
 "use client";
 
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import {
   ArrowLeft,
   Check,
-  ChevronDown,
   CreditCard,
   FileImage,
   Upload,
@@ -14,21 +13,17 @@ import Link from "next/link";
 import { use, useMemo, useState } from "react";
 import { toast } from "sonner";
 
-import { Button } from "@/components/ui/button";
-import { PinModal } from "@/components/PinModal";
-import { useAuthGate } from "@/hooks/useAuthGate";
+import { PinModal } from "@/components/payments/PinModal";
+import { Button } from "@/components/ui/Button";
+import { FeeBreakdown } from "@/components/ui/FeeBreakdown";
+import { useAuthGate } from "@/lib/hooks/useAuthGate";
 import { getBrandBySlug } from "@/lib/mock-data/gift-card-catalog";
+import { formatAmount } from "@/lib/utils/format";
+import type { BrandPageProps, CardType } from "@/types";
 
 // TODO: Connect to real exchange rate data
 const MOCK_RATE = 950;
 const SERVICE_FEE_PERCENT = 0.02;
-
-const formatPrice = (value: number) =>
-  new Intl.NumberFormat("en-NG", {
-    maximumFractionDigits: 0,
-  }).format(value);
-
-type CardType = "physical" | "ecode";
 
 const cardTypes: { value: CardType; label: string; description: string }[] = [
   {
@@ -43,11 +38,7 @@ const cardTypes: { value: CardType; label: string; description: string }[] = [
   },
 ];
 
-export default function GiftCardSellPage({
-  params,
-}: {
-  params: Promise<{ brand: string }>;
-}) {
+export default function GiftCardSellPage({ params }: BrandPageProps) {
   const { brand: slug } = use(params);
   const brand = getBrandBySlug(slug);
 
@@ -57,7 +48,6 @@ export default function GiftCardSellPage({
   const [useCustom, setUseCustom] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const [fileName, setFileName] = useState("");
-  const [feeOpen, setFeeOpen] = useState(false);
   const [pinOpen, setPinOpen] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [referenceId] = useState(
@@ -97,7 +87,6 @@ export default function GiftCardSellPage({
     );
   }
 
-  // ── Confirmation screen ──────────────────────
   if (submitted) {
     return (
       <div className="mx-auto w-full max-w-lg space-y-8">
@@ -116,7 +105,6 @@ export default function GiftCardSellPage({
             We&apos;ll verify your {brand.name} card and credit your wallet
             within 24 hours.
           </p>
-          {/* TODO: Connect to real review/payout timeline */}
 
           <div className="mt-6 rounded-[22px] border border-border bg-muted/35 p-4 text-left">
             <div className="flex items-center gap-3">
@@ -133,7 +121,7 @@ export default function GiftCardSellPage({
                 <p className="font-semibold">{brand.name} Gift Card</p>
                 <p className="text-xs text-muted-foreground">
                   {cardType === "physical" ? "Physical card" : "E-code"} · ₦
-                  {formatPrice(activeValue)} face value
+                  {formatAmount(activeValue)} face value
                 </p>
               </div>
             </div>
@@ -150,7 +138,7 @@ export default function GiftCardSellPage({
               <div className="flex justify-between">
                 <span className="text-muted-foreground">Expected payout</span>
                 <span className="font-semibold text-success">
-                  ₦{formatPrice(payout.net)}
+                  ₦{formatAmount(payout.net)}
                 </span>
               </div>
               <div className="flex justify-between">
@@ -163,11 +151,7 @@ export default function GiftCardSellPage({
           </div>
 
           <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-            <Button
-              asChild
-              variant="outline"
-              className="flex-1"
-            >
+            <Button asChild variant="outline" className="flex-1">
               <Link href="/gift-cards">Sell another card</Link>
             </Button>
             <Button asChild className="flex-1">
@@ -179,7 +163,6 @@ export default function GiftCardSellPage({
     );
   }
 
-  // ── Sell form ────────────────────────────────
   return (
     <div className="mx-auto w-full max-w-5xl space-y-6">
       <Link
@@ -190,9 +173,7 @@ export default function GiftCardSellPage({
       </Link>
 
       <div className="grid gap-5 lg:grid-cols-[1.1fr_0.9fr]">
-        {/* ── Left: Form ──────────────────────────── */}
         <div className="space-y-6">
-          {/* Brand header */}
           <section className="overflow-hidden rounded-[28px] border border-border bg-card">
             <div className="relative aspect-[21/6] bg-muted">
               <Image
@@ -215,7 +196,6 @@ export default function GiftCardSellPage({
             </div>
           </section>
 
-          {/* Card type */}
           <section className="rounded-[28px] border border-border bg-card p-5 md:p-7">
             <div className="flex items-center gap-3">
               <span className="grid size-10 place-items-center rounded-xl bg-secondary text-primary">
@@ -259,10 +239,8 @@ export default function GiftCardSellPage({
                 );
               })}
             </div>
-            {/* TODO: Connect to real card-type options per brand */}
           </section>
 
-          {/* Amount */}
           <section className="rounded-[28px] border border-border bg-card p-5 md:p-7">
             <div className="flex items-center gap-3">
               <span className="grid size-10 place-items-center rounded-xl bg-secondary text-primary">
@@ -327,7 +305,6 @@ export default function GiftCardSellPage({
             </div>
           </section>
 
-          {/* Upload */}
           <section className="rounded-[28px] border border-border bg-card p-5 md:p-7">
             <div className="flex items-center gap-3">
               <span className="grid size-10 place-items-center rounded-xl bg-secondary text-primary">
@@ -377,12 +354,10 @@ export default function GiftCardSellPage({
                 />
               </label>
             </div>
-            {/* TODO: Connect to real upload + verification backend */}
           </section>
         </div>
 
-        {/* ── Right: Payout summary ────────────────── */}
-        <aside className="order-first flex flex-col justify-between rounded-[28px] bg-card p-5 shadow-[0_4px_24px_rgba(224,122,95,0.08)] ring-1 ring-border md:p-7 lg:order-none lg:sticky lg:top-24">
+        <aside className="order-first flex flex-col justify-between rounded-[28px] bg-card p-5 shadow-[0_4px_24px_rgba(43,33,28,0.06)] ring-1 ring-border md:p-7 lg:order-none lg:sticky lg:top-24">
           <div>
             <p className="text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground">
               Payout summary
@@ -405,7 +380,7 @@ export default function GiftCardSellPage({
               </span>
             </div>
             <p className="mt-2 font-heading text-4xl font-semibold text-success">
-              {activeValue > 0 ? `₦${formatPrice(payout.net)}` : "—"}
+              {activeValue > 0 ? `₦${formatAmount(payout.net)}` : "—"}
             </p>
             <p className="mt-1 text-xs text-muted-foreground">
               {activeValue > 0
@@ -436,60 +411,40 @@ export default function GiftCardSellPage({
             <div className="flex items-center justify-between text-sm">
               <span className="text-muted-foreground">Service fee</span>
               <span className="font-medium">
-                {activeValue > 0
-                  ? `₦${formatPrice(payout.fee)}`
-                  : "—"}
+                {activeValue > 0 ? `₦${formatAmount(payout.fee)}` : "—"}
               </span>
             </div>
           </div>
 
-          <button
-            type="button"
-            onClick={() => setFeeOpen((open) => !open)}
-            className="mt-4 flex w-full items-center justify-between text-sm text-muted-foreground"
-          >
-            <span>Rate breakdown</span>
-            <ChevronDown
-              className={`size-4 transition-transform ${feeOpen ? "rotate-180" : ""}`}
+          <div className="mt-4">
+            <FeeBreakdown
+              label="Rate breakdown"
+              className="mt-0"
+              contentClassName="space-y-2 border-t border-border pt-3 text-sm"
+              rows={[
+                {
+                  label: "Face value",
+                  value: activeValue > 0 ? `$${activeValue}` : "—",
+                },
+                {
+                  label: "Rate applied",
+                  value: `₦${MOCK_RATE}/$1`,
+                },
+                {
+                  label: "Service fee (2%)",
+                  value:
+                    activeValue > 0 ? `₦${formatAmount(payout.fee)}` : "—",
+                },
+                {
+                  label: "You receive",
+                  value:
+                    activeValue > 0 ? `₦${formatAmount(payout.net)}` : "—",
+                  emphasis: "strong-bordered",
+                  valueClassName: "text-success",
+                },
+              ]}
             />
-          </button>
-          <AnimatePresence initial={false}>
-            {feeOpen && (
-              <motion.div
-                initial={{ height: 0, opacity: 0 }}
-                animate={{ height: "auto", opacity: 1 }}
-                exit={{ height: 0, opacity: 0 }}
-                className="overflow-hidden"
-              >
-                <div className="space-y-2 border-t border-border pt-3 text-sm">
-                  <div className="flex justify-between text-muted-foreground">
-                    <span>Face value</span>
-                    <span>{activeValue > 0 ? `$${activeValue}` : "—"}</span>
-                  </div>
-                  <div className="flex justify-between text-muted-foreground">
-                    <span>Rate applied</span>
-                    <span>₦{MOCK_RATE}/$1</span>
-                  </div>
-                  <div className="flex justify-between text-muted-foreground">
-                    <span>Service fee (2%)</span>
-                    <span>
-                      {activeValue > 0
-                        ? `₦${formatPrice(payout.fee)}`
-                        : "—"}
-                    </span>
-                  </div>
-                  <div className="flex justify-between border-t border-border pt-2 font-semibold">
-                    <span>You receive</span>
-                    <span className="text-success">
-                      {activeValue > 0
-                        ? `₦${formatPrice(payout.net)}`
-                        : "—"}
-                    </span>
-                  </div>
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
+          </div>
 
           <Button
             type="button"
@@ -517,7 +472,7 @@ export default function GiftCardSellPage({
           setSubmitted(true);
         }}
         title={`Sell ${brand.name} gift card`}
-        amount={`₦${formatPrice(payout.net)}`}
+        amount={`₦${formatAmount(payout.net)}`}
       />
     </div>
   );

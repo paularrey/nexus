@@ -1,17 +1,4 @@
-export type SubscriptionPlan = {
-  name: string;
-  price: number;
-  duration: string;
-  detail: string;
-};
-
-export type SubscriptionProvider = {
-  name: string;
-  shortName: string;
-  category: string;
-  color: string;
-  plans: SubscriptionPlan[];
-};
+import type { SubscriptionProvider } from "@/types";
 
 export const subscriptionData = {
   providers: [

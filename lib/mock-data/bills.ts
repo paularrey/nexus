@@ -1,10 +1,4 @@
-export type Biller = {
-  name: string;
-  shortName: string;
-  description: string;
-  color: string;
-  identifierLabel: string;
-};
+import type { Biller } from "@/types";
 
 export const billsData = {
   billers: [

@@ -1,36 +1,65 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Ravecard (Nexus Pay)
 
-## Getting Started
+Frontend-only UI prototype for Ravecard — a warm, friendly lifestyle payments experience. **No backend, no database, no real APIs.** All data is mocked in `lib/mock-data/`.
 
-First, run the development server:
+## Run locally
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Other scripts:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build   # production build
+npm run lint    # eslint
+```
 
-## Learn More
+## Stack
 
-To learn more about Next.js, take a look at the following resources:
+- Next.js 16 (App Router) + React 19 + TypeScript (strict)
+- Tailwind CSS v4 + shadcn-style tokens
+- framer-motion, vaul (drawers), sonner (toasts), next-themes
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Folder structure
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```
+app/                  # Routes only — pages compose components
+  (auth)/             # Auth route group
+  gift-cards/         # Nested dynamic routes
+  bookings/
+components/
+  ui/                 # Reusable primitives (Button, FeeBreakdown, ProviderCard, …)
+  layout/             # AppShell, SplashScreen, nav, onboarding, cookie consent
+  auth/               # AuthModal
+  payments/           # PinModal (mock payment confirmation)
+lib/
+  context/            # Auth + preferences React contexts
+  hooks/              # useAuthGate, useMockVerification
+  mock-data/          # All mock datasets (imported by pages)
+  utils/              # cn(), formatters, onboarding storage
+types/                # Shared TypeScript interfaces
+public/               # Static assets
+```
 
-## Deploy on Vercel
+## Conventions
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- **PascalCase** file names for components (`.tsx`)
+- **camelCase** for hooks, functions, variables
+- kebab-case for non-component modules (`mock-data`, contexts)
+- No `any` types; props are explicitly typed
+- Shared domain types live in `types/` — mock files import from there
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Theming
+
+- Light theme is the **hard default** on first load (not system preference).
+- Dark theme only applies via the in-app toggle; “System” is available as an explicit choice on Settings.
+- Colors are CSS variables registered in `app/globals.css` under Tailwind’s `@theme` — use utility classes (`bg-card`, `text-primary`, `border-border`, …), never hardcoded hex values.
+
+## Demo credentials
+
+- Mock PIN: `1234`
+- Mock 2FA/OTP code: `123456`

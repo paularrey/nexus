@@ -1,10 +1,4 @@
-export type DashboardShortcut = {
-  label: string;
-  description: string;
-  href: string;
-  icon: "zap" | "bills" | "betting" | "gift" | "store" | "more";
-  tone: "blue" | "orange" | "green" | "navy";
-};
+import type { DashboardShortcut } from "@/types";
 
 export const dashboardData = {
   balance: 248650,

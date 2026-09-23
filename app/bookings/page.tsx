@@ -1,15 +1,17 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { MapPin, Search, Star } from "lucide-react";
+import { MapPin, Star } from "lucide-react";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 
+import { SearchInput } from "@/components/ui/SearchInput";
 import {
-  categories,
+  marketplaceCategories,
   marketplaceListings,
-  type MarketplaceCategory,
 } from "@/lib/mock-data/marketplace";
+import { formatAmount } from "@/lib/utils/format";
+import type { MarketplaceCategory } from "@/types";
 
 const categoryColors: Record<MarketplaceCategory, string> = {
   Hair: "#d946ef",
@@ -51,21 +53,15 @@ export default function MarketplacePage() {
         </p>
       </header>
 
-      {/* ── Search bar ─────────────────────────────── */}
-      <div className="relative">
-        <Search className="pointer-events-none absolute left-4 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
-        <input
-          type="text"
-          value={search}
-          onChange={(event) => setSearch(event.target.value)}
-          placeholder="Search services or providers..."
-          className="h-12 w-full rounded-2xl border border-border bg-card pl-11 pr-4 text-sm outline-none transition focus:border-primary focus:ring-3 focus:ring-primary/15"
-        />
-      </div>
+      <SearchInput
+        value={search}
+        onChange={setSearch}
+        placeholder="Search services or providers..."
+        aria-label="Search services"
+      />
 
-      {/* ── Category filter chips ──────────────────── */}
       <div className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-1 scrollbar-none sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0">
-        {(["All", ...categories] as const).map((category) => {
+        {(["All", ...marketplaceCategories] as const).map((category) => {
           const isActive = activeCategory === category;
           return (
             <motion.button
@@ -85,7 +81,6 @@ export default function MarketplacePage() {
         })}
       </div>
 
-      {/* ── Listings grid ──────────────────────────── */}
       <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {filteredListings.map((listing, index) => {
           const color = categoryColors[listing.category];
@@ -100,7 +95,6 @@ export default function MarketplacePage() {
                 href={`/bookings/${listing.id}/book`}
                 className="group block overflow-hidden rounded-[24px] border border-border bg-card transition-all hover:-translate-y-1 hover:border-primary/30 hover:shadow-xl"
               >
-                {/* ── Image placeholder ─────────────── */}
                 <div className="relative aspect-[16/10] overflow-hidden bg-muted">
                   <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 border-2 border-dashed border-border bg-muted/50 text-muted-foreground">
                     <span className="text-xs font-medium">
@@ -111,7 +105,6 @@ export default function MarketplacePage() {
                     </span>
                   </div>
 
-                  {/* Category badge — sits on top of image */}
                   <span
                     className="absolute left-3 top-3 rounded-lg px-2.5 py-1 text-[11px] font-semibold text-white"
                     style={{ backgroundColor: color }}
@@ -120,7 +113,6 @@ export default function MarketplacePage() {
                   </span>
                 </div>
 
-                {/* ── Card body ──────────────────────── */}
                 <div className="p-4">
                   <div className="flex items-start justify-between gap-2">
                     <h3 className="font-heading text-lg font-semibold group-hover:text-primary">
@@ -148,7 +140,7 @@ export default function MarketplacePage() {
 
                   <div className="mt-4 flex items-center justify-between border-t border-border pt-3">
                     <span className="font-heading text-xl font-semibold text-foreground">
-                      ₦{listing.price.toLocaleString("en-NG")}
+                      ₦{formatAmount(listing.price)}
                     </span>
                     <span
                       className="rounded-xl px-4 py-2 text-sm font-semibold text-white transition-transform group-hover:scale-105"

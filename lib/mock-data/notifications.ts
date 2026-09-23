@@ -1,17 +1,8 @@
-import type { LucideIcon } from "lucide-react";
 import { Bell, Gift, ShieldCheck, WalletCards, Zap } from "lucide-react";
 
-export type NotificationItem = {
-  id: string;
-  title: string;
-  description: string;
-  timestamp: string;
-  icon: LucideIcon;
-  tone: string;
-  unread: boolean;
-};
+import type { NotificationItem } from "@/types";
 
-export const notifications: NotificationItem[] = [
+export const notificationsData: NotificationItem[] = [
   {
     id: "welcome",
     title: "Welcome to Ravecard",

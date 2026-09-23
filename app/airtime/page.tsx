@@ -1,28 +1,25 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { Check, ChevronDown, Phone, Smartphone } from "lucide-react";
+import { Check, Phone, Smartphone } from "lucide-react";
 import Image from "next/image";
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
 
-import { Button } from "@/components/ui/button";
-import { PinModal } from "@/components/PinModal";
-import { useAuthGate } from "@/hooks/useAuthGate";
+import { PinModal } from "@/components/payments/PinModal";
+import { Button } from "@/components/ui/Button";
+import { FeeBreakdown } from "@/components/ui/FeeBreakdown";
+import { SectionHeader } from "@/components/ui/SectionHeader";
+import { SegmentedToggle } from "@/components/ui/SegmentedToggle";
+import { useAuthGate } from "@/lib/hooks/useAuthGate";
 import { airtimeData } from "@/lib/mock-data/airtime";
+import { formatAmount, formatPhoneNumber } from "@/lib/utils/format";
 import {
   translations,
   usePreferences,
 } from "@/lib/context/preferences-context";
 
 const SERVICE_FEE = 50;
-
-const formatPhoneNumber = (value: string) => {
-  const digits = value.replace(/\D/g, "").slice(0, 11);
-  return digits.replace(/(\d{4})(\d{3})(\d{0,4})/, (_, first, second, third) =>
-    [first, second, third].filter(Boolean).join(" "),
-  );
-};
 
 export default function AirtimePage() {
   const { language } = usePreferences();
@@ -37,7 +34,6 @@ export default function AirtimePage() {
   );
   const [phone, setPhone] = useState("");
   const [pinOpen, setPinOpen] = useState(false);
-  const [feeOpen, setFeeOpen] = useState(false);
   const authGate = useAuthGate();
 
   const detectedNetwork = useMemo(() => {
@@ -69,36 +65,19 @@ export default function AirtimePage() {
         </p>
       </header>
 
-      {/* ── Airtime / Data toggle ──────────────────── */}
-      <div className="grid grid-cols-2 rounded-2xl bg-muted p-1">
-        {(["airtime", "data"] as const).map((option) => (
-          <button
-            key={option}
-            type="button"
-            onClick={() => setService(option)}
-            className={`rounded-xl px-4 py-3 text-sm font-semibold capitalize transition-colors ${service === option ? "bg-card text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"}`}
-            aria-pressed={service === option}
-          >
-            {option}
-          </button>
-        ))}
-      </div>
+      <SegmentedToggle
+        options={["airtime", "data"] as const}
+        value={service}
+        onChange={setService}
+      />
 
-      {/* ── Network selection ──────────────────────── */}
       <section>
-        <div className="mb-4 flex items-center gap-3">
-          <span className="grid size-10 place-items-center rounded-xl bg-secondary text-primary">
-            <Smartphone className="size-5" />
-          </span>
-          <div>
-            <h2 className="font-heading text-xl font-semibold">
-              Choose a network
-            </h2>
-            <p className="text-sm text-muted-foreground">
-              Available networks are shown below.
-            </p>
-          </div>
-        </div>
+        <SectionHeader
+          icon={Smartphone}
+          title="Choose a network"
+          description="Available networks are shown below."
+          className="mb-4 flex items-center gap-3"
+        />
         <div className="grid grid-cols-4 gap-4">
           {airtimeData.networks.map((network) => {
             const isSelected = selectedNetwork.name === network.name;
@@ -117,7 +96,7 @@ export default function AirtimePage() {
                 <span
                   className={`relative size-16 overflow-hidden rounded-full border-[2.5px] transition-all sm:size-20 ${
                     isSelected
-                      ? "border-primary shadow-[0_0_0_4px_rgba(201,76,58,0.15)]"
+                      ? "border-primary shadow-[0_0_0_4px_rgba(238,123,96,0.18)]"
                       : "border-border hover:border-primary/30"
                   }`}
                 >
@@ -151,7 +130,6 @@ export default function AirtimePage() {
         </div>
       </section>
 
-      {/* ── Phone number ───────────────────────────── */}
       <section>
         <label
           className="block text-sm font-medium"
@@ -197,7 +175,6 @@ export default function AirtimePage() {
         </AnimatePresence>
       </section>
 
-      {/* ── Amount / Data plan ─────────────────────── */}
       <section>
         <p className="text-sm font-medium">
           {service === "airtime" ? "Amount" : "Choose a data plan"}
@@ -230,15 +207,14 @@ export default function AirtimePage() {
               >
                 <span className="block">
                   {typeof preset === "number"
-                    ? `₦${preset.toLocaleString("en-NG")}`
+                    ? `₦${formatAmount(preset)}`
                     : preset.label}
                 </span>
                 {typeof preset !== "number" && (
                   <span
                     className={`mt-1 block text-xs ${isSelected ? "text-white/70" : "text-muted-foreground"}`}
                   >
-                    ₦{preset.amount.toLocaleString("en-NG")} ·{" "}
-                    {preset.validity}
+                    ₦{formatAmount(preset.amount)} · {preset.validity}
                   </span>
                 )}
               </motion.button>
@@ -247,62 +223,34 @@ export default function AirtimePage() {
         </div>
       </section>
 
-      {/* ── Desktop summary (hidden on mobile) ─────── */}
       {hasSelection && (
         <section className="hidden md:block">
-          <div className="rounded-[28px] bg-[var(--gradient-cta)] p-6 text-white shadow-[0_4px_24px_rgba(201,76,58,0.25)]">
-            <p className="text-sm text-white/60">Ready to top up</p>
+          <div className="rounded-[28px] border border-border bg-surface p-6 text-foreground shadow-[0_4px_24px_rgba(43,33,28,0.06)]">
+            <p className="text-sm text-muted-foreground">Ready to top up</p>
             <p className="mt-3 font-heading text-3xl font-semibold">
-              ₦{amount.toLocaleString("en-NG")}
+              ₦{formatAmount(amount)}
             </p>
-            <p className="mt-2 text-sm text-white/60">
+            <p className="mt-2 text-sm text-muted-foreground">
               {selectedNetwork.name} ·{" "}
               {service === "data" ? selectedPlan.label : "Airtime"} ·{" "}
               {phone || "Phone number needed"}
             </p>
 
-            <div className="mt-5 border-t border-white/15 pt-4">
-              <button
-                type="button"
-                onClick={() => setFeeOpen((open) => !open)}
-                className="flex w-full items-center justify-between text-sm text-white/70"
-              >
-                <span>Fee breakdown</span>
-                <ChevronDown
-                  className={`size-4 transition-transform ${feeOpen ? "rotate-180" : ""}`}
-                />
-              </button>
-              <AnimatePresence initial={false}>
-                {feeOpen && (
-                  <motion.div
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: "auto", opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    className="overflow-hidden"
-                  >
-                    <div className="space-y-2 pt-4 text-sm">
-                      <div className="flex justify-between text-white/50">
-                        <span>Airtime</span>
-                        <span>
-                          ₦{amount.toLocaleString("en-NG")}
-                        </span>
-                      </div>
-                      <div className="flex justify-between text-white/50">
-                        <span>Service fee</span>
-                        <span>
-                          ₦{SERVICE_FEE.toLocaleString("en-NG")}
-                        </span>
-                      </div>
-                      <div className="flex justify-between font-semibold">
-                        <span>Total</span>
-                        <span>
-                          ₦{totalAmount.toLocaleString("en-NG")}
-                        </span>
-                      </div>
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
+            <div className="mt-5 border-t border-border pt-4">
+              <FeeBreakdown
+                rows={[
+                  { label: "Airtime", value: `₦${formatAmount(amount)}` },
+                  {
+                    label: "Service fee",
+                    value: `₦${formatAmount(SERVICE_FEE)}`,
+                  },
+                  {
+                    label: "Total",
+                    value: `₦${formatAmount(totalAmount)}`,
+                    emphasis: "strong",
+                  },
+                ]}
+              />
             </div>
 
             <Button
@@ -310,7 +258,7 @@ export default function AirtimePage() {
               size="lg"
               onClick={buyAirtime}
               disabled={!phone || pinOpen}
-              className="mt-5 h-12 w-full bg-white text-primary hover:bg-white/90"
+              className="mt-5 h-12 w-full bg-primary text-white hover:bg-primary/90"
             >
               {service === "airtime" ? "Buy Airtime" : "Buy Data"}
             </Button>
@@ -318,7 +266,6 @@ export default function AirtimePage() {
         </section>
       )}
 
-      {/* ── Mobile sticky summary ──────────────────── */}
       <AnimatePresence>
         {hasSelection && (
           <motion.div
@@ -332,7 +279,7 @@ export default function AirtimePage() {
               <div className="min-w-0 flex-1">
                 <p className="text-xs text-muted-foreground">Total</p>
                 <p className="font-heading text-xl font-semibold">
-                  ₦{totalAmount.toLocaleString("en-NG")}
+                  ₦{formatAmount(totalAmount)}
                 </p>
               </div>
               <Button
@@ -340,7 +287,7 @@ export default function AirtimePage() {
                 size="lg"
                 onClick={buyAirtime}
                 disabled={!phone || pinOpen}
-                className="h-12 shrink-0 bg-[var(--gradient-cta)] px-6 text-white shadow-[0_4px_16px_rgba(201,76,58,0.3)] hover:opacity-90"
+                className="h-12 shrink-0 bg-primary px-6 text-white shadow-[0_4px_16px_rgba(238,123,96,0.3)] hover:bg-primary/90"
               >
                 {service === "airtime" ? "Buy Airtime" : "Buy Data"}
               </Button>
@@ -362,7 +309,7 @@ export default function AirtimePage() {
             ? "Confirm airtime purchase"
             : "Confirm data purchase"
         }
-        amount={`₦${totalAmount.toLocaleString("en-NG")}`}
+        amount={`₦${formatAmount(totalAmount)}`}
       />
     </div>
   );

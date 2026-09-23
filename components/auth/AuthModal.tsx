@@ -4,7 +4,7 @@ import { Drawer } from "vaul";
 import { Eye, EyeOff, LockKeyhole, X } from "lucide-react";
 import { useState } from "react";
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/Button";
 import { useAuth } from "@/lib/context/auth-context";
 
 export function AuthModal() {
@@ -280,7 +280,7 @@ export function AuthModal() {
               <Button
                 type="submit"
                 size="lg"
-                className="h-11 w-full bg-primary text-base shadow-[0_12px_28px_rgba(201,76,58,0.24)] hover:bg-primary/90 md:h-12"
+                className="h-11 w-full bg-primary text-base shadow-[0_12px_28px_rgba(204,107,73,0.24)] hover:bg-primary/90 md:h-12"
               >
                 {mode === "sign-in" ? "Sign In" : "Create Account"}
               </Button>

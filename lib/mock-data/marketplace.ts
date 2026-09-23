@@ -1,25 +1,6 @@
-export type MarketplaceCategory =
-  | "Hair"
-  | "Nails"
-  | "Spa"
-  | "Cleaning"
-  | "Home Repairs"
-  | "Photography";
+import type { MarketplaceCategory, MarketplaceListing } from "@/types";
 
-export type MarketplaceListing = {
-  id: string;
-  name: string;
-  category: MarketplaceCategory;
-  price: number;
-  rating: number;
-  reviews: number;
-  location: string;
-  description: string;
-  image: string; // path under public/images/marketplace/
-  availableSlots: string[];
-};
-
-export const categories: MarketplaceCategory[] = [
+export const marketplaceCategories: MarketplaceCategory[] = [
   "Hair",
   "Nails",
   "Spa",
