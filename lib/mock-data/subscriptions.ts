@@ -32,7 +32,7 @@ export const subscriptionData = {
       name: "Showmax",
       shortName: "S",
       category: "Streaming",
-      color: "#0f172a",
+      color: "#2A4A6B",
       plans: [
         {
           name: "Mobile",

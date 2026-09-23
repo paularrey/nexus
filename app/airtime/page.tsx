@@ -273,7 +273,7 @@ export default function AirtimePage() {
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: 100, opacity: 0 }}
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            className="fixed inset-x-0 bottom-20 z-30 border-t border-border bg-card/95 px-4 py-4 shadow-[0_-4px_20px_rgba(0,0,0,0.08)] backdrop-blur md:hidden"
+            className="fixed inset-x-0 bottom-20 z-30 border-t border-border bg-card/95 px-4 py-4 shadow-[0_-4px_20px_rgb(46_46_58_/_0.08)] backdrop-blur md:hidden"
           >
             <div className="mx-auto flex items-center justify-between gap-4">
               <div className="min-w-0 flex-1">
