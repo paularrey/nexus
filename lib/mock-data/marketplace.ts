@@ -9,6 +9,15 @@ export const marketplaceCategories: MarketplaceCategory[] = [
   "Photography",
 ];
 
+export const categoryColors: Record<MarketplaceCategory, string> = {
+  Hair: "#E0629E",
+  Nails: "#E0629E",
+  Spa: "#FF5733",
+  Cleaning: "#4A90D9",
+  "Home Repairs": "#D9A441",
+  Photography: "#4A90D9",
+};
+
 export const marketplaceListings: MarketplaceListing[] = [
   // ── Hair ──────────────────────────────────────────
   {

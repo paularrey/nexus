@@ -14,25 +14,18 @@ import {
   Send,
   Ticket,
   Zap,
-  type LucideIcon,
 } from "lucide-react";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { TransactionRow } from "@/components/ui/TransactionRow";
+import { translations, usePreferences } from "@/lib/context/preferences-context";
 import { dashboardData } from "@/lib/mock-data/dashboard";
 import { walletData } from "@/lib/mock-data/wallet";
-import { formatAmount } from "@/lib/utils/format";
-import { translations, usePreferences } from "@/lib/context/preferences-context";
+import { formatNaira } from "@/lib/utils/format";
+import type { ServiceLink } from "@/types";
 
-type Service = {
-  label: string;
-  description: string;
-  href: string;
-  icon: LucideIcon;
-};
-
-const services: Service[] = [
+const services: ServiceLink[] = [
   {
     label: "Airtime & Data",
     description: "Top up any network in seconds",
@@ -94,105 +87,45 @@ export default function Home() {
   const { language } = usePreferences();
   const labels = translations[language];
 
-  const [currentDate, setCurrentDate] = useState(() => {
-    const now = new Date();
-    return now.toLocaleDateString("en-NG", {
-      weekday: "long",
-      month: "long",
-      day: "numeric",
-    });
-  });
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const now = new Date();
-      setCurrentDate(
-        now.toLocaleDateString("en-NG", {
-          weekday: "long",
-          month: "long",
-          day: "numeric",
-        }),
-      );
-    }, 60000);
-    return () => clearInterval(interval);
-  }, []);
-
   return (
     <div className="mx-auto w-full max-w-7xl space-y-8">
-      <section className="relative overflow-hidden rounded-[28px] border border-white/10 bg-gradient-to-br from-[#1f1f1f] via-[#181818] to-[#141414] p-6 shadow-[0_24px_60px_rgb(0_0_0_/_0.45)] md:p-8">
-        <div className="pointer-events-none absolute -right-24 -top-28 size-64 rounded-full bg-primary/15 blur-3xl" />
-        <div className="absolute inset-x-0 top-0 h-0.5 bg-gradient-to-r from-primary via-primary/50 to-transparent" />
+      <section className="relative overflow-hidden rounded-[28px] border border-border bg-gradient-to-br from-surface to-background shadow-xl">
+        {/* Soft accent glow — theme accent (--primary) at low opacity, top-right */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute -right-32 -top-36 size-64 rounded-full bg-primary/15 blur-3xl"
+        />
+        {/* Thin accent line along the top edge */}
+        <div
+          aria-hidden="true"
+          className="absolute inset-x-0 top-0 h-0.5 bg-gradient-to-r from-primary via-primary/40 to-transparent"
+        />
 
-        <div className="relative flex items-start justify-between">
-          <svg
-            width="46"
-            height="34"
-            viewBox="0 0 46 34"
-            fill="none"
-            aria-hidden="true"
-          >
-            <rect
-              x="1"
-              y="1"
-              width="44"
-              height="32"
-              rx="6"
-              fill="#FF5733"
-              stroke="rgb(18 18 18 / 0.35)"
-            />
-            <path
-              d="M1 12h14M1 22h14M31 1h-8c-3 0-5 2-5 5v22c0 3 2 5 5 5h8M45 12H31M45 22H31"
-              stroke="#121212"
-              strokeWidth="2"
-            />
-            <rect
-              x="15"
-              y="1"
-              width="16"
-              height="32"
-              stroke="#121212"
-              strokeWidth="2"
-            />
-          </svg>
-          <svg
-            width="28"
-            height="28"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            className="text-foreground/80"
-            aria-hidden="true"
-          >
-            <path d="M8 8a6 6 0 0 1 0 8" />
-            <path d="M12 5.5a10 10 0 0 1 0 13" />
-            <path d="M16 3a14 14 0 0 1 0 17" />
-          </svg>
+        {/* Geometric diamond accents — confined to the top band + right edge,
+            entirely clear of the balance number below */}
+        <div aria-hidden="true" className="pointer-events-none absolute inset-0">
+          <span className="absolute right-[7.5rem] top-3 size-14 rotate-45 rounded-md border border-primary/25" />
+          <span className="absolute right-5 top-1.5 size-10 rotate-45 rounded-md border border-border" />
+          <span className="absolute right-3 top-16 size-8 rotate-45 rounded-md border border-primary/15" />
         </div>
 
-        <div className="relative mt-6 flex flex-wrap items-start justify-between gap-6">
-          <div className="min-w-0">
-            <div className="flex items-center gap-3">
-              <p className="text-sm text-muted-foreground">
-                {labels.availableBalance}
-              </p>
-              <button
-                type="button"
-                onClick={() => setBalanceVisible((visible) => !visible)}
-                className="rounded-full p-1.5 text-muted-foreground transition-colors hover:bg-white/5 hover:text-foreground"
-                aria-label={
-                  balanceVisible ? "Hide balance" : "Show balance"
-                }
-              >
-                {balanceVisible ? (
-                  <Eye className="size-4" />
-                ) : (
-                  <EyeOff className="size-4" />
-                )}
-              </button>
-            </div>
-            <div className="mt-1">
+        <div className="relative z-10 p-6 md:p-8">
+          {/* Top row: wordmark left, accent badge right */}
+          <div className="flex items-center justify-between gap-4">
+            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-primary">
+              Ravecard
+            </p>
+            <span className="grid size-11 shrink-0 place-items-center rounded-full bg-primary font-heading text-xl font-bold text-primary-foreground">
+              R
+            </span>
+          </div>
+
+          {/* Balance */}
+          <div className="mt-8">
+            <p className="text-sm text-muted-foreground">
+              {labels.availableBalance}
+            </p>
+            <div className="mt-1 flex items-center gap-2">
               <AnimatePresence mode="wait">
                 <motion.span
                   key={balanceVisible ? "visible" : "hidden"}
@@ -202,54 +135,42 @@ export default function Home() {
                   className="font-heading text-4xl font-semibold tracking-tight text-foreground md:text-5xl"
                 >
                   {balanceVisible
-                    ? `₦${formatAmount(dashboardData.balance)}`
+                    ? formatNaira(dashboardData.balance)
                     : "₦ ••••••"}
                 </motion.span>
               </AnimatePresence>
+              <button
+                type="button"
+                onClick={() => setBalanceVisible((visible) => !visible)}
+                className="rounded-full p-2 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                aria-label={
+                  balanceVisible ? "Hide balance" : "Show balance"
+                }
+              >
+                {balanceVisible ? (
+                  <Eye className="size-5" />
+                ) : (
+                  <EyeOff className="size-5" />
+                )}
+              </button>
             </div>
-            <p className="mt-3 text-sm text-muted-foreground">
-              {currentDate}
+          </div>
+
+          {/* Bottom row: member + masked number left, validity right */}
+          <div className="mt-8 flex flex-wrap items-end justify-between gap-3 border-t border-border pt-4">
+            <div className="min-w-0">
+              <p className="text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
+                {dashboardData.cardholder}
+              </p>
+              <p className="mt-1 font-mono text-sm tracking-wider text-foreground">
+                {dashboardData.cardNumber}
+              </p>
+            </div>
+            <p className="text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground">
+              Valid{" "}
+              <span className="text-primary">{dashboardData.expiry}</span>
             </p>
           </div>
-          <div className="flex gap-2">
-            <Link
-              href="/profile"
-              className="inline-flex items-center gap-1.5 rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary-hover"
-            >
-              <Send className="size-4" />
-              Send
-            </Link>
-            <Link
-              href="/history"
-              className="inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/5 px-4 py-2 text-sm font-semibold text-foreground transition-colors hover:bg-white/10"
-            >
-              <Clock className="size-4" />
-              Activity
-            </Link>
-          </div>
-        </div>
-
-        <div className="relative mt-6 flex flex-wrap items-center justify-between gap-3 border-t border-white/10 pt-4">
-          <p className="font-mono text-sm tracking-wider text-foreground/90">
-            {dashboardData.cardNumber}
-          </p>
-          <p className="text-xs text-muted-foreground">
-            {dashboardData.cardholder} · {dashboardData.expiry}
-          </p>
-        </div>
-
-        <div className="relative mt-4 flex items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <span className="grid size-10 place-items-center rounded-xl bg-primary font-heading text-lg font-bold text-primary-foreground">
-              R
-            </span>
-            <span className="font-heading text-lg font-semibold tracking-tight text-foreground">
-              Ravecard
-            </span>
-          </div>
-          <span className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
-            Spend Smarter. Live Freer.
-          </span>
         </div>
       </section>
 
@@ -276,7 +197,7 @@ export default function Home() {
               >
                 <Link
                   href={service.href}
-                  className="group flex h-full min-h-[148px] flex-col rounded-3xl border border-border bg-surface p-4 transition-all hover:-translate-y-1 hover:border-primary/35 hover:shadow-[0_12px_28px_rgb(46_46_58_/_0.08)] md:p-5"
+                  className="group flex h-full min-h-[148px] flex-col rounded-3xl border border-border bg-surface p-4 transition-all hover:-translate-y-1 hover:border-primary/35 hover:shadow-md md:p-5"
                 >
                   <span
                     className="grid size-12 shrink-0 place-items-center rounded-full bg-primary text-primary-foreground"

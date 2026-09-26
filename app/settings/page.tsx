@@ -7,6 +7,8 @@ import { useTheme } from "next-themes";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/Button";
+import { CardSection } from "@/components/ui/CardSection";
+import { PageHeader } from "@/components/ui/PageHeader";
 import Link from "next/link";
 import {
   languageOptions,
@@ -37,17 +39,13 @@ export default function SettingsPage() {
 
   return (
     <div className="mx-auto w-full max-w-3xl space-y-8">
-      <header>
-        <p className="text-sm font-medium text-primary">Settings</p>
-        <h1 className="mt-1 font-heading text-3xl font-semibold tracking-tight md:text-4xl">
-          {labels.settingsTitle}
-        </h1>
-        <p className="mt-2 text-muted-foreground">
-          Tune Ravecard to how you move.
-        </p>
-      </header>
+      <PageHeader
+        eyebrow="Settings"
+        title={labels.settingsTitle}
+        lede="Tune Ravecard to how you move."
+      />
 
-      <section className="rounded-[28px] border border-border bg-card p-5 md:p-8">
+      <CardSection>
         <div className="flex items-center gap-3">
           <span className="grid size-10 place-items-center rounded-xl bg-secondary text-primary">
             <Palette className="size-5" />
@@ -97,9 +95,9 @@ export default function SettingsPage() {
             ? `${resolvedTheme === "dark" ? "Dark" : "Light"} appearance is active.`
             : "Loading appearance..."}
         </p>
-      </section>
+      </CardSection>
 
-      <section className="rounded-[28px] border border-border bg-card p-5 md:p-8">
+      <CardSection>
         <div className="flex items-center gap-3">
           <span className="grid size-10 place-items-center rounded-xl bg-primary/15 text-primary">
             <Check className="size-5" />
@@ -161,7 +159,7 @@ export default function SettingsPage() {
         >
           {labels.savePreferences}
         </Button>
-      </section>
+      </CardSection>
 
       <div className="flex justify-end">
         <Link

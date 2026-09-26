@@ -6,6 +6,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/Button";
+import { PageHeader } from "@/components/ui/PageHeader";
 import { notificationsData } from "@/lib/mock-data/notifications";
 
 export default function NotificationsPage() {
@@ -19,27 +20,23 @@ export default function NotificationsPage() {
 
   return (
     <div className="mx-auto w-full max-w-3xl space-y-8">
-      <header className="flex items-end justify-between gap-4">
-        <div>
-          <p className="text-sm font-medium text-primary">Notifications</p>
-          <h1 className="mt-1 font-heading text-3xl font-semibold tracking-tight md:text-4xl">
-            Never miss a move.
-          </h1>
-          <p className="mt-2 text-muted-foreground">
-            Critical alerts, delivered the moment they land.
-          </p>
-        </div>
-        {unreadCount > 0 && (
-          <Button
-            type="button"
-            variant="secondary"
-            onClick={markAllRead}
-            className="shrink-0 gap-2"
-          >
-            <CheckCheck className="size-4" /> Mark all read
-          </Button>
-        )}
-      </header>
+      <PageHeader
+        eyebrow="Notifications"
+        title="Never miss a move."
+        lede="Critical alerts, delivered the moment they land."
+        action={
+          unreadCount > 0 ? (
+            <Button
+              type="button"
+              variant="secondary"
+              onClick={markAllRead}
+              className="shrink-0 gap-2"
+            >
+              <CheckCheck className="size-4" /> Mark all read
+            </Button>
+          ) : undefined
+        }
+      />
 
       <section className="space-y-3" aria-label="Notifications list">
         {items.map((item, index) => {

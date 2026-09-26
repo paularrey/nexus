@@ -1,26 +1,28 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowLeft, Calendar, Clock, MapPin, Star } from "lucide-react";
-import Link from "next/link";
+import { Calendar, Clock, MapPin, Star } from "lucide-react";
 import { use, useMemo, useState } from "react";
 import { toast } from "sonner";
 
 import { PinModal } from "@/components/payments/PinModal";
+import { BackLink } from "@/components/ui/BackLink";
 import { Button } from "@/components/ui/Button";
+import { CardSection } from "@/components/ui/CardSection";
+import { EmptyState } from "@/components/ui/EmptyState";
 import { FeeBreakdown } from "@/components/ui/FeeBreakdown";
 import { SectionHeader } from "@/components/ui/SectionHeader";
-import { useAuthGate } from "@/lib/hooks/useAuthGate";
+import { usePinFlow } from "@/lib/hooks/usePinFlow";
 import { marketplaceListings } from "@/lib/mock-data/marketplace";
-import { formatAmount } from "@/lib/utils/format";
-import type { BookingPageProps } from "@/types";
+import { formatNaira } from "@/lib/utils/format";
+import type { BookingPageProps, CalendarDay } from "@/types";
 
 const SERVICE_FEE = 500;
 const BOOKING_FEE = 200;
 
 const generateCalendarDays = () => {
   const today = new Date();
-  const days: { date: Date; label: string; dayName: string }[] = [];
+  const days: CalendarDay[] = [];
   for (let i = 0; i < 14; i++) {
     const d = new Date(today);
     d.setDate(today.getDate() + i);
@@ -39,8 +41,7 @@ export default function BookingReviewPage({ params }: BookingPageProps) {
 
   const [selectedDate, setSelectedDate] = useState(0);
   const [selectedSlot, setSelectedSlot] = useState<string | null>(null);
-  const [pinOpen, setPinOpen] = useState(false);
-  const authGate = useAuthGate();
+  const { pinOpen, setPinOpen, openPin } = usePinFlow();
 
   const calendarDays = useMemo(() => generateCalendarDays(), []);
 
@@ -60,36 +61,18 @@ export default function BookingReviewPage({ params }: BookingPageProps) {
   if (!listing) {
     return (
       <div className="mx-auto w-full max-w-5xl space-y-8">
-        <Link
-          href="/bookings"
-          className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground"
-        >
-          <ArrowLeft className="size-4" /> Back to bookings
-        </Link>
-        <div className="rounded-[28px] border border-dashed border-border bg-card p-12 text-center">
-          <p className="text-lg font-semibold text-muted-foreground">
-            Service not found
-          </p>
-          <p className="mt-2 text-sm text-muted-foreground">
-            This listing may have been removed.
-          </p>
-        </div>
+        <BackLink href="/bookings">Back to bookings</BackLink>
+        <EmptyState
+          title="Service not found"
+          description="This listing may have been removed."
+        />
       </div>
     );
   }
 
-  const confirmBooking = () => {
-    authGate(() => setPinOpen(true));
-  };
-
   return (
     <div className="mx-auto w-full max-w-5xl space-y-8">
-      <Link
-        href="/bookings"
-        className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground"
-      >
-        <ArrowLeft className="size-4" /> Back to bookings
-      </Link>
+      <BackLink href="/bookings">Back to bookings</BackLink>
 
       <section className="overflow-hidden rounded-[28px] border border-border bg-card">
         <div className="relative aspect-[21/8] bg-muted md:aspect-[21/6]">
@@ -125,7 +108,7 @@ export default function BookingReviewPage({ params }: BookingPageProps) {
             <div className="shrink-0 rounded-2xl bg-muted/50 px-5 py-3 text-right">
               <p className="text-xs text-muted-foreground">Starting from</p>
               <p className="font-heading text-2xl font-semibold text-foreground">
-                ₦{formatAmount(listing.price)}
+                {formatNaira(listing.price)}
               </p>
             </div>
           </div>
@@ -133,7 +116,7 @@ export default function BookingReviewPage({ params }: BookingPageProps) {
       </section>
 
       <section className="grid gap-5 lg:grid-cols-[1.1fr_0.9fr]">
-        <div className="space-y-6 rounded-[28px] border border-border bg-card p-5 md:p-8">
+        <CardSection className="space-y-6">
           <div>
             <SectionHeader
               icon={Calendar}
@@ -191,7 +174,7 @@ export default function BookingReviewPage({ params }: BookingPageProps) {
               ))}
             </div>
           </div>
-        </div>
+        </CardSection>
 
         <aside className="order-first flex flex-col justify-between rounded-[28px] bg-card p-5 shadow-[0_4px_24px_rgb(46_46_58_/_0.05)] ring-1 ring-border md:p-8 lg:order-none lg:sticky lg:top-24">
           <div>
@@ -199,7 +182,7 @@ export default function BookingReviewPage({ params }: BookingPageProps) {
               Booking summary
             </p>
             <p className="mt-3 font-heading text-3xl font-semibold">
-              ₦{formatAmount(total)}
+              {formatNaira(total)}
             </p>
             <p className="mt-2 text-sm text-muted-foreground">
               {listing.name} ·{" "}
@@ -235,19 +218,19 @@ export default function BookingReviewPage({ params }: BookingPageProps) {
               rows={[
                 {
                   label: "Service fee",
-                  value: `₦${formatAmount(SERVICE_FEE)}`,
+                  value: formatNaira(SERVICE_FEE),
                 },
                 {
                   label: "Booking fee",
-                  value: `₦${formatAmount(BOOKING_FEE)}`,
+                  value: formatNaira(BOOKING_FEE),
                 },
                 {
                   label: "Service price",
-                  value: `₦${formatAmount(listing.price)}`,
+                  value: formatNaira(listing.price),
                 },
                 {
                   label: "Total",
-                  value: `₦${formatAmount(total)}`,
+                  value: formatNaira(total),
                   emphasis: "strong-bordered",
                 },
               ]}
@@ -257,7 +240,7 @@ export default function BookingReviewPage({ params }: BookingPageProps) {
           <Button
             type="button"
             size="lg"
-            onClick={confirmBooking}
+            onClick={openPin}
             disabled={!selectedSlot || pinOpen}
             className="mt-6 h-12 w-full rounded-full"
           >
@@ -275,7 +258,7 @@ export default function BookingReviewPage({ params }: BookingPageProps) {
           })
         }
         title="Confirm booking"
-        amount={`₦${formatAmount(total)}`}
+        amount={formatNaira(total)}
       />
     </div>
   );

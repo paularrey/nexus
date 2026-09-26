@@ -1,15 +1,14 @@
+import { PageHeader } from "@/components/ui/PageHeader";
+
 export default function TermsPage() {
   return (
     <article className="mx-auto w-full max-w-3xl space-y-8">
-      <header>
-        <p className="text-sm font-medium text-primary">Ravecard legal</p>
-        <h1 className="mt-1 font-heading text-3xl font-semibold tracking-tight md:text-4xl">
-          Terms & Conditions
-        </h1>
-        <p className="mt-2 text-sm text-muted-foreground">
-          Last updated August 2026
-        </p>
-      </header>
+      <PageHeader
+        eyebrow="Ravecard legal"
+        title="Terms & Conditions"
+        lede="Last updated August 2026"
+        ledeClassName="mt-2 text-sm text-muted-foreground"
+      />
 
       <div className="space-y-7 rounded-[28px] border border-border bg-card p-6 leading-7 text-muted-foreground md:p-10">
         <section>

@@ -22,7 +22,10 @@ import { useState } from "react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/Button";
+import { CardSection } from "@/components/ui/CardSection";
+import { PageHeader } from "@/components/ui/PageHeader";
 import { SettingToggle } from "@/components/ui/SettingToggle";
+import { SuccessBanner } from "@/components/ui/SuccessBanner";
 import { useAuth } from "@/lib/context/auth-context";
 import {
   translations,
@@ -33,6 +36,11 @@ const profileName = "Alex Morgan";
 const profileEmail = "alex@example.com";
 const kycProgress = 72;
 
+const DEMO_OTP_CODE = "123456";
+const DEMO_2FA_SECRET = "RAVECARD-DEMO-2FA-KEY";
+const initialBackupCodes = ["RC-4821", "RC-7314", "RC-9052", "RC-1683"];
+const regeneratedBackupCodes = ["RC-2940", "RC-6178", "RC-8432", "RC-5061"];
+
 export default function ProfilePage() {
   const { isLoggedIn, openAuth, logout } = useAuth();
   const { language } = usePreferences();
@@ -41,12 +49,6 @@ export default function ProfilePage() {
     copyAll: translations[language].copyAll ?? "Copy all",
     download: translations[language].download ?? "Download",
     regenerate: translations[language].regenerate ?? "Regenerate",
-    setupAuthenticator:
-      translations[language].setupAuthenticator ?? "Set up your authenticator",
-    checking: translations[language].checking ?? "Checking...",
-    verify: translations[language].verify ?? "Verify",
-    sendCode: translations[language].sendCode ?? "Send code",
-    twoFactorEnabled: translations[language].twoFactorEnabled ?? "2FA enabled",
   };
   const [twoFactorEnabled, setTwoFactorEnabled] = useState(false);
   const [twoFactorMethods, setTwoFactorMethods] = useState<string[]>([]);
@@ -56,12 +58,7 @@ export default function ProfilePage() {
   const [isSendingCode, setIsSendingCode] = useState(false);
   const [disableOpen, setDisableOpen] = useState(false);
   const [regenerateOpen, setRegenerateOpen] = useState(false);
-  const [backupCodes, setBackupCodes] = useState([
-    "RC-4821",
-    "RC-7314",
-    "RC-9052",
-    "RC-1683",
-  ]);
+  const [backupCodes, setBackupCodes] = useState(initialBackupCodes);
   const [biometricsEnabled, setBiometricsEnabled] = useState(false);
 
   const handleLogout = () => {
@@ -80,7 +77,7 @@ export default function ProfilePage() {
     setIsVerifyingTwoFactor(true);
     window.setTimeout(() => {
       setIsVerifyingTwoFactor(false);
-      if (twoFactorCode === "123456") {
+      if (twoFactorCode === DEMO_OTP_CODE) {
         setTwoFactorEnabled(true);
         setTwoFactorMethods((methods) =>
           Array.from(new Set([...methods, twoFactorMethod])),
@@ -88,14 +85,14 @@ export default function ProfilePage() {
         toast.success("Two-factor authentication enabled");
       } else {
         toast.error("That code is not valid", {
-          description: "Use the demo code 123456.",
+          description: `Use the demo code ${DEMO_OTP_CODE}.`,
         });
       }
     }, 700);
   };
 
   const copySecret = async () => {
-    await navigator.clipboard.writeText("RAVECARD-DEMO-2FA-KEY");
+    await navigator.clipboard.writeText(DEMO_2FA_SECRET);
     toast.success("Secret key copied");
   };
 
@@ -130,19 +127,14 @@ export default function ProfilePage() {
 
   return (
     <div className="mx-auto w-full max-w-5xl space-y-8">
-      <header>
-        <p className="text-sm font-medium text-primary">{labels.profile}</p>
-        <h1 className="mt-1 font-heading text-3xl font-semibold tracking-tight md:text-4xl">
-          {labels.profileTitle}
-        </h1>
-        <p className="mt-2 text-muted-foreground">
-          Your identity, your security, your rules. Built for how you actually
-          live.
-        </p>
-      </header>
+      <PageHeader
+        eyebrow={labels.profile}
+        title={labels.profileTitle}
+        lede="Your identity, your security, your rules. Built for how you actually live."
+      />
 
       {!isLoggedIn ? (
-        <section className="rounded-[28px] border border-border bg-card p-6 md:p-8">
+        <CardSection className="p-6 md:p-8">
           <div className="flex items-center gap-4">
             <span className="grid size-14 place-items-center rounded-2xl bg-secondary text-primary">
               <UserRound className="size-7" />
@@ -163,11 +155,11 @@ export default function ProfilePage() {
           >
             Sign In
           </Button>
-        </section>
+        </CardSection>
       ) : (
         <>
           <section className="grid gap-5 lg:grid-cols-[1.1fr_0.9fr]">
-            <div className="rounded-[28px] border border-border bg-surface p-6 text-foreground shadow-[0_4px_24px_rgb(0_0_0_/_0.4)] md:p-8">
+            <CardSection className="bg-surface p-6 text-foreground shadow-[0_4px_24px_rgb(0_0_0_/_0.4)] md:p-8">
               <div className="flex items-start justify-between gap-4">
                 <div className="flex items-center gap-4">
                   <div className="grid size-16 place-items-center rounded-2xl bg-primary font-heading text-2xl font-bold text-primary-foreground">
@@ -191,9 +183,9 @@ export default function ProfilePage() {
                 <span className="text-muted-foreground">Member since</span>
                 <span className="text-foreground">August 2026</span>
               </div>
-            </div>
+            </CardSection>
 
-            <div className="rounded-[28px] border border-border bg-card p-6 md:p-8">
+            <CardSection className="p-6 md:p-8">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm font-medium text-muted-foreground">
@@ -248,13 +240,10 @@ export default function ProfilePage() {
                   </p>
                 </div>
               </div>
-            </div>
+            </CardSection>
           </section>
 
-          <section
-            id="security"
-            className="rounded-[28px] border border-border bg-card p-5 md:p-8"
-          >
+          <CardSection id="security">
             <div className="flex items-center justify-between gap-4">
               <div>
                 <p className="text-sm font-medium text-muted-foreground">
@@ -412,7 +401,7 @@ export default function ProfilePage() {
                             onClick={copySecret}
                             className="flex min-w-0 items-center gap-2 rounded-lg border border-border bg-background px-3 py-2 text-xs font-mono text-muted-foreground"
                           >
-                            <span className="truncate">RAVECARD-DEMO-2FA-KEY</span>
+                            <span className="truncate">{DEMO_2FA_SECRET}</span>
                             <Copy className="size-3.5 shrink-0" />
                           </button>
                         </div>
@@ -440,7 +429,7 @@ export default function ProfilePage() {
                               event.target.value.replace(/\D/g, ""),
                             )
                           }
-                          placeholder="Enter 123456"
+                          placeholder={`Enter ${DEMO_OTP_CODE}`}
                           className="h-11 min-w-0 flex-1 rounded-xl border border-input bg-background px-3 text-center tracking-[0.3em] outline-none focus:border-primary focus:ring-3 focus:ring-primary/15"
                         />
                         <Button
@@ -461,15 +450,12 @@ export default function ProfilePage() {
                 </div>
               )}
               {twoFactorEnabled && twoFactorMethods.length > 0 && (
-                <div className="mt-4 flex items-center gap-3 rounded-2xl border border-success/30 bg-success/10 p-4 text-success">
-                  <Check className="size-5" />
-                  <div>
-                    <p className="font-semibold">{labels.twoFactorEnabled}</p>
-                    <p className="text-sm text-success/80">
-                      Your account has an extra sign-in check.
-                    </p>
-                  </div>
-                </div>
+                <SuccessBanner
+                  className="mt-4"
+                  icon={Check}
+                  title={labels.twoFactorEnabled}
+                  description="Your account has an extra sign-in check."
+                />
               )}
               <SettingToggle
                 label="Biometric confirmation"
@@ -479,7 +465,7 @@ export default function ProfilePage() {
                 onChange={() => setBiometricsEnabled((value) => !value)}
               />
             </div>
-          </section>
+          </CardSection>
 
           <Drawer.Root open={disableOpen} onOpenChange={setDisableOpen}>
             <Drawer.Portal>
@@ -487,8 +473,7 @@ export default function ProfilePage() {
               <Drawer.Content className="fixed inset-x-0 bottom-0 z-50 mx-auto h-fit max-h-[calc(100dvh-1rem)] w-full max-w-md overflow-y-auto rounded-t-[28px] border border-border bg-card p-5 outline-none md:bottom-auto md:top-1/2 md:-translate-y-1/2 md:rounded-[28px]">
                 <div className="mx-auto mb-4 h-1.5 w-12 rounded-full bg-muted md:hidden" />
                 <Drawer.Title className="font-heading text-xl font-semibold">
-                  {labels.disableTwoFactor ??
-                    "Disable two-factor authentication?"}
+                  {labels.disableTwoFactor}
                 </Drawer.Title>
                 <Drawer.Description className="mt-2 text-sm text-muted-foreground">
                   Choose a verification method and enter the demo code to
@@ -511,7 +496,7 @@ export default function ProfilePage() {
                   onChange={(event) =>
                     setTwoFactorCode(event.target.value.replace(/\D/g, ""))
                   }
-                  placeholder="Enter 123456"
+                  placeholder={`Enter ${DEMO_OTP_CODE}`}
                   className="mt-3 h-11 w-full rounded-xl border border-input bg-background px-3 text-center tracking-[0.3em]"
                 />
                 <div className="mt-5 flex gap-2">
@@ -526,7 +511,7 @@ export default function ProfilePage() {
                   <Button
                     type="button"
                     className="flex-1"
-                    disabled={twoFactorCode !== "123456"}
+                    disabled={twoFactorCode !== DEMO_OTP_CODE}
                     onClick={() => {
                       setTwoFactorEnabled(false);
                       setTwoFactorMethods([]);
@@ -566,12 +551,7 @@ export default function ProfilePage() {
                     type="button"
                     className="flex-1"
                     onClick={() => {
-                      setBackupCodes([
-                        "RC-2940",
-                        "RC-6178",
-                        "RC-8432",
-                        "RC-5061",
-                      ]);
+                      setBackupCodes(regeneratedBackupCodes);
                       setRegenerateOpen(false);
                       toast.success("Backup codes regenerated");
                     }}

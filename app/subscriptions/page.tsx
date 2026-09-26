@@ -7,11 +7,13 @@ import { toast } from "sonner";
 
 import { PinModal } from "@/components/payments/PinModal";
 import { Button } from "@/components/ui/Button";
+import { CardSection } from "@/components/ui/CardSection";
 import { ProviderCard } from "@/components/ui/ProviderCard";
+import { PageHeader } from "@/components/ui/PageHeader";
 import { SectionHeader } from "@/components/ui/SectionHeader";
-import { useAuthGate } from "@/lib/hooks/useAuthGate";
+import { usePinFlow } from "@/lib/hooks/usePinFlow";
 import { subscriptionData } from "@/lib/mock-data/subscriptions";
-import { formatAmount } from "@/lib/utils/format";
+import { formatNaira } from "@/lib/utils/format";
 import type { SubscriptionProvider } from "@/types";
 
 export default function SubscriptionsPage() {
@@ -19,8 +21,7 @@ export default function SubscriptionsPage() {
     useState<SubscriptionProvider>(subscriptionData.providers[0]);
   const [selectedPlanIndex, setSelectedPlanIndex] = useState(1);
   const [accountNumber, setAccountNumber] = useState("");
-  const [pinOpen, setPinOpen] = useState(false);
-  const authGate = useAuthGate();
+  const { pinOpen, setPinOpen, openPin } = usePinFlow();
   const selectedPlan = selectedProvider.plans[selectedPlanIndex];
 
   const chooseProvider = (provider: SubscriptionProvider) => {
@@ -28,24 +29,16 @@ export default function SubscriptionsPage() {
     setSelectedPlanIndex(1);
   };
 
-  const confirmSubscription = () => {
-    authGate(() => setPinOpen(true));
-  };
-
   return (
     <div className="mx-auto w-full max-w-5xl space-y-8">
-      <header>
-        <p className="text-sm font-medium text-primary">Subscriptions</p>
-        <h1 className="mt-1 font-heading text-3xl font-semibold tracking-tight md:text-4xl">
-          Never miss a renewal.
-        </h1>
-        <p className="mt-2 max-w-2xl text-muted-foreground">
-          Choose a streaming, music, or cable provider and prepare a mock
-          renewal.
-        </p>
-      </header>
+      <PageHeader
+        eyebrow="Subscriptions"
+        title="Never miss a renewal."
+        lede="Choose a streaming, music, or cable provider and prepare a mock renewal."
+        ledeClassName="mt-2 max-w-2xl text-muted-foreground"
+      />
 
-      <section className="rounded-[28px] border border-border bg-card p-5 md:p-8">
+      <CardSection>
         <SectionHeader
           icon={Tv}
           title="Choose a provider"
@@ -65,10 +58,10 @@ export default function SubscriptionsPage() {
             />
           ))}
         </div>
-      </section>
+      </CardSection>
 
       <section className="grid gap-5 lg:grid-cols-[1.1fr_0.9fr]">
-        <div className="rounded-[28px] border border-border bg-card p-5 md:p-8">
+        <CardSection>
           <p className="text-sm font-medium text-muted-foreground">
             {selectedProvider.name} plans
           </p>
@@ -90,7 +83,7 @@ export default function SubscriptionsPage() {
                   {selectedPlanIndex === index && <Check className="size-4" />}
                 </span>
                 <span className="mt-2 block text-xl font-semibold text-foreground">
-                  ₦{formatAmount(plan.price)}
+                  {formatNaira(plan.price)}
                 </span>
                 <span className="mt-1 block text-xs text-muted-foreground">
                   {plan.detail} · {plan.duration}
@@ -114,13 +107,13 @@ export default function SubscriptionsPage() {
               />
             </span>
           </label>
-        </div>
+        </CardSection>
 
         <aside className="flex flex-col justify-between rounded-[28px] border border-border bg-surface p-5 text-foreground shadow-[0_4px_24px_rgb(46_46_58_/_0.05)] md:p-8">
           <div>
             <p className="text-sm text-muted-foreground">Renewal preview</p>
             <p className="mt-3 font-heading text-3xl font-semibold">
-              ₦{formatAmount(selectedPlan.price)}
+              {formatNaira(selectedPlan.price)}
             </p>
             <p className="mt-2 text-sm text-muted-foreground">
               {selectedProvider.name} · {selectedPlan.name} ·{" "}
@@ -130,7 +123,7 @@ export default function SubscriptionsPage() {
           <Button
             type="button"
             size="lg"
-            onClick={confirmSubscription}
+            onClick={openPin}
             disabled={!accountNumber || pinOpen}
             className="mt-8 h-12 w-full rounded-full bg-primary text-primary-foreground hover:bg-primary-hover"
           >
@@ -148,7 +141,7 @@ export default function SubscriptionsPage() {
           })
         }
         title="Confirm subscription renewal"
-        amount={`₦${formatAmount(selectedPlan.price)}`}
+        amount={formatNaira(selectedPlan.price)}
       />
     </div>
   );

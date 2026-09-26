@@ -4,6 +4,14 @@ export function formatAmount(value: number): string {
   }).format(value);
 }
 
+export function formatNaira(value: number): string {
+  return `₦${formatAmount(value)}`;
+}
+
+export function formatUsd(value: number): string {
+  return `$${value}`;
+}
+
 export function formatPhoneNumber(value: string): string {
   const digits = value.replace(/\D/g, "").slice(0, 11);
   return digits.replace(

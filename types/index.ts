@@ -10,6 +10,13 @@ export type NavItem = {
   icon: LucideIcon;
 };
 
+export type ServiceLink = {
+  label: string;
+  description: string;
+  href: string;
+  icon: LucideIcon;
+};
+
 export type WalletTransaction = {
   id: string;
   title: string;
@@ -67,6 +74,18 @@ export type GiftCardBrand = {
 };
 
 export type CardType = "physical" | "ecode";
+
+export type GiftCardTypeOption = {
+  value: CardType;
+  label: string;
+  description: string;
+};
+
+export type CalendarDay = {
+  date: Date;
+  label: string;
+  dayName: string;
+};
 
 export type MarketplaceCategory =
   | "Hair"

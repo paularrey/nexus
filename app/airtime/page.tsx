@@ -9,11 +9,12 @@ import { toast } from "sonner";
 import { PinModal } from "@/components/payments/PinModal";
 import { Button } from "@/components/ui/Button";
 import { FeeBreakdown } from "@/components/ui/FeeBreakdown";
+import { PageHeader } from "@/components/ui/PageHeader";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { SegmentedToggle } from "@/components/ui/SegmentedToggle";
-import { useAuthGate } from "@/lib/hooks/useAuthGate";
+import { usePinFlow } from "@/lib/hooks/usePinFlow";
 import { airtimeData } from "@/lib/mock-data/airtime";
-import { formatAmount, formatPhoneNumber } from "@/lib/utils/format";
+import { formatNaira, formatPhoneNumber } from "@/lib/utils/format";
 import {
   translations,
   usePreferences,
@@ -33,8 +34,7 @@ export default function AirtimePage() {
     airtimeData.networks[0].dataPlans[1],
   );
   const [phone, setPhone] = useState("");
-  const [pinOpen, setPinOpen] = useState(false);
-  const authGate = useAuthGate();
+  const { pinOpen, setPinOpen, openPin } = usePinFlow();
 
   const detectedNetwork = useMemo(() => {
     const digits = phone.replace(/\D/g, "");
@@ -46,24 +46,13 @@ export default function AirtimePage() {
   const hasSelection = Boolean(selectedNetwork && amount);
   const totalAmount = amount + SERVICE_FEE;
 
-  const buyAirtime = () => {
-    authGate(() => {
-      setPinOpen(true);
-    });
-  };
-
   return (
     <div className="mx-auto w-full max-w-2xl space-y-8">
-      <header>
-        <p className="text-sm font-medium text-primary">Airtime & data</p>
-        <h1 className="mt-1 font-heading text-3xl font-semibold tracking-tight md:text-4xl">
-          {labels.airtimeTitle}
-        </h1>
-        <p className="mt-2 text-muted-foreground">
-          Choose airtime or a data bundle, then enter a number and select a
-          plan.
-        </p>
-      </header>
+      <PageHeader
+        eyebrow="Airtime & data"
+        title={labels.airtimeTitle}
+        lede="Choose airtime or a data bundle, then enter a number and select a plan."
+      />
 
       <SegmentedToggle
         options={["airtime", "data"] as const}
@@ -207,14 +196,14 @@ export default function AirtimePage() {
               >
                 <span className="block">
                   {typeof preset === "number"
-                    ? `₦${formatAmount(preset)}`
+                    ? formatNaira(preset)
                     : preset.label}
                 </span>
                 {typeof preset !== "number" && (
                   <span
                     className={`mt-1 block text-xs ${isSelected ? "text-white/80" : "text-muted-foreground"}`}
                   >
-                    ₦{formatAmount(preset.amount)} · {preset.validity}
+                    {formatNaira(preset.amount)} · {preset.validity}
                   </span>
                 )}
               </motion.button>
@@ -228,7 +217,7 @@ export default function AirtimePage() {
           <div className="rounded-[28px] border border-border bg-surface p-6 text-foreground shadow-[0_4px_24px_rgb(46_46_58_/_0.05)]">
             <p className="text-sm text-muted-foreground">Ready to top up</p>
             <p className="mt-3 font-heading text-3xl font-semibold">
-              ₦{formatAmount(amount)}
+              {formatNaira(amount)}
             </p>
             <p className="mt-2 text-sm text-muted-foreground">
               {selectedNetwork.name} ·{" "}
@@ -239,14 +228,14 @@ export default function AirtimePage() {
             <div className="mt-5 border-t border-border pt-4">
               <FeeBreakdown
                 rows={[
-                  { label: "Airtime", value: `₦${formatAmount(amount)}` },
+                  { label: "Airtime", value: formatNaira(amount) },
                   {
                     label: "Service fee",
-                    value: `₦${formatAmount(SERVICE_FEE)}`,
+                    value: formatNaira(SERVICE_FEE),
                   },
                   {
                     label: "Total",
-                    value: `₦${formatAmount(totalAmount)}`,
+                    value: formatNaira(totalAmount),
                     emphasis: "strong",
                   },
                 ]}
@@ -256,7 +245,7 @@ export default function AirtimePage() {
             <Button
               type="button"
               size="lg"
-              onClick={buyAirtime}
+              onClick={openPin}
               disabled={!phone || pinOpen}
               className="mt-5 h-12 w-full rounded-full bg-primary text-primary-foreground hover:bg-primary-hover"
             >
@@ -279,13 +268,13 @@ export default function AirtimePage() {
               <div className="min-w-0 flex-1">
                 <p className="text-xs text-muted-foreground">Total</p>
                 <p className="font-heading text-xl font-semibold">
-                  ₦{formatAmount(totalAmount)}
+                  {formatNaira(totalAmount)}
                 </p>
               </div>
               <Button
                 type="button"
                 size="lg"
-                onClick={buyAirtime}
+                onClick={openPin}
                 disabled={!phone || pinOpen}
                 className="h-12 shrink-0 rounded-full bg-primary px-6 text-primary-foreground shadow-[0_4px_16px_rgb(255_87_51_/_0.3)] hover:bg-primary-hover"
               >
@@ -309,7 +298,7 @@ export default function AirtimePage() {
             ? "Confirm airtime purchase"
             : "Confirm data purchase"
         }
-        amount={`₦${formatAmount(totalAmount)}`}
+        amount={formatNaira(totalAmount)}
       />
     </div>
   );

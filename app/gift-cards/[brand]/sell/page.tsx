@@ -1,31 +1,32 @@
 "use client";
 
 import { motion } from "framer-motion";
-import {
-  ArrowLeft,
-  Check,
-  CreditCard,
-  FileImage,
-  Upload,
-} from "lucide-react";
+import { Check, CreditCard, FileImage, Upload } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { use, useMemo, useState } from "react";
 import { toast } from "sonner";
 
 import { PinModal } from "@/components/payments/PinModal";
+import { BackLink } from "@/components/ui/BackLink";
 import { Button } from "@/components/ui/Button";
+import { CardSection } from "@/components/ui/CardSection";
+import { EmptyState } from "@/components/ui/EmptyState";
 import { FeeBreakdown } from "@/components/ui/FeeBreakdown";
-import { useAuthGate } from "@/lib/hooks/useAuthGate";
+import { usePinFlow } from "@/lib/hooks/usePinFlow";
 import { getBrandBySlug } from "@/lib/mock-data/gift-card-catalog";
-import { formatAmount } from "@/lib/utils/format";
-import type { BrandPageProps, CardType } from "@/types";
+import { formatNaira, formatUsd } from "@/lib/utils/format";
+import type {
+  BrandPageProps,
+  CardType,
+  GiftCardTypeOption,
+} from "@/types";
 
 // TODO: Connect to real exchange rate data
 const MOCK_RATE = 950;
 const SERVICE_FEE_PERCENT = 0.02;
 
-const cardTypes: { value: CardType; label: string; description: string }[] = [
+const cardTypes: GiftCardTypeOption[] = [
   {
     value: "physical",
     label: "Physical card",
@@ -48,12 +49,11 @@ export default function GiftCardSellPage({ params }: BrandPageProps) {
   const [useCustom, setUseCustom] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const [fileName, setFileName] = useState("");
-  const [pinOpen, setPinOpen] = useState(false);
+  const { pinOpen, setPinOpen, openPin } = usePinFlow();
   const [submitted, setSubmitted] = useState(false);
   const [referenceId] = useState(
     () => `NX-GC-${Date.now().toString(36).toUpperCase()}`,
   );
-  const authGate = useAuthGate();
 
   const activeValue = useCustom ? Number(customValue) || 0 : faceValue ?? 0;
 
@@ -66,23 +66,14 @@ export default function GiftCardSellPage({ params }: BrandPageProps) {
 
   const confirmSubmission = () => {
     if (!activeValue || !fileName) return;
-    authGate(() => setPinOpen(true));
+    openPin();
   };
 
   if (!brand) {
     return (
       <div className="mx-auto w-full max-w-5xl space-y-8">
-        <Link
-          href="/gift-cards"
-          className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground"
-        >
-          <ArrowLeft className="size-4" /> Back to gift cards
-        </Link>
-        <div className="rounded-[28px] border border-dashed border-border bg-card p-12 text-center">
-          <p className="text-lg font-semibold text-muted-foreground">
-            Brand not found
-          </p>
-        </div>
+        <BackLink href="/gift-cards">Back to gift cards</BackLink>
+        <EmptyState title="Brand not found" />
       </div>
     );
   }
@@ -120,8 +111,8 @@ export default function GiftCardSellPage({ params }: BrandPageProps) {
               <div>
                 <p className="font-semibold">{brand.name} Gift Card</p>
                 <p className="text-xs text-muted-foreground">
-                  {cardType === "physical" ? "Physical card" : "E-code"} · ₦
-                  {formatAmount(activeValue)} face value
+                  {cardType === "physical" ? "Physical card" : "E-code"} ·{" "}
+                  {formatNaira(activeValue)} face value
                 </p>
               </div>
             </div>
@@ -138,7 +129,7 @@ export default function GiftCardSellPage({ params }: BrandPageProps) {
               <div className="flex justify-between">
                 <span className="text-muted-foreground">Expected payout</span>
                 <span className="font-semibold text-success">
-                  ₦{formatAmount(payout.net)}
+                  {formatNaira(payout.net)}
                 </span>
               </div>
               <div className="flex justify-between">
@@ -165,12 +156,7 @@ export default function GiftCardSellPage({ params }: BrandPageProps) {
 
   return (
     <div className="mx-auto w-full max-w-5xl space-y-6">
-      <Link
-        href="/gift-cards"
-        className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground"
-      >
-        <ArrowLeft className="size-4" /> Back to gift cards
-      </Link>
+      <BackLink href="/gift-cards">Back to gift cards</BackLink>
 
       <div className="grid gap-5 lg:grid-cols-[1.1fr_0.9fr]">
         <div className="space-y-6">
@@ -196,7 +182,7 @@ export default function GiftCardSellPage({ params }: BrandPageProps) {
             </div>
           </section>
 
-          <section className="rounded-[28px] border border-border bg-card p-5 md:p-7">
+          <CardSection className="p-5 md:p-7">
             <div className="flex items-center gap-3">
               <span className="grid size-10 place-items-center rounded-xl bg-secondary text-primary">
                 <CreditCard className="size-5" />
@@ -239,9 +225,9 @@ export default function GiftCardSellPage({ params }: BrandPageProps) {
                 );
               })}
             </div>
-          </section>
+          </CardSection>
 
-          <section className="rounded-[28px] border border-border bg-card p-5 md:p-7">
+          <CardSection className="p-5 md:p-7">
             <div className="flex items-center gap-3">
               <span className="grid size-10 place-items-center rounded-xl bg-secondary text-primary">
                 <span className="text-lg font-bold">₦</span>
@@ -297,15 +283,15 @@ export default function GiftCardSellPage({ params }: BrandPageProps) {
                           : "border-border text-muted-foreground hover:border-primary/40"
                       }`}
                     >
-                      ${preset}
+                      {formatUsd(preset)}
                     </button>
                   );
                 })}
               </div>
             </div>
-          </section>
+          </CardSection>
 
-          <section className="rounded-[28px] border border-border bg-card p-5 md:p-7">
+          <CardSection className="p-5 md:p-7">
             <div className="flex items-center gap-3">
               <span className="grid size-10 place-items-center rounded-xl bg-secondary text-primary">
                 <FileImage className="size-5" />
@@ -354,7 +340,7 @@ export default function GiftCardSellPage({ params }: BrandPageProps) {
                 />
               </label>
             </div>
-          </section>
+          </CardSection>
         </div>
 
         <aside className="order-first flex flex-col justify-between rounded-[28px] bg-card p-5 shadow-[0_4px_24px_rgb(46_46_58_/_0.05)] ring-1 ring-border md:p-7 lg:order-none lg:sticky lg:top-24">
@@ -380,11 +366,11 @@ export default function GiftCardSellPage({ params }: BrandPageProps) {
               </span>
             </div>
             <p className="mt-2 font-heading text-4xl font-semibold text-success">
-              {activeValue > 0 ? `₦${formatAmount(payout.net)}` : "—"}
+              {activeValue > 0 ? formatNaira(payout.net) : "—"}
             </p>
             <p className="mt-1 text-xs text-muted-foreground">
               {activeValue > 0
-                ? `for $${activeValue} ${brand.name} card`
+                ? `for ${formatUsd(activeValue)} ${brand.name} card`
                 : "Enter card value to see payout"}
             </p>
           </motion.div>
@@ -401,7 +387,7 @@ export default function GiftCardSellPage({ params }: BrandPageProps) {
             <div className="flex items-center justify-between text-sm">
               <span className="text-muted-foreground">Face value</span>
               <span className="font-medium">
-                {activeValue > 0 ? `$${activeValue}` : "—"}
+                {activeValue > 0 ? formatUsd(activeValue) : "—"}
               </span>
             </div>
             <div className="flex items-center justify-between text-sm">
@@ -411,7 +397,7 @@ export default function GiftCardSellPage({ params }: BrandPageProps) {
             <div className="flex items-center justify-between text-sm">
               <span className="text-muted-foreground">Service fee</span>
               <span className="font-medium">
-                {activeValue > 0 ? `₦${formatAmount(payout.fee)}` : "—"}
+                {activeValue > 0 ? formatNaira(payout.fee) : "—"}
               </span>
             </div>
           </div>
@@ -424,7 +410,7 @@ export default function GiftCardSellPage({ params }: BrandPageProps) {
               rows={[
                 {
                   label: "Face value",
-                  value: activeValue > 0 ? `$${activeValue}` : "—",
+                  value: activeValue > 0 ? formatUsd(activeValue) : "—",
                 },
                 {
                   label: "Rate applied",
@@ -432,13 +418,11 @@ export default function GiftCardSellPage({ params }: BrandPageProps) {
                 },
                 {
                   label: "Service fee (2%)",
-                  value:
-                    activeValue > 0 ? `₦${formatAmount(payout.fee)}` : "—",
+                  value: activeValue > 0 ? formatNaira(payout.fee) : "—",
                 },
                 {
                   label: "You receive",
-                  value:
-                    activeValue > 0 ? `₦${formatAmount(payout.net)}` : "—",
+                  value: activeValue > 0 ? formatNaira(payout.net) : "—",
                   emphasis: "strong-bordered",
                   valueClassName: "text-success",
                 },
@@ -467,12 +451,12 @@ export default function GiftCardSellPage({ params }: BrandPageProps) {
         onOpenChange={setPinOpen}
         onSuccess={() => {
           toast.success("Card submitted", {
-            description: `Your ${brand.name} card ($${activeValue}) is now under review.`,
+            description: `Your ${brand.name} card (${formatUsd(activeValue)}) is now under review.`,
           });
           setSubmitted(true);
         }}
         title={`Sell ${brand.name} gift card`}
-        amount={`₦${formatAmount(payout.net)}`}
+        amount={formatNaira(payout.net)}
       />
     </div>
   );

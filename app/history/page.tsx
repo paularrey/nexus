@@ -5,6 +5,7 @@ import { CreditCard, X } from "lucide-react";
 import { useState } from "react";
 
 import { Button } from "@/components/ui/Button";
+import { PageHeader } from "@/components/ui/PageHeader";
 import { TransactionRow } from "@/components/ui/TransactionRow";
 import { walletData } from "@/lib/mock-data/wallet";
 import type { WalletTransaction } from "@/types";
@@ -15,15 +16,11 @@ export default function HistoryPage() {
 
   return (
     <div className="mx-auto w-full max-w-5xl space-y-8">
-      <header>
-        <p className="text-sm font-medium text-primary">Activity</p>
-        <h1 className="mt-1 font-heading text-3xl font-semibold tracking-tight md:text-4xl">
-          Transaction history
-        </h1>
-        <p className="mt-2 text-muted-foreground">
-          Every payment, top-up, and booking — on the record.
-        </p>
-      </header>
+      <PageHeader
+        eyebrow="Activity"
+        title="Transaction history"
+        lede="Every payment, top-up, and booking — on the record."
+      />
 
       <section>
         <div className="mb-4 flex items-end justify-between">

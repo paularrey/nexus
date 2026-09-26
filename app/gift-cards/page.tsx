@@ -6,13 +6,15 @@ import Image from "next/image";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 
+import { EmptyState } from "@/components/ui/EmptyState";
+import { PageHeader } from "@/components/ui/PageHeader";
 import { SearchInput } from "@/components/ui/SearchInput";
 import { SegmentedToggle } from "@/components/ui/SegmentedToggle";
 import {
   giftCardBrands,
   giftCardRates,
 } from "@/lib/mock-data/gift-card-catalog";
-import { formatAmount } from "@/lib/utils/format";
+import { formatNaira } from "@/lib/utils/format";
 
 export default function GiftCardsPage() {
   const [mode, setMode] = useState<"sell" | "buy">("sell");
@@ -30,16 +32,12 @@ export default function GiftCardsPage() {
 
   return (
     <div className="mx-auto w-full max-w-5xl space-y-6">
-      <header>
-        <p className="text-sm font-medium text-primary">Gift cards</p>
-        <h1 className="mt-1 font-heading text-3xl font-semibold tracking-tight md:text-4xl">
-          Gift cards
-        </h1>
-        <p className="mt-2 max-w-xl text-muted-foreground">
-          Sell your unused gift cards for instant cash. Your card. Your rules.
-          Your freedom.
-        </p>
-      </header>
+      <PageHeader
+        eyebrow="Gift cards"
+        title="Gift cards"
+        lede="Sell your unused gift cards for instant cash. Your card. Your rules. Your freedom."
+        ledeClassName="mt-2 max-w-xl text-muted-foreground"
+      />
 
       <SegmentedToggle
         options={["sell", "buy"] as const}
@@ -82,14 +80,10 @@ export default function GiftCardsPage() {
 
           <section>
             {filteredBrands.length === 0 && (
-              <div className="rounded-[28px] border border-dashed border-border bg-card p-12 text-center">
-                <p className="text-lg font-semibold text-muted-foreground">
-                  No results for &ldquo;{search}&rdquo;
-                </p>
-                <p className="mt-2 text-sm text-muted-foreground">
-                  Try a different search term.
-                </p>
-              </div>
+              <EmptyState
+                title={`No results for “${search}”`}
+                description="Try a different search term."
+              />
             )}
 
             <div className="space-y-2">
@@ -123,7 +117,7 @@ export default function GiftCardsPage() {
                       </p>
                     </div>
                     <span className="text-sm font-semibold text-primary">
-                      From ₦{formatAmount(brand.startingPrice)}
+                      From {formatNaira(brand.startingPrice)}
                     </span>
                     <ArrowRight className="size-4 shrink-0 text-muted-foreground transition-colors group-hover:text-primary" />
                   </Link>

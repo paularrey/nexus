@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/Button";
 import { useAuth } from "@/lib/context/auth-context";
 
-function LoginContent() {
+export default function LoginPage() {
   const { openAuth } = useAuth();
 
   return (
@@ -40,8 +40,4 @@ function LoginContent() {
       </section>
     </main>
   );
-}
-
-export default function LoginPage() {
-  return <LoginContent />;
 }

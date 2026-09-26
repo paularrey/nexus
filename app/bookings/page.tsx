@@ -5,22 +5,16 @@ import { MapPin, Star } from "lucide-react";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 
+import { EmptyState } from "@/components/ui/EmptyState";
+import { PageHeader } from "@/components/ui/PageHeader";
 import { SearchInput } from "@/components/ui/SearchInput";
 import {
+  categoryColors,
   marketplaceCategories,
   marketplaceListings,
 } from "@/lib/mock-data/marketplace";
-import { formatAmount } from "@/lib/utils/format";
+import { formatNaira } from "@/lib/utils/format";
 import type { MarketplaceCategory } from "@/types";
-
-const categoryColors: Record<MarketplaceCategory, string> = {
-  Hair: "#E0629E",
-  Nails: "#E0629E",
-  Spa: "#FF5733",
-  Cleaning: "#4A90D9",
-  "Home Repairs": "#D9A441",
-  Photography: "#4A90D9",
-};
 
 export default function MarketplacePage() {
   const [activeCategory, setActiveCategory] = useState<
@@ -42,16 +36,12 @@ export default function MarketplacePage() {
 
   return (
     <div className="mx-auto w-full max-w-6xl space-y-8">
-      <header>
-        <p className="text-sm font-medium text-primary">Services marketplace</p>
-        <h1 className="mt-1 font-heading text-3xl font-semibold tracking-tight md:text-4xl">
-          Find local services you trust.
-        </h1>
-        <p className="mt-2 max-w-2xl text-muted-foreground">
-          Browse verified providers, compare prices, and book instantly — all in
-          one place.
-        </p>
-      </header>
+      <PageHeader
+        eyebrow="Services marketplace"
+        title="Find local services you trust."
+        lede="Browse verified providers, compare prices, and book instantly — all in one place."
+        ledeClassName="mt-2 max-w-2xl text-muted-foreground"
+      />
 
       <SearchInput
         value={search}
@@ -140,7 +130,7 @@ export default function MarketplacePage() {
 
                   <div className="mt-4 flex items-center justify-between border-t border-border pt-3">
                     <span className="font-heading text-xl font-semibold text-foreground">
-                      ₦{formatAmount(listing.price)}
+                      {formatNaira(listing.price)}
                     </span>
                     <span
                       className="rounded-xl px-4 py-2 text-sm font-semibold text-white transition-transform group-hover:scale-105"
@@ -157,14 +147,10 @@ export default function MarketplacePage() {
       </section>
 
       {filteredListings.length === 0 && (
-        <div className="rounded-[28px] border border-dashed border-border bg-card p-12 text-center">
-          <p className="text-lg font-semibold text-muted-foreground">
-            No services found
-          </p>
-          <p className="mt-2 text-sm text-muted-foreground">
-            Try a different search term or category.
-          </p>
-        </div>
+        <EmptyState
+          title="No services found"
+          description="Try a different search term or category."
+        />
       )}
     </div>
   );

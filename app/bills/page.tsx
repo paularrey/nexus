@@ -8,13 +8,16 @@ import { toast } from "sonner";
 import { PinModal } from "@/components/payments/PinModal";
 import { AmountPresets } from "@/components/ui/AmountPresets";
 import { Button } from "@/components/ui/Button";
+import { CardSection } from "@/components/ui/CardSection";
 import { FeeBreakdown } from "@/components/ui/FeeBreakdown";
+import { PageHeader } from "@/components/ui/PageHeader";
 import { ProviderCard } from "@/components/ui/ProviderCard";
 import { SectionHeader } from "@/components/ui/SectionHeader";
-import { useAuthGate } from "@/lib/hooks/useAuthGate";
+import { SuccessBanner } from "@/components/ui/SuccessBanner";
 import { useMockVerification } from "@/lib/hooks/useMockVerification";
+import { usePinFlow } from "@/lib/hooks/usePinFlow";
 import { billsData } from "@/lib/mock-data/bills";
-import { formatAmount } from "@/lib/utils/format";
+import { formatNaira } from "@/lib/utils/format";
 import {
   translations,
   usePreferences,
@@ -26,9 +29,8 @@ export default function BillsPage() {
   const [selectedBiller, setSelectedBiller] = useState(billsData.billers[0]);
   const [identifier, setIdentifier] = useState("");
   const [amount, setAmount] = useState(5000);
-  const [pinOpen, setPinOpen] = useState(false);
+  const { pinOpen, setPinOpen, openPin } = usePinFlow();
   const { isVerifying, isVerified, verify, reset } = useMockVerification();
-  const authGate = useAuthGate();
 
   const verifyCustomer = () => {
     verify(Boolean(identifier.trim()), {
@@ -37,25 +39,15 @@ export default function BillsPage() {
     });
   };
 
-  const payBill = () => {
-    authGate(() => {
-      setPinOpen(true);
-    });
-  };
-
   return (
     <div className="mx-auto w-full max-w-5xl space-y-8">
-      <header>
-        <p className="text-sm font-medium text-primary">Bills & utilities</p>
-        <h1 className="mt-1 font-heading text-3xl font-semibold tracking-tight md:text-4xl">
-          {labels.billsTitle}
-        </h1>
-        <p className="mt-2 text-muted-foreground">
-          Choose a service, verify a customer number, and review the mock fee.
-        </p>
-      </header>
+      <PageHeader
+        eyebrow="Bills & utilities"
+        title={labels.billsTitle}
+        lede="Choose a service, verify a customer number, and review the mock fee."
+      />
 
-      <section className="rounded-[28px] border border-border bg-card p-5 md:p-8">
+      <CardSection>
         <SectionHeader
           icon={ReceiptText}
           title="Choose a service"
@@ -78,10 +70,10 @@ export default function BillsPage() {
             />
           ))}
         </div>
-      </section>
+      </CardSection>
 
       <section className="grid gap-5 lg:grid-cols-[1.1fr_0.9fr]">
-        <div className="rounded-[28px] border border-border bg-card p-5 md:p-8">
+        <CardSection>
           <div className="flex items-center justify-between gap-4">
             <div>
               <p className="text-sm font-medium text-muted-foreground">
@@ -129,15 +121,11 @@ export default function BillsPage() {
                 exit={{ opacity: 0, height: 0, y: -8 }}
                 className="mt-5 overflow-hidden"
               >
-                <div className="flex items-center gap-3 rounded-2xl border border-success/30 bg-success/10 p-4 text-success">
-                  <ShieldCheck className="size-5" />
-                  <div>
-                    <p className="font-semibold">Customer verified</p>
-                    <p className="text-sm text-success/80">
-                      Demo result for {selectedBiller.name}
-                    </p>
-                  </div>
-                </div>
+                <SuccessBanner
+                  icon={ShieldCheck}
+                  title="Customer verified"
+                  description={`Demo result for ${selectedBiller.name}`}
+                />
               </motion.div>
             )}
           </AnimatePresence>
@@ -149,7 +137,7 @@ export default function BillsPage() {
               onChange={setAmount}
             />
           </div>
-        </div>
+        </CardSection>
 
         <aside className="order-first rounded-[28px] border border-border bg-surface p-4 text-foreground shadow-[0_4px_24px_rgb(46_46_58_/_0.05)] md:p-6 lg:order-none lg:sticky lg:top-24 lg:p-8">
           <div className="flex items-start justify-between gap-4">
@@ -158,7 +146,7 @@ export default function BillsPage() {
                 Payment summary
               </p>
               <p className="mt-3 font-heading text-3xl font-semibold">
-                ₦{formatAmount(amount)}
+                {formatNaira(amount)}
               </p>
             </div>
             <div className="grid size-10 place-items-center rounded-xl bg-primary/10 text-primary">
@@ -186,11 +174,11 @@ export default function BillsPage() {
               rows={[
                 {
                   label: "Service fee",
-                  value: `₦${formatAmount(billsData.serviceFee)}`,
+                  value: formatNaira(billsData.serviceFee),
                 },
                 {
                   label: "Total",
-                  value: `₦${formatAmount(amount + billsData.serviceFee)}`,
+                  value: formatNaira(amount + billsData.serviceFee),
                   emphasis: "strong",
                 },
               ]}
@@ -199,7 +187,7 @@ export default function BillsPage() {
           <Button
             type="button"
             size="lg"
-            onClick={payBill}
+            onClick={openPin}
             disabled={!identifier || !isVerified || pinOpen}
             className="mt-6 h-12 w-full rounded-full bg-primary text-primary-foreground hover:bg-primary-hover"
           >
@@ -216,7 +204,7 @@ export default function BillsPage() {
           })
         }
         title="Confirm bill payment"
-        amount={`₦${formatAmount(amount)}`}
+        amount={formatNaira(amount)}
       />
     </div>
   );
