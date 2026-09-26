@@ -8,6 +8,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/Button";
+import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import { AuthModal } from "@/components/auth/AuthModal";
 import { CookieConsent } from "@/components/layout/CookieConsent";
 import { OnboardingModal } from "@/components/layout/OnboardingModal";
@@ -74,6 +75,7 @@ export function AppShell({ children }: AppShellProps) {
           Ravecard
         </Link>
         <div className="flex items-center gap-2">
+          <ThemeToggle />
           <Button asChild variant="ghost" size="icon-sm" className="relative">
             <Link
               href="/notifications"
@@ -196,6 +198,7 @@ export function AppShell({ children }: AppShellProps) {
             </h1>
           </div>
           <div className="flex items-center gap-3">
+            <ThemeToggle />
             <Button asChild variant="ghost" size="icon" className="relative">
               <Link
                 href="/notifications"

@@ -4,8 +4,8 @@
   "description": "Spend Smarter. Live Freer. Your card for everyday payments.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#121212",
-  "theme_color": "#121212",
+  "background_color": "#F4F4FB",
+  "theme_color": "#F4F4FB",
   "orientation": "portrait-primary",
   "categories": ["finance", "utilities"],
   "icons": [

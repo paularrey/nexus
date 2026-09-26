@@ -109,7 +109,7 @@ export default function SubscriptionsPage() {
           </label>
         </CardSection>
 
-        <aside className="flex flex-col justify-between rounded-[28px] border border-border bg-surface p-5 text-foreground shadow-[0_4px_24px_rgb(46_46_58_/_0.05)] md:p-8">
+        <aside className="flex flex-col justify-between rounded-[28px] border border-border bg-surface p-5 text-foreground shadow-[0_4px_24px_rgb(15_23_42_/_0.06)] md:p-8">
           <div>
             <p className="text-sm text-muted-foreground">Renewal preview</p>
             <p className="mt-3 font-heading text-3xl font-semibold">

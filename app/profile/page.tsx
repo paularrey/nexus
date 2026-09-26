@@ -159,7 +159,7 @@ export default function ProfilePage() {
       ) : (
         <>
           <section className="grid gap-5 lg:grid-cols-[1.1fr_0.9fr]">
-            <CardSection className="bg-surface p-6 text-foreground shadow-[0_4px_24px_rgb(0_0_0_/_0.4)] md:p-8">
+            <CardSection className="bg-surface p-6 text-foreground shadow-[0_4px_24px_rgb(15_23_42_/_0.08)] md:p-8">
               <div className="flex items-start justify-between gap-4">
                 <div className="flex items-center gap-4">
                   <div className="grid size-16 place-items-center rounded-2xl bg-primary font-heading text-2xl font-bold text-primary-foreground">
@@ -382,7 +382,7 @@ export default function ProfilePage() {
                       {twoFactorMethod === "authenticator" && (
                         <div className="mt-3 flex items-center gap-3">
                           <div
-                            className="grid size-20 grid-cols-5 gap-1 rounded-lg bg-white p-2 dark:bg-slate-950"
+                            className="grid size-20 grid-cols-5 gap-1 rounded-lg bg-card p-2"
                             aria-label="Demo QR code placeholder"
                           >
                             {Array.from({ length: 25 }, (_, index) => (
@@ -390,8 +390,8 @@ export default function ProfilePage() {
                                 key={index}
                                 className={
                                   (index * 7 + 3) % 5 < 2
-                                    ? "rounded-sm bg-slate-900 dark:bg-white"
-                                    : "rounded-sm bg-slate-200 dark:bg-slate-800"
+                                    ? "rounded-sm bg-foreground"
+                                    : "rounded-sm bg-border"
                                 }
                               />
                             ))}
@@ -575,7 +575,7 @@ export default function ProfilePage() {
               type="button"
               variant="destructive"
               onClick={handleLogout}
-              className="h-11 gap-2 transition-shadow hover:shadow-[0_0_22px_rgb(255_87_51_/_0.35)]"
+              className="h-11 gap-2 transition-shadow hover:shadow-[0_0_22px_rgb(79_70_229_/_0.35)]"
             >
               <LogOut className="size-4" /> Sign out
             </Button>

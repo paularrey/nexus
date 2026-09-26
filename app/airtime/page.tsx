@@ -85,7 +85,7 @@ export default function AirtimePage() {
                 <span
                   className={`relative size-16 overflow-hidden rounded-full border-[2.5px] transition-all sm:size-20 ${
                     isSelected
-                      ? "border-primary shadow-[0_0_0_4px_rgb(255_87_51_/_0.18)]"
+                      ? "border-primary shadow-[0_0_0_4px_rgb(79_70_229_/_0.18)]"
                       : "border-border hover:border-primary/30"
                   }`}
                 >
@@ -102,7 +102,7 @@ export default function AirtimePage() {
                       animate={{ scale: 1 }}
                       className="absolute inset-0 flex items-center justify-center bg-primary/30"
                     >
-                      <Check className="size-5 text-white" />
+                      <Check className="size-5 text-primary-foreground" />
                     </motion.span>
                   )}
                 </span>
@@ -201,7 +201,7 @@ export default function AirtimePage() {
                 </span>
                 {typeof preset !== "number" && (
                   <span
-                    className={`mt-1 block text-xs ${isSelected ? "text-white/80" : "text-muted-foreground"}`}
+                    className={`mt-1 block text-xs ${isSelected ? "text-primary-foreground/80" : "text-muted-foreground"}`}
                   >
                     {formatNaira(preset.amount)} · {preset.validity}
                   </span>
@@ -214,7 +214,7 @@ export default function AirtimePage() {
 
       {hasSelection && (
         <section className="hidden md:block">
-          <div className="rounded-[28px] border border-border bg-surface p-6 text-foreground shadow-[0_4px_24px_rgb(46_46_58_/_0.05)]">
+          <div className="rounded-[28px] border border-border bg-surface p-6 text-foreground shadow-[0_4px_24px_rgb(15_23_42_/_0.06)]">
             <p className="text-sm text-muted-foreground">Ready to top up</p>
             <p className="mt-3 font-heading text-3xl font-semibold">
               {formatNaira(amount)}
@@ -262,7 +262,7 @@ export default function AirtimePage() {
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: 100, opacity: 0 }}
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            className="fixed inset-x-0 bottom-20 z-30 border-t border-border bg-card/95 px-4 py-4 shadow-[0_-4px_20px_rgb(46_46_58_/_0.08)] backdrop-blur md:hidden"
+            className="fixed inset-x-0 bottom-20 z-30 border-t border-border bg-card/95 px-4 py-4 shadow-[0_-4px_20px_rgb(15_23_42_/_0.08)] backdrop-blur md:hidden"
           >
             <div className="mx-auto flex items-center justify-between gap-4">
               <div className="min-w-0 flex-1">
@@ -276,7 +276,7 @@ export default function AirtimePage() {
                 size="lg"
                 onClick={openPin}
                 disabled={!phone || pinOpen}
-                className="h-12 shrink-0 rounded-full bg-primary px-6 text-primary-foreground shadow-[0_4px_16px_rgb(255_87_51_/_0.3)] hover:bg-primary-hover"
+                className="h-12 shrink-0 rounded-full bg-primary px-6 text-primary-foreground shadow-[0_4px_16px_rgb(79_70_229_/_0.3)] hover:bg-primary-hover"
               >
                 {service === "airtime" ? "Buy Airtime" : "Buy Data"}
               </Button>

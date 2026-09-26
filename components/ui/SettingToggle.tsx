@@ -40,7 +40,7 @@ export function SettingToggle({
         <motion.span
           layout
           transition={{ type: "spring", stiffness: 520, damping: 30 }}
-          className={`block size-5 rounded-full bg-white shadow-sm ${enabled ? "ml-5" : "ml-0"}`}
+          className={`block size-5 rounded-full bg-card shadow-sm ${enabled ? "ml-5" : "ml-0"}`}
         />
       </button>
     </div>

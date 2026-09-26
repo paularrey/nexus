@@ -29,7 +29,7 @@ export const metadata: Metadata = {
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
-    statusBarStyle: "black-translucent",
+    statusBarStyle: "default",
     title: "Ravecard",
   },
   formatDetection: {
@@ -38,7 +38,10 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#121212",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#f4f4fb" },
+    { media: "(prefers-color-scheme: dark)", color: "#1a1816" },
+  ],
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,
@@ -55,7 +58,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="apple-mobile-web-app-title" content="Ravecard" />
       </head>
       <body className="min-h-full flex flex-col">

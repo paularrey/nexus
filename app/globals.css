@@ -45,14 +45,6 @@
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
-  --color-badge-lavender: var(--badge-lavender);
-  --color-badge-lavender-fg: var(--badge-lavender-fg);
-  --color-badge-blue: var(--badge-blue);
-  --color-badge-blue-fg: var(--badge-blue-fg);
-  --color-badge-pink: var(--badge-pink);
-  --color-badge-pink-fg: var(--badge-pink-fg);
-  --color-badge-yellow: var(--badge-yellow);
-  --color-badge-yellow-fg: var(--badge-yellow-fg);
   --color-scrim: var(--scrim);
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
@@ -63,106 +55,95 @@
   --radius-4xl: calc(var(--radius) * 2.6);
 }
 
-/* ── RAVECARD — single default theme ──────────────── */
+/* ── RAVECARD THEME — Electric Blue on Light / Espresso Charcoal on Dark ──
+   Only two sources of color exist: the tokens below. Never hardcode hex
+   values in components — use the utility classes they generate. */
+
 :root {
-  --background: #121212;
-  --surface: #1a1a1a;
-  --surface-alt: #222222;
-  --foreground: #f2f2f2;
-  --muted-foreground: #9b9b9b;
-  --card: #1a1a1a;
-  --card-foreground: #f2f2f2;
-  --popover: #1a1a1a;
-  --popover-foreground: #f2f2f2;
-  --primary: #ff5733;
-  --primary-hover: #ff6f52;
-  --primary-foreground: #121212;
-  --secondary: #1f1f1f;
-  --secondary-foreground: #ff5733;
-  --muted: #1f1f1f;
-  --accent: #ff5733;
-  --accent-foreground: #121212;
-  --success: #3ddc97;
-  --danger: #ff6b6b;
-  --destructive: #ff6b6b;
-  --warning: #f5b942;
-  --border: #2a2a2a;
-  --input: #2a2a2a;
-  --ring: #ff5733;
-  --scrim: rgb(0 0 0 / 0.65);
-  --badge-lavender: #2b1c16;
-  --badge-lavender-fg: #ff7a5c;
-  --badge-blue: #16242e;
-  --badge-blue-fg: #5eb6ef;
-  --badge-pink: #2b1a22;
-  --badge-pink-fg: #f77fb4;
-  --badge-yellow: #2b2416;
-  --badge-yellow-fg: #f0c14b;
-  --chart-1: #ff5733;
-  --chart-2: #f0c14b;
-  --chart-3: #f77fb4;
-  --chart-4: #5eb6ef;
-  --chart-5: #3ddc97;
+  color-scheme: light;
+
+  --background: #f4f4fb;
+  --surface: #ffffff;
+  --surface-alt: #f4f4fb;
+  --foreground: #0f172a;
+  --muted-foreground: #64748b;
+  --card: #ffffff;
+  --card-foreground: #0f172a;
+  --popover: #ffffff;
+  --popover-foreground: #0f172a;
+  --primary: #4f46e5;
+  --primary-hover: #4338ca;
+  --primary-foreground: #ffffff;
+  --secondary: #eef2ff;
+  --secondary-foreground: #4f46e5;
+  --muted: #eef2f7;
+  --accent: #4f46e5;
+  --accent-foreground: #ffffff;
+  --success: #16a34a;
+  --danger: #dc2626;
+  --destructive: #dc2626;
+  --warning: #d97706;
+  --border: #e2e8f0;
+  --input: #e2e8f0;
+  --ring: #4f46e5;
+  --scrim: rgb(15 23 42 / 0.45);
+  --chart-1: #4f46e5;
+  --chart-2: #d97706;
+  --chart-3: #ec4899;
+  --chart-4: #0ea5e9;
+  --chart-5: #16a34a;
   --radius: 0.75rem;
-  --sidebar: #121212;
-  --sidebar-foreground: #f2f2f2;
-  --sidebar-primary: #ff5733;
-  --sidebar-primary-foreground: #121212;
-  --sidebar-accent: #1f1f1f;
-  --sidebar-accent-foreground: #ff5733;
-  --sidebar-border: #2a2a2a;
-  --sidebar-ring: #ff5733;
+  --sidebar: #ffffff;
+  --sidebar-foreground: #0f172a;
+  --sidebar-primary: #4f46e5;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #eef2ff;
+  --sidebar-accent-foreground: #4f46e5;
+  --sidebar-border: #e2e8f0;
+  --sidebar-ring: #4f46e5;
 }
 
-/* Ravecard ships a single theme — `.dark` resolves to the same palette
-   so the in-app theme toggle never reintroduces an off-brand look. */
 .dark {
-  --background: #121212;
-  --surface: #1a1a1a;
-  --surface-alt: #222222;
-  --foreground: #f2f2f2;
-  --muted-foreground: #9b9b9b;
-  --card: #1a1a1a;
-  --card-foreground: #f2f2f2;
-  --popover: #1a1a1a;
-  --popover-foreground: #f2f2f2;
-  --primary: #ff5733;
-  --primary-hover: #ff6f52;
-  --primary-foreground: #121212;
-  --secondary: #1f1f1f;
-  --secondary-foreground: #ff5733;
-  --muted: #1f1f1f;
-  --accent: #ff5733;
-  --accent-foreground: #121212;
+  color-scheme: dark;
+
+  --background: #1a1816;
+  --surface: #282522;
+  --surface-alt: #322e2a;
+  --foreground: #f5efea;
+  --muted-foreground: #a1a1aa;
+  --card: #282522;
+  --card-foreground: #f5efea;
+  --popover: #282522;
+  --popover-foreground: #f5efea;
+  --primary: #4f46e5;
+  --primary-hover: #6366f1;
+  --primary-foreground: #ffffff;
+  --secondary: #35312d;
+  --secondary-foreground: #f5efea;
+  --muted: #35312d;
+  --accent: #818cf8;
+  --accent-foreground: #1a1816;
   --success: #3ddc97;
   --danger: #ff6b6b;
   --destructive: #ff6b6b;
   --warning: #f5b942;
-  --border: #2a2a2a;
-  --input: #2a2a2a;
-  --ring: #ff5733;
+  --border: #3f3a36;
+  --input: #3f3a36;
+  --ring: #4f46e5;
   --scrim: rgb(0 0 0 / 0.65);
-  --badge-lavender: #2b1c16;
-  --badge-lavender-fg: #ff7a5c;
-  --badge-blue: #16242e;
-  --badge-blue-fg: #5eb6ef;
-  --badge-pink: #2b1a22;
-  --badge-pink-fg: #f77fb4;
-  --badge-yellow: #2b2416;
-  --badge-yellow-fg: #f0c14b;
-  --chart-1: #ff5733;
-  --chart-2: #f0c14b;
-  --chart-3: #f77fb4;
-  --chart-4: #5eb6ef;
+  --chart-1: #818cf8;
+  --chart-2: #fbbf24;
+  --chart-3: #f472b6;
+  --chart-4: #38bdf8;
   --chart-5: #3ddc97;
-  --sidebar: #121212;
-  --sidebar-foreground: #f2f2f2;
-  --sidebar-primary: #ff5733;
-  --sidebar-primary-foreground: #121212;
-  --sidebar-accent: #1f1f1f;
-  --sidebar-accent-foreground: #ff5733;
-  --sidebar-border: #2a2a2a;
-  --sidebar-ring: #ff5733;
+  --sidebar: #1a1816;
+  --sidebar-foreground: #f5efea;
+  --sidebar-primary: #4f46e5;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #35312d;
+  --sidebar-accent-foreground: #f5efea;
+  --sidebar-border: #3f3a36;
+  --sidebar-ring: #4f46e5;
 }
 
 @layer base {

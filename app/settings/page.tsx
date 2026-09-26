@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { Check, ChevronDown, Monitor, Moon, Palette, Sun } from "lucide-react";
 import { useState, useSyncExternalStore } from "react";
 import { useTheme } from "next-themes";
@@ -37,6 +36,13 @@ export default function SettingsPage() {
     { value: "system", label: "System", icon: Monitor },
   ] as const;
 
+  const activeThemeIndex = mounted
+    ? Math.max(
+        0,
+        themeOptions.findIndex((option) => option.value === theme),
+      )
+    : 0;
+
   return (
     <div className="mx-auto w-full max-w-3xl space-y-8">
       <PageHeader
@@ -62,28 +68,22 @@ export default function SettingsPage() {
           role="radiogroup"
           aria-label="Theme preference"
         >
-          {mounted && (
-            <motion.span
-              layoutId="theme-highlight"
-              transition={{ type: "spring", stiffness: 420, damping: 30 }}
-              className="absolute inset-y-1 w-[calc(33.333%-0.333rem)] rounded-lg bg-card shadow-sm"
-              style={{
-                left: `calc(${themeOptions.findIndex((option) => option.value === theme) * 33.333}% + 0.25rem)`,
-              }}
-            />
-          )}
+          <span
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-y-1 left-1 w-[calc((100%-0.5rem)/3)] rounded-lg bg-card shadow-sm transition-transform duration-300 ease-out"
+            style={{ transform: `translateX(${activeThemeIndex * 100}%)` }}
+          />
           {themeOptions.map(({ value, label, icon: Icon }) => (
             <button
               key={value}
               type="button"
               role="radio"
               aria-checked={mounted && theme === value}
-              disabled={!mounted}
               onClick={() => {
                 setTheme(value);
                 toast.success(`${label} theme selected`);
               }}
-              className="relative z-10 flex min-w-0 items-center justify-center gap-2 rounded-lg px-2 py-2 text-sm font-medium text-muted-foreground transition-colors aria-checked:text-foreground disabled:opacity-50"
+              className="relative z-10 flex min-w-0 items-center justify-center gap-2 rounded-lg px-2 py-2 text-sm font-medium text-muted-foreground transition-colors aria-checked:text-foreground"
             >
               <Icon className="size-4" />
               <span>{label}</span>

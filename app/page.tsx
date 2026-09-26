@@ -1,14 +1,13 @@
 "use client";
 
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import {
   ArrowUpRight,
   Bell,
   CalendarDays,
   Clock,
-  Eye,
-  EyeOff,
   Gift,
+  Nfc,
   ReceiptText,
   RefreshCw,
   Send,
@@ -16,8 +15,8 @@ import {
   Zap,
 } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
 
+import { Button } from "@/components/ui/Button";
 import { TransactionRow } from "@/components/ui/TransactionRow";
 import { translations, usePreferences } from "@/lib/context/preferences-context";
 import { dashboardData } from "@/lib/mock-data/dashboard";
@@ -83,94 +82,45 @@ const services: ServiceLink[] = [
 ];
 
 export default function Home() {
-  const [balanceVisible, setBalanceVisible] = useState(true);
   const { language } = usePreferences();
   const labels = translations[language];
 
   return (
     <div className="mx-auto w-full max-w-7xl space-y-8">
-      <section className="relative overflow-hidden rounded-[28px] border border-border bg-gradient-to-br from-surface to-background shadow-xl">
-        {/* Soft accent glow — theme accent (--primary) at low opacity, top-right */}
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute -right-32 -top-36 size-64 rounded-full bg-primary/15 blur-3xl"
-        />
-        {/* Thin accent line along the top edge */}
-        <div
-          aria-hidden="true"
-          className="absolute inset-x-0 top-0 h-0.5 bg-gradient-to-r from-primary via-primary/40 to-transparent"
-        />
-
-        {/* Geometric diamond accents — confined to the top band + right edge,
-            entirely clear of the balance number below */}
-        <div aria-hidden="true" className="pointer-events-none absolute inset-0">
-          <span className="absolute right-[7.5rem] top-3 size-14 rotate-45 rounded-md border border-primary/25" />
-          <span className="absolute right-5 top-1.5 size-10 rotate-45 rounded-md border border-border" />
-          <span className="absolute right-3 top-16 size-8 rotate-45 rounded-md border border-primary/15" />
+      <section className="rounded-[28px] border border-border bg-surface p-6 md:p-8">
+        <div className="flex items-center justify-between gap-4">
+          <p className="text-lg font-bold tracking-tight text-foreground">
+            Ravecard
+          </p>
+          <Nfc className="size-6 shrink-0 text-primary" aria-hidden="true" />
         </div>
 
-        <div className="relative z-10 p-6 md:p-8">
-          {/* Top row: wordmark left, accent badge right */}
-          <div className="flex items-center justify-between gap-4">
-            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-primary">
-              Ravecard
-            </p>
-            <span className="grid size-11 shrink-0 place-items-center rounded-full bg-primary font-heading text-xl font-bold text-primary-foreground">
-              R
-            </span>
-          </div>
+        <div className="mt-8">
+          <p className="text-sm text-muted-foreground">
+            {labels.availableBalance}
+          </p>
+          <p className="mt-1 font-heading text-4xl font-bold tracking-tight text-foreground md:text-5xl">
+            {formatNaira(dashboardData.balance)}
+          </p>
+        </div>
 
-          {/* Balance */}
-          <div className="mt-8">
-            <p className="text-sm text-muted-foreground">
-              {labels.availableBalance}
-            </p>
-            <div className="mt-1 flex items-center gap-2">
-              <AnimatePresence mode="wait">
-                <motion.span
-                  key={balanceVisible ? "visible" : "hidden"}
-                  initial={{ opacity: 0, y: 8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -8 }}
-                  className="font-heading text-4xl font-semibold tracking-tight text-foreground md:text-5xl"
-                >
-                  {balanceVisible
-                    ? formatNaira(dashboardData.balance)
-                    : "₦ ••••••"}
-                </motion.span>
-              </AnimatePresence>
-              <button
-                type="button"
-                onClick={() => setBalanceVisible((visible) => !visible)}
-                className="rounded-full p-2 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-                aria-label={
-                  balanceVisible ? "Hide balance" : "Show balance"
-                }
-              >
-                {balanceVisible ? (
-                  <Eye className="size-5" />
-                ) : (
-                  <EyeOff className="size-5" />
-                )}
-              </button>
-            </div>
-          </div>
-
-          {/* Bottom row: member + masked number left, validity right */}
-          <div className="mt-8 flex flex-wrap items-end justify-between gap-3 border-t border-border pt-4">
-            <div className="min-w-0">
-              <p className="text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
-                {dashboardData.cardholder}
-              </p>
-              <p className="mt-1 font-mono text-sm tracking-wider text-foreground">
-                {dashboardData.cardNumber}
-              </p>
-            </div>
-            <p className="text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground">
-              Valid{" "}
-              <span className="text-primary">{dashboardData.expiry}</span>
-            </p>
-          </div>
+        <div className="mt-8 grid grid-cols-2 gap-3">
+          <Button asChild size="lg" className="gap-2">
+            <Link href="/profile">
+              <Send className="size-4" data-icon="inline-start" /> Send
+            </Link>
+          </Button>
+          <Button
+            asChild
+            variant="outline"
+            size="lg"
+            className="gap-2 border-transparent bg-muted text-primary hover:bg-muted hover:text-primary"
+          >
+            <Link href="/history">
+              <RefreshCw className="size-4" data-icon="inline-start" />{" "}
+              Activity
+            </Link>
+          </Button>
         </div>
       </section>
 

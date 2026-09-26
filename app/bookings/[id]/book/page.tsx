@@ -176,7 +176,7 @@ export default function BookingReviewPage({ params }: BookingPageProps) {
           </div>
         </CardSection>
 
-        <aside className="order-first flex flex-col justify-between rounded-[28px] bg-card p-5 shadow-[0_4px_24px_rgb(46_46_58_/_0.05)] ring-1 ring-border md:p-8 lg:order-none lg:sticky lg:top-24">
+        <aside className="order-first flex flex-col justify-between rounded-[28px] bg-card p-5 shadow-[0_4px_24px_rgb(15_23_42_/_0.06)] ring-1 ring-border md:p-8 lg:order-none lg:sticky lg:top-24">
           <div>
             <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
               Booking summary
