@@ -1,7 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { Bell, Menu, Settings, X } from "lucide-react";
+import { Bell, Menu, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -88,15 +88,6 @@ export function AppShell({ children }: AppShellProps) {
               </span>
             </Link>
           </Button>
-          <Button asChild variant="ghost" size="icon-sm">
-            <Link
-              href="/settings"
-              aria-label={labels.settings}
-              title={labels.settings}
-            >
-              <Settings />
-            </Link>
-          </Button>
           {!isLoggedIn && (
             <Button
               variant="outline"
@@ -157,7 +148,9 @@ export function AppShell({ children }: AppShellProps) {
         >
           {navItems.map((item) => {
             const Icon = item.icon;
-            const isActive = pathname === item.href;
+            const isActive =
+              pathname === item.href ||
+              (item.href !== "/" && pathname.startsWith(`${item.href}/`));
 
             return (
               <Link
@@ -211,16 +204,6 @@ export function AppShell({ children }: AppShellProps) {
                 </span>
               </Link>
             </Button>
-            <Button
-              asChild
-              variant="ghost"
-              size="icon"
-              aria-label="Open settings"
-            >
-              <Link href="/settings" title={labels.settings}>
-                <Settings />
-              </Link>
-            </Button>
             {!isLoggedIn && (
               <Button
                 variant="outline"
@@ -250,7 +233,9 @@ export function AppShell({ children }: AppShellProps) {
       >
         {navItems.map((item) => {
           const Icon = item.icon;
-          const isActive = pathname === item.href;
+          const isActive =
+            pathname === item.href ||
+            (item.href !== "/" && pathname.startsWith(`${item.href}/`));
 
           return (
             <Link

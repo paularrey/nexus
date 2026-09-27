@@ -22,6 +22,7 @@ import { translations, usePreferences } from "@/lib/context/preferences-context"
 import { dashboardData } from "@/lib/mock-data/dashboard";
 import { walletData } from "@/lib/mock-data/wallet";
 import { formatNaira } from "@/lib/utils/format";
+import { useHideBalance } from "@/lib/hooks/useHideBalance";
 import type { ServiceLink } from "@/types";
 
 const services: ServiceLink[] = [
@@ -75,7 +76,7 @@ const services: ServiceLink[] = [
   },
   {
     label: "More",
-    description: "Alerts, profile & settings",
+    description: "Alerts, profile & more",
     href: "/notifications",
     icon: Bell,
   },
@@ -84,6 +85,7 @@ const services: ServiceLink[] = [
 export default function Home() {
   const { language } = usePreferences();
   const labels = translations[language];
+  const { hideBalance } = useHideBalance();
 
   return (
     <div className="mx-auto w-full max-w-7xl space-y-8">
@@ -100,7 +102,7 @@ export default function Home() {
             {labels.availableBalance}
           </p>
           <p className="mt-1 font-heading text-4xl font-bold tracking-tight text-foreground md:text-5xl">
-            {formatNaira(dashboardData.balance)}
+            {hideBalance ? "₦ ••••••" : formatNaira(dashboardData.balance)}
           </p>
         </div>
 
