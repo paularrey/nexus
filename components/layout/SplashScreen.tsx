@@ -32,8 +32,8 @@ export function SplashScreen({ isVisible }: SplashScreenProps) {
         transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
         className="relative flex flex-col items-center gap-8"
       >
-        <div className="relative grid size-40 place-items-center rounded-[36px] border border-primary/30 bg-surface shadow-[0_32px_80px_rgb(79_70_229_/_0.28)]">
-          <div className="absolute inset-3 rounded-[28px] border border-white/25" />
+        <div className="relative grid size-40 place-items-center rounded-[36px] border border-primary/30 bg-surface shadow-[0_32px_80px_color-mix(in_srgb,var(--primary)_28%,transparent)]">
+          <div className="absolute inset-3 rounded-[28px] border border-primary-foreground/20" />
           <Image
             src="/ravelogo512.png"
             alt="Ravecard"
@@ -46,15 +46,15 @@ export function SplashScreen({ isVisible }: SplashScreenProps) {
             initial={{ x: "-140%" }}
             animate={isVisible ? { x: "140%" } : { x: "-140%" }}
             transition={{ delay: 0.35, duration: 0.8, ease: "easeInOut" }}
-            className="absolute inset-y-0 w-10 -skew-x-12 bg-white/25 blur-md"
+            className="absolute inset-y-0 w-10 -skew-x-12 bg-primary-foreground/25 blur-md"
           />
         </div>
         <div className="text-center">
           <p className="font-heading text-3xl font-bold tracking-tight text-foreground">
             Ravecard
           </p>
-          <p className="mt-2 text-base text-muted-foreground">
-            Spend Smarter. Live Freer.
+          <p className="mx-auto mt-3 max-w-xs text-base leading-relaxed text-muted-foreground">
+            Hi there - Welcome to Ravecard. Your money, made simple.
           </p>
         </div>
       </motion.div>

@@ -20,42 +20,36 @@ const steps = [
     title: "Pay for airtime and data",
     description:
       "Top up any mobile network directly from your Ravecard balance. Pick a plan, enter a number, confirm — done.",
-    color: "bg-primary/15 text-primary",
   },
   {
     icon: ReceiptText,
     title: "Settle bills without leaving home",
     description:
       "Electricity, internet, cable TV — verify your account, choose an amount, and pay in seconds.",
-    color: "bg-success/10 text-success",
   },
   {
     icon: Gift,
     title: "Buy or sell gift cards at live rates",
     description:
       "Browse brands, see a real-time conversion, and submit your card for instant payout estimation.",
-    color: "bg-primary/15 text-primary",
   },
   {
     icon: BookOpen,
     title: "Book local services you trust",
     description:
       "Find spas, salons, photographers, and home repair providers. Pick a date, choose a time, and confirm your booking.",
-    color: "bg-success/10 text-success",
   },
   {
     icon: Smartphone,
     title: "Renew subscriptions in one tap",
     description:
       "Netflix, DSTV, Spotify, and more. Select your plan, enter your account number, and renew without hunting for payment pages.",
-    color: "bg-primary/15 text-primary",
   },
   {
     icon: CreditCard,
     title: "More than a card. It's your freedom.",
     description:
       "The home screen shows your available balance, recent activity, and quick access to every service — your freedom, all in one view.",
-    color: "bg-primary/15 text-primary",
   },
 ] as const;
 
@@ -99,7 +93,7 @@ export function OnboardingModal({ open, onOpenChange }: OnboardingModalProps) {
         <button
           type="button"
           onClick={skip}
-          className="absolute right-4 top-4 text-sm font-medium text-muted-foreground hover:text-foreground"
+          className="absolute right-3 top-3 rounded-lg px-2.5 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-2 focus-visible:outline-ring"
         >
           Skip
         </button>
@@ -124,9 +118,7 @@ export function OnboardingModal({ open, onOpenChange }: OnboardingModalProps) {
             transition={{ duration: 0.2 }}
             className="flex flex-col items-center text-center"
           >
-            <div
-              className={`grid size-16 place-items-center rounded-2xl ${current.color}`}
-            >
+            <div className="grid size-16 place-items-center rounded-2xl bg-primary/15 text-primary">
               <current.icon className="size-8" />
             </div>
 
