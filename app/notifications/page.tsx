@@ -47,7 +47,7 @@ export default function NotificationsPage() {
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.06 }}
-              className={`flex gap-4 rounded-2xl border p-4 transition-colors ${item.unread ? "border-primary/25 bg-card" : "border-border bg-card/70"}`}
+              className={`flex gap-4 rounded-2xl border p-4 transition-colors ${item.unread ? "border-primary/25 bg-card" : "border-border bg-card"}`}
             >
               <span
                 className={`grid size-11 shrink-0 place-items-center rounded-xl ${item.tone}`}
