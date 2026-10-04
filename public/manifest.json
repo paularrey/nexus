@@ -5,7 +5,10 @@
   "start_url": "/",
   "display": "standalone",
   "background_color": "#F4F4FB",
-  "theme_color": "#F4F4FB",
+  "theme_color": [
+    { "media": "(prefers-color-scheme: light)", "color": "#F4F4FB" },
+    { "media": "(prefers-color-scheme: dark)", "color": "#1A1816" }
+  ],
   "orientation": "portrait-primary",
   "categories": ["finance", "utilities"],
   "icons": [
