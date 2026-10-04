@@ -23,35 +23,26 @@ export function SplashScreen({ isVisible }: SplashScreenProps) {
     >
       <div className="absolute inset-0 bg-primary/10" />
       <motion.div
-        initial={{ opacity: 0, scale: 0.72, rotate: -8 }}
+        initial={{ opacity: 0, scale: 0.8 }}
         animate={
           isVisible
-            ? { opacity: 1, scale: 1, rotate: 0 }
-            : { opacity: 0, scale: 1.08, rotate: 4 }
+            ? { opacity: 1, scale: 1 }
+            : { opacity: 0, scale: 0.8 }
         }
         transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
         className="relative flex flex-col items-center gap-8"
       >
-        <div className="relative grid size-40 place-items-center rounded-[36px] border border-primary/30 bg-surface shadow-[0_32px_80px_color-mix(in_srgb,var(--primary)_28%,transparent)]">
-          <div className="absolute inset-3 rounded-[28px] border border-primary-foreground/20" />
-          <Image
-            src="/ravelogo512.png"
-            alt="Ravecard"
-            width={120}
-            height={120}
-            className="relative z-10"
-            priority
-          />
-          <motion.span
-            initial={{ x: "-140%" }}
-            animate={isVisible ? { x: "140%" } : { x: "-140%" }}
-            transition={{ delay: 0.35, duration: 0.8, ease: "easeInOut" }}
-            className="absolute inset-y-0 w-10 -skew-x-12 bg-primary-foreground/25 blur-md"
-          />
-        </div>
+        <Image
+          src="/ravelogo512.png"
+          alt="Ravecard"
+          width={160}
+          height={160}
+          priority
+          className="rounded-[36px] shadow-[0_32px_80px_color-mix(in_srgb,var(--primary)_28%,transparent)]"
+        />
         <div className="text-center">
           <p className="font-heading text-3xl font-bold tracking-tight text-foreground">
-            Ravecard
+            Welcome
           </p>
           <p className="mx-auto mt-3 max-w-xs text-base leading-relaxed text-muted-foreground">
             Hi there - Welcome to Ravecard. Your money, made simple.

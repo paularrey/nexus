@@ -121,8 +121,8 @@
   --secondary: #35312d;
   --secondary-foreground: #f5efea;
   --muted: #35312d;
-  --accent: #818cf8;
-  --accent-foreground: #1a1816;
+  --accent: #4f46e5;
+  --accent-foreground: #ffffff;
   --success: #3ddc97;
   --danger: #ff6b6b;
   --destructive: #ff6b6b;
@@ -131,7 +131,7 @@
   --input: #3f3a36;
   --ring: #4f46e5;
   --scrim: rgb(0 0 0 / 0.65);
-  --chart-1: #818cf8;
+  --chart-1: #4f46e5;
   --chart-2: #fbbf24;
   --chart-3: #f472b6;
   --chart-4: #38bdf8;
