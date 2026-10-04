@@ -1,32 +1,159 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Check, CreditCard, Tv } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
 import { PinModal } from "@/components/payments/PinModal";
+import { AccountStep } from "@/components/subscriptions/AccountStep";
+import { ConfirmStep } from "@/components/subscriptions/ConfirmStep";
+import {
+  PaymentStep,
+  type PaymentMethod,
+} from "@/components/subscriptions/PaymentStep";
+import { PlanStep } from "@/components/subscriptions/PlanStep";
+import { StepIndicator } from "@/components/subscriptions/StepIndicator";
 import { Button } from "@/components/ui/Button";
-import { CardSection } from "@/components/ui/CardSection";
-import { ProviderCard } from "@/components/ui/ProviderCard";
 import { PageHeader } from "@/components/ui/PageHeader";
-import { SectionHeader } from "@/components/ui/SectionHeader";
 import { usePinFlow } from "@/lib/hooks/usePinFlow";
-import { subscriptionData } from "@/lib/mock-data/subscriptions";
+import { useMockVerification } from "@/lib/hooks/useMockVerification";
+import { dashboardData } from "@/lib/mock-data/dashboard";
+import {
+  billingDurations,
+  subscriptionData,
+} from "@/lib/mock-data/subscriptions";
 import { formatNaira } from "@/lib/utils/format";
 import type { SubscriptionProvider } from "@/types";
 
-export default function SubscriptionsPage() {
-  const [selectedProvider, setSelectedProvider] =
-    useState<SubscriptionProvider>(subscriptionData.providers[0]);
-  const [selectedPlanIndex, setSelectedPlanIndex] = useState(1);
-  const [accountNumber, setAccountNumber] = useState("");
-  const { pinOpen, setPinOpen, openPin } = usePinFlow();
-  const selectedPlan = selectedProvider.plans[selectedPlanIndex];
+type StepKey = "plan" | "account" | "confirm";
 
-  const chooseProvider = (provider: SubscriptionProvider) => {
+const streamingSteps = [
+  { key: "plan", label: "Plan" },
+  { key: "account", label: "Account" },
+  { key: "confirm", label: "Confirm" },
+] as const;
+
+const cableSteps = [
+  { key: "plan", label: "Bouquet" },
+  { key: "account", label: "Verify" },
+  { key: "confirm", label: "Confirm" },
+] as const;
+
+function isValidEmailOrPhone(value: string) {
+  const trimmed = value.trim();
+  if (!trimmed) return false;
+  if (trimmed.includes("@")) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed);
+  }
+  return trimmed.replace(/\D/g, "").length >= 10;
+}
+
+function renewalDays(duration: string) {
+  return Number.parseInt(duration, 10) || 30;
+}
+
+function renewalDateAfter(days: number) {
+  const date = new Date(Date.now() + days * 86_400_000);
+  return date.toLocaleDateString("en-NG", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  });
+}
+
+export default function SubscriptionsPage() {
+  const [stepIndex, setStepIndex] = useState(0);
+  const [selectedProvider, setSelectedProvider] = useState<
+    SubscriptionProvider
+  >(subscriptionData.providers[0]);
+  const [planIndex, setPlanIndex] = useState(1);
+  const [durationIndex, setDurationIndex] = useState(0);
+  const [accountValue, setAccountValue] = useState("");
+  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod | null>(
+    "wallet",
+  );
+  const { pinOpen, setPinOpen, openPin } = usePinFlow();
+  const {
+    isVerifying,
+    isVerified,
+    verify,
+    reset: resetVerification,
+  } = useMockVerification();
+
+  const isCable = selectedProvider.kind === "cable";
+  const steps = isCable ? cableSteps : streamingSteps;
+  const stepKey: StepKey = steps[Math.min(stepIndex, steps.length - 1)].key;
+
+  const selectedPlan = selectedProvider.plans[planIndex];
+  const duration = billingDurations[durationIndex];
+  const totalPrice = isCable
+    ? Math.round((selectedPlan.price * duration.multiplier) / 50) * 50
+    : selectedPlan.price;
+  const billingCycle = isCable ? duration.label : selectedPlan.duration;
+  const cycleDays = isCable ? duration.months * 30 : renewalDays(selectedPlan.duration);
+  const renewalDate = renewalDateAfter(cycleDays);
+
+  const paymentLabel =
+    paymentMethod === "wallet"
+      ? "Ravecard Wallet"
+      : paymentMethod === "card"
+        ? `Saved card ···· ${dashboardData.cardNumber.slice(-4)}`
+        : "Not selected";
+
+  const accountLabel = isCable ? "Smart card" : "Account";
+  const accountDisplay = isCable
+    ? accountValue
+      ? `${accountValue} · ${subscriptionData.mockAccountName}`
+      : ""
+    : accountValue.trim();
+
+  const changeProvider = (provider: SubscriptionProvider) => {
     setSelectedProvider(provider);
-    setSelectedPlanIndex(1);
+    setPlanIndex(1);
+    setDurationIndex(0);
+    setAccountValue("");
+    resetVerification();
+  };
+
+  const canContinue =
+    stepKey === "plan"
+      ? true
+      : stepKey === "account"
+        ? isCable
+          ? isVerified
+          : isValidEmailOrPhone(accountValue)
+        : paymentMethod !== null;
+
+  const primaryLabel =
+    stepKey === "confirm"
+      ? `Confirm & Pay ${formatNaira(totalPrice)}`
+      : "Continue";
+
+  const handlePrimary = () => {
+    if (stepKey !== "confirm") {
+      setStepIndex((index) => index + 1);
+      return;
+    }
+    // TODO: Connect to real payment processing
+    openPin();
+  };
+
+  const handleSuccess = () => {
+    toast.success("Subscription set up", {
+      description: `${selectedProvider.name} ${selectedPlan.name} renews on ${renewalDate}.`,
+    });
+    setStepIndex(0);
+    setPaymentMethod("wallet");
+    setAccountValue("");
+    resetVerification();
+  };
+
+  const handleVerify = () => {
+    verify(Boolean(accountValue.trim()), {
+      title: "Decoder verified",
+      description: `${subscriptionData.mockAccountName} · ${selectedProvider.name}`,
+    });
   };
 
   return (
@@ -38,111 +165,120 @@ export default function SubscriptionsPage() {
         ledeClassName="mt-2 max-w-2xl text-muted-foreground"
       />
 
-      <CardSection>
-        <SectionHeader
-          icon={Tv}
-          title="Choose a provider"
-          description="Select the subscription you want to renew."
-        />
-        <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
-          {subscriptionData.providers.map((provider) => (
-            <ProviderCard
-              key={provider.name}
-              name={provider.name}
-              shortName={provider.shortName}
-              color={provider.color}
-              image={provider.image}
-              subtitle={provider.category}
-              shortNameTextSize="lg"
-              isSelected={selectedProvider.name === provider.name}
-              onSelect={() => chooseProvider(provider)}
-            />
-          ))}
-        </div>
-      </CardSection>
+      <StepIndicator steps={steps} current={stepIndex} />
 
       <section className="grid gap-5 lg:grid-cols-[1.1fr_0.9fr]">
-        <CardSection>
-          <p className="text-sm font-medium text-muted-foreground">
-            {selectedProvider.name} plans
-          </p>
-          <h2 className="mt-1 font-heading text-2xl font-semibold">
-            Select a plan
-          </h2>
-          <div className="mt-5 grid gap-2 sm:grid-cols-3">
-            {selectedProvider.plans.map((plan, index) => (
-              <motion.button
-                key={plan.name}
-                type="button"
-                whileTap={{ scale: 0.96 }}
-                onClick={() => setSelectedPlanIndex(index)}
-                className={`rounded-2xl border p-4 text-left transition-colors ${selectedPlanIndex === index ? "border-primary bg-secondary text-primary" : "border-border hover:border-primary/40"}`}
-                aria-pressed={selectedPlanIndex === index}
-              >
-                <span className="flex items-center justify-between gap-2 font-semibold">
-                  {plan.name}
-                  {selectedPlanIndex === index && <Check className="size-4" />}
-                </span>
-                <span className="mt-2 block text-xl font-semibold text-foreground">
-                  {formatNaira(plan.price)}
-                </span>
-                <span className="mt-1 block text-xs text-muted-foreground">
-                  {plan.detail} · {plan.duration}
-                </span>
-              </motion.button>
-            ))}
-          </div>
-          <label
-            className="mt-7 block text-sm font-medium"
-            htmlFor="subscription-account"
+        <div>
+          <motion.div
+            key={stepKey + selectedProvider.kind}
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.25 }}
+            className="space-y-5"
           >
-            Account or smartcard number
-            <span className="relative mt-2 block">
-              <CreditCard className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
-              <input
-                id="subscription-account"
-                value={accountNumber}
-                onChange={(event) => setAccountNumber(event.target.value)}
-                placeholder="Enter your account number"
-                className="h-12 w-full rounded-xl border border-input bg-background pl-10 pr-3 outline-none transition focus:border-primary focus:ring-3 focus:ring-primary/15"
+            {stepKey === "plan" && (
+              <PlanStep
+                providers={subscriptionData.providers}
+                selectedProvider={selectedProvider}
+                onProviderChange={changeProvider}
+                planIndex={planIndex}
+                onPlanChange={setPlanIndex}
+                durationIndex={durationIndex}
+                onDurationChange={setDurationIndex}
               />
-            </span>
-          </label>
-        </CardSection>
+            )}
+            {stepKey === "account" && (
+              <AccountStep
+                provider={selectedProvider}
+                value={accountValue}
+                onValueChange={setAccountValue}
+                isVerifying={isVerifying}
+                isVerified={isVerified}
+                onVerify={handleVerify}
+                onReset={resetVerification}
+                accountName={subscriptionData.mockAccountName}
+              />
+            )}
+            {stepKey === "confirm" && (
+              <>
+                <PaymentStep
+                  value={paymentMethod}
+                  onChange={setPaymentMethod}
+                  amount={totalPrice}
+                  walletBalance={dashboardData.balance}
+                  cardNumber={dashboardData.cardNumber}
+                  cardExpiry={dashboardData.expiry}
+                />
+                <ConfirmStep
+                  provider={selectedProvider}
+                  plan={selectedPlan}
+                  paymentLabel={paymentLabel}
+                  renewalDate={renewalDate}
+                  billingCycle={billingCycle}
+                  accountLabel={accountLabel}
+                  accountValue={accountDisplay}
+                  totalPrice={totalPrice}
+                />
+              </>
+            )}
+          </motion.div>
+
+          <div className="mt-5 flex items-center justify-between gap-3">
+            <Button
+              type="button"
+              variant="ghost"
+              onClick={() => setStepIndex((index) => Math.max(0, index - 1))}
+              disabled={stepIndex === 0}
+              className="gap-1.5"
+            >
+              <ArrowLeft /> Back
+            </Button>
+            <Button
+              type="button"
+              size="lg"
+              onClick={handlePrimary}
+              disabled={!canContinue}
+              className="h-11 px-6"
+            >
+              {primaryLabel}
+            </Button>
+          </div>
+        </div>
 
         <aside className="flex flex-col justify-between rounded-[28px] border border-border bg-surface p-5 text-foreground shadow-[0_4px_24px_rgb(15_23_42_/_0.06)] md:p-8">
           <div>
             <p className="text-sm text-muted-foreground">Renewal preview</p>
             <p className="mt-3 font-heading text-3xl font-semibold">
-              {formatNaira(selectedPlan.price)}
+              {formatNaira(totalPrice)}
             </p>
             <p className="mt-2 text-sm text-muted-foreground">
-              {selectedProvider.name} · {selectedPlan.name} ·{" "}
-              {accountNumber || "Account number needed"}
+              {selectedProvider.name} · {selectedPlan.name} · {billingCycle}
             </p>
+            <dl className="mt-5 space-y-3 border-t border-border pt-4 text-sm">
+              <div className="flex items-center justify-between gap-4">
+                <dt className="text-muted-foreground">Payment</dt>
+                <dd className="font-medium">
+                  {paymentMethod ? paymentLabel : "Choose on step 3"}
+                </dd>
+              </div>
+              <div className="flex items-center justify-between gap-4">
+                <dt className="text-muted-foreground">Next renewal</dt>
+                <dd className="font-medium">{renewalDate}</dd>
+              </div>
+            </dl>
           </div>
-          <Button
-            type="button"
-            size="lg"
-            onClick={openPin}
-            disabled={!accountNumber || pinOpen}
-            className="mt-8 h-12 w-full rounded-full bg-primary text-primary-foreground hover:bg-primary-hover"
-          >
-            Confirm renewal
-          </Button>
+          <p className="mt-6 text-xs text-muted-foreground">
+            Mock checkout — no real money moves.
+          </p>
         </aside>
       </section>
 
       <PinModal
         open={pinOpen}
         onOpenChange={setPinOpen}
-        onSuccess={() =>
-          toast.success("Subscription renewal ready", {
-            description: `Mock ${selectedProvider.name} renewal prepared.`,
-          })
-        }
+        onSuccess={handleSuccess}
         title="Confirm subscription renewal"
-        amount={formatNaira(selectedPlan.price)}
+        amount={formatNaira(totalPrice)}
       />
     </div>
   );

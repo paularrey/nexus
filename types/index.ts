@@ -90,13 +90,22 @@ export type SubscriptionPlan = {
   detail: string;
 };
 
+export type SubscriptionProviderKind = "streaming" | "cable";
+
 export type SubscriptionProvider = {
   name: string;
   shortName: string;
   category: string;
+  kind: SubscriptionProviderKind;
   color: string;
   image: string;
   plans: SubscriptionPlan[];
+};
+
+export type BillingDuration = {
+  label: string;
+  months: number;
+  multiplier: number;
 };
 
 export type FeeBreakdownRow = {

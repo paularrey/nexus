@@ -1,6 +1,13 @@
-import type { SubscriptionProvider } from "@/types";
+import type { BillingDuration, SubscriptionProvider } from "@/types";
+
+export const billingDurations: BillingDuration[] = [
+  { label: "1 month", months: 1, multiplier: 1 },
+  { label: "3 months", months: 3, multiplier: 2.85 },
+  { label: "Annual", months: 12, multiplier: 10 },
+];
 
 export const subscriptionData = {
+  mockAccountName: "Alex Morgan",
   providers: [
     {
       name: "Netflix",
@@ -8,6 +15,7 @@ export const subscriptionData = {
       category: "Streaming",
       color: "#e50914",
       image: "/netflix.png",
+      kind: "streaming",
       plans: [
         {
           name: "Mobile",
@@ -35,6 +43,7 @@ export const subscriptionData = {
       category: "Streaming",
       color: "#2A4A6B",
       image: "/showmax.png",
+      kind: "streaming",
       plans: [
         {
           name: "Mobile",
@@ -62,6 +71,7 @@ export const subscriptionData = {
       category: "Music",
       color: "#1db954",
       image: "/spotify.png",
+      kind: "streaming",
       plans: [
         {
           name: "Individual",
@@ -89,6 +99,7 @@ export const subscriptionData = {
       category: "Cable TV",
       color: "#0066b3",
       image: "/dstv.png",
+      kind: "cable",
       plans: [
         {
           name: "Access",
@@ -116,6 +127,7 @@ export const subscriptionData = {
       category: "Cable TV",
       color: "#f28c28",
       image: "/gotv.png",
+      kind: "cable",
       plans: [
         {
           name: "Smallie",
@@ -143,6 +155,7 @@ export const subscriptionData = {
       category: "Cable TV",
       color: "#c8102e",
       image: "/startimes.png",
+      kind: "cable",
       plans: [
         {
           name: "Nova",
