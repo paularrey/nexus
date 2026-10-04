@@ -60,6 +60,7 @@ export default function BettingPage() {
               name={platform.name}
               shortName={platform.shortName}
               color={platform.color}
+              image={platform.image}
               isSelected={selectedPlatform.name === platform.name}
               onSelect={() => {
                 setSelectedPlatform(platform);

@@ -7,6 +7,7 @@ export const subscriptionData = {
       shortName: "N",
       category: "Streaming",
       color: "#e50914",
+      image: "/netflix.png",
       plans: [
         {
           name: "Mobile",
@@ -33,6 +34,7 @@ export const subscriptionData = {
       shortName: "S",
       category: "Streaming",
       color: "#2A4A6B",
+      image: "/showmax.png",
       plans: [
         {
           name: "Mobile",
@@ -59,6 +61,7 @@ export const subscriptionData = {
       shortName: "S",
       category: "Music",
       color: "#1db954",
+      image: "/spotify.png",
       plans: [
         {
           name: "Individual",
@@ -85,6 +88,7 @@ export const subscriptionData = {
       shortName: "D",
       category: "Cable TV",
       color: "#0066b3",
+      image: "/dstv.png",
       plans: [
         {
           name: "Access",
@@ -111,6 +115,7 @@ export const subscriptionData = {
       shortName: "G",
       category: "Cable TV",
       color: "#f28c28",
+      image: "/gotv.png",
       plans: [
         {
           name: "Smallie",
@@ -137,6 +142,7 @@ export const subscriptionData = {
       shortName: "ST",
       category: "Cable TV",
       color: "#c8102e",
+      image: "/startimes.png",
       plans: [
         {
           name: "Nova",

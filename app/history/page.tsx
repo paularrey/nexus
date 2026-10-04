@@ -19,7 +19,7 @@ export default function HistoryPage() {
       <PageHeader
         eyebrow="Activity"
         title="Transaction history"
-        lede="Every payment, top-up, and booking — on the record."
+        lede="Every payment and top-up — on the record."
       />
 
       <section>

@@ -51,6 +51,7 @@ export default function SubscriptionsPage() {
               name={provider.name}
               shortName={provider.shortName}
               color={provider.color}
+              image={provider.image}
               subtitle={provider.category}
               shortNameTextSize="lg"
               isSelected={selectedProvider.name === provider.name}

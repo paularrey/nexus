@@ -41,7 +41,6 @@ export function AppShell({ children }: AppShellProps) {
     "/airtime": labels.airtime,
     "/profile": labels.profile,
     "/subscriptions": "Subscriptions",
-    "/bookings": "Bookings",
     "/history": "History",
   };
 

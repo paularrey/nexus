@@ -2,11 +2,13 @@
 
 import { motion } from "framer-motion";
 import { Check } from "lucide-react";
+import Image from "next/image";
 
 type ProviderCardProps = {
   name: string;
   shortName: string;
   color: string;
+  image?: string;
   subtitle?: string;
   shortNameTextSize?: "sm" | "lg";
   isSelected: boolean;
@@ -17,6 +19,7 @@ export function ProviderCard({
   name,
   shortName,
   color,
+  image,
   subtitle,
   shortNameTextSize = "sm",
   isSelected,
@@ -36,14 +39,26 @@ export function ProviderCard({
       }}
       aria-pressed={isSelected}
     >
-      <span
-        className={`grid size-10 place-items-center rounded-xl font-bold text-white ${
-          shortNameTextSize === "lg" ? "text-lg" : "text-sm"
-        }`}
-        style={{ backgroundColor: color }}
-      >
-        {shortName}
-      </span>
+      {image ? (
+        <span className="grid size-10 shrink-0 place-items-center overflow-hidden rounded-xl bg-muted">
+          <Image
+            src={image}
+            alt={`${name} logo`}
+            width={28}
+            height={28}
+            className="object-contain"
+          />
+        </span>
+      ) : (
+        <span
+          className={`grid size-10 place-items-center rounded-xl font-bold text-white ${
+            shortNameTextSize === "lg" ? "text-lg" : "text-sm"
+          }`}
+          style={{ backgroundColor: color }}
+        >
+          {shortName}
+        </span>
+      )}
       {subtitle !== undefined ? (
         <span>
           <span className="block font-semibold">{name}</span>

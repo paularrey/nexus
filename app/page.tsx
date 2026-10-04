@@ -4,7 +4,6 @@ import { motion } from "framer-motion";
 import {
   ArrowUpRight,
   Bell,
-  CalendarDays,
   Clock,
   Gift,
   Nfc,
@@ -28,55 +27,41 @@ import type { ServiceLink } from "@/types";
 const services: ServiceLink[] = [
   {
     label: "Airtime & Data",
-    description: "Top up any network in seconds",
     href: "/airtime",
     icon: Zap,
   },
   {
     label: "Bills",
-    description: "Power, water & more",
     href: "/bills",
     icon: ReceiptText,
   },
   {
     label: "Gift Cards",
-    description: "Buy or sell instantly",
     href: "/gift-cards",
     icon: Gift,
   },
   {
     label: "Wallet",
-    description: "Send money to anyone",
     href: "/profile",
     icon: Send,
   },
   {
     label: "Subscriptions",
-    description: "Renew your favorite plans",
     href: "/subscriptions",
     icon: RefreshCw,
   },
   {
     label: "History",
-    description: "Track every naira spent",
     href: "/history",
     icon: Clock,
   },
   {
     label: "Betting",
-    description: "Fund betting wallets",
     href: "/betting",
     icon: Ticket,
   },
   {
-    label: "Bookings",
-    description: "Book local services",
-    href: "/bookings",
-    icon: CalendarDays,
-  },
-  {
     label: "More",
-    description: "Alerts, profile & more",
     href: "/notifications",
     icon: Bell,
   },
@@ -135,7 +120,7 @@ export default function Home() {
             Built for how you actually live.
           </p>
         </div>
-        <div className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-4">
+        <div className="grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4">
           {services.map((service, index) => {
             const Icon = service.icon;
             return (
@@ -149,18 +134,15 @@ export default function Home() {
               >
                 <Link
                   href={service.href}
-                  className="group flex h-full min-h-[148px] flex-col rounded-3xl border border-border bg-surface p-4 transition-all hover:-translate-y-1 hover:border-primary/35 hover:shadow-md md:p-5"
+                  className="group flex h-full min-h-[124px] flex-col rounded-3xl border border-border bg-surface p-4 transition-all hover:-translate-y-1 hover:border-primary/35 hover:shadow-md md:p-5"
                 >
                   <span
-                    className="grid size-12 shrink-0 place-items-center rounded-full bg-primary text-primary-foreground"
+                    className="grid size-11 shrink-0 place-items-center rounded-full bg-primary text-primary-foreground"
                   >
                     <Icon className="size-5" />
                   </span>
                   <span className="mt-auto pt-4 text-sm font-bold text-foreground md:text-base">
                     {service.label}
-                  </span>
-                  <span className="mt-1 text-xs leading-snug text-muted-foreground md:text-sm">
-                    {service.description}
                   </span>
                 </Link>
               </motion.div>

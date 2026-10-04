@@ -3,7 +3,6 @@
 import { AnimatePresence, motion } from "framer-motion";
 import {
   ArrowRight,
-  BookOpen,
   CreditCard,
   Gift,
   ReceiptText,
@@ -32,12 +31,6 @@ const steps = [
     title: "Buy or sell gift cards at live rates",
     description:
       "Browse brands, see a real-time conversion, and submit your card for instant payout estimation.",
-  },
-  {
-    icon: BookOpen,
-    title: "Book local services you trust",
-    description:
-      "Find spas, salons, photographers, and home repair providers. Pick a date, choose a time, and confirm your booking.",
   },
   {
     icon: Smartphone,

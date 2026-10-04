@@ -33,7 +33,6 @@ npx tsc --noEmit # typecheck
 app/                  # Routes only — pages compose components
   (auth)/             # Auth route group
   gift-cards/         # Nested dynamic routes
-  bookings/
 components/
   ui/                 # Reusable primitives (Button, CardSection, PageHeader,
                       #   EmptyState, BackLink, SuccessBanner, FeeBreakdown, …)
@@ -63,8 +62,13 @@ public/               # Static assets
 
 ## Theming
 
-- Ravecard has a **single default theme**: Deep Black `#121212` background with Coral Orange `#FF5733` accent. There is no separate light palette.
-- Colors are CSS variables registered in `app/globals.css` under Tailwind's `@theme` — use utility classes (`bg-card`, `text-primary`, `border-border`, …), never hardcoded hex values.
+- Ravecard has two token-driven themes: **Light** (default) — Electric Blue
+  `#4F46E5` accent on `#F4F4FB` background — and **Dark** — Espresso Charcoal
+  `#1A1816` background with `#282522` surfaces, same Electric Blue accent.
+  A System option follows the OS preference (managed by `next-themes`).
+- Colors are CSS variables in `app/globals.css` under Tailwind's `@theme` —
+  use utility classes (`bg-card`, `text-primary`, `border-border`, …), never
+  hardcoded hex values.
 
 ## Demo credentials
 

@@ -12,7 +12,6 @@ export type NavItem = {
 
 export type ServiceLink = {
   label: string;
-  description: string;
   href: string;
   icon: LucideIcon;
 };
@@ -46,6 +45,7 @@ export type BettingPlatform = {
   name: string;
   shortName: string;
   color: string;
+  image: string;
 };
 
 export type Biller = {
@@ -54,14 +54,6 @@ export type Biller = {
   description: string;
   color: string;
   identifierLabel: string;
-};
-
-export type DashboardShortcut = {
-  label: string;
-  description: string;
-  href: string;
-  icon: "zap" | "bills" | "betting" | "gift" | "store" | "more";
-  tone: "blue" | "orange" | "green" | "navy";
 };
 
 export type GiftCardBrand = {
@@ -79,33 +71,6 @@ export type GiftCardTypeOption = {
   value: CardType;
   label: string;
   description: string;
-};
-
-export type CalendarDay = {
-  date: Date;
-  label: string;
-  dayName: string;
-};
-
-export type MarketplaceCategory =
-  | "Hair"
-  | "Nails"
-  | "Spa"
-  | "Cleaning"
-  | "Home Repairs"
-  | "Photography";
-
-export type MarketplaceListing = {
-  id: string;
-  name: string;
-  category: MarketplaceCategory;
-  price: number;
-  rating: number;
-  reviews: number;
-  location: string;
-  description: string;
-  image: string;
-  availableSlots: string[];
 };
 
 export type NotificationItem = {
@@ -130,6 +95,7 @@ export type SubscriptionProvider = {
   shortName: string;
   category: string;
   color: string;
+  image: string;
   plans: SubscriptionPlan[];
 };
 
@@ -142,10 +108,6 @@ export type FeeBreakdownRow = {
 
 export type BrandPageProps = {
   params: Promise<{ brand: string }>;
-};
-
-export type BookingPageProps = {
-  params: Promise<{ id: string }>;
 };
 
 export type ChildrenProps = {
