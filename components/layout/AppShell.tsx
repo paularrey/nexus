@@ -1,10 +1,10 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { Bell, Menu, X } from "lucide-react";
+import { ArrowLeft, Bell, Menu, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/Button";
@@ -27,6 +27,7 @@ type AppShellProps = {
 
 export function AppShell({ children }: AppShellProps) {
   const pathname = usePathname();
+  const router = useRouter();
   const { isLoggedIn, openAuth } = useAuth();
   const { language } = usePreferences();
   const [sidebarOpen, setSidebarOpen] = useState(true);
@@ -65,15 +66,30 @@ export function AppShell({ children }: AppShellProps) {
     <div className="min-h-screen bg-background text-foreground">
       <SplashScreen isVisible={splashVisible} />
 
-      <header className="flex h-16 items-center justify-between border-b border-border bg-card px-4 md:hidden">
+      <header className="sticky top-0 z-40 grid min-h-16 grid-cols-[1fr_auto_1fr] items-center border-b border-border bg-card/95 px-2 pt-[env(safe-area-inset-top)] backdrop-blur md:hidden">
+        <div className="flex justify-start">
+          {pathname !== "/" ? (
+            <Button
+              variant="ghost"
+              size="icon-lg"
+              type="button"
+              aria-label="Go back"
+              onClick={() => router.back()}
+            >
+              <ArrowLeft />
+            </Button>
+          ) : (
+            <span aria-hidden className="size-10" />
+          )}
+        </div>
         <Link
           href="/"
           className="font-heading text-xl font-bold tracking-tight text-primary"
         >
           Ravecard
         </Link>
-        <div className="flex items-center gap-2">
-          <Button asChild variant="ghost" size="icon-sm" className="relative">
+        <div className="flex items-center justify-end gap-1">
+          <Button asChild variant="ghost" size="icon-lg" className="relative">
             <Link
               href="/notifications"
               aria-label="Open notifications"
@@ -224,7 +240,7 @@ export function AppShell({ children }: AppShellProps) {
       </div>
 
       <nav
-        className="fixed inset-x-0 bottom-0 z-30 grid h-20 grid-cols-6 border-t border-border bg-card/95 px-1 pb-2 pt-1 backdrop-blur md:hidden"
+        className="fixed inset-x-0 bottom-0 z-30 grid min-h-20 grid-cols-6 border-t border-border bg-card/95 px-1 pb-[calc(0.5rem_+_env(safe-area-inset-bottom))] pt-1 backdrop-blur md:hidden"
         aria-label="Mobile navigation"
       >
         {navItems.map((item) => {

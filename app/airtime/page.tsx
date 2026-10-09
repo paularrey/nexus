@@ -47,7 +47,7 @@ export default function AirtimePage() {
   const totalAmount = amount + SERVICE_FEE;
 
   return (
-    <div className="mx-auto w-full max-w-2xl space-y-8">
+    <div className="mx-auto w-full max-w-[480px] space-y-6 pb-24 md:pb-8">
       <PageHeader
         eyebrow="Airtime & data"
         title={labels.airtimeTitle}
@@ -67,7 +67,7 @@ export default function AirtimePage() {
           description="Available networks are shown below."
           className="mb-4 flex items-center gap-3"
         />
-        <div className="grid grid-cols-4 gap-4">
+        <div className="grid grid-cols-4 gap-3">
           {airtimeData.networks.map((network) => {
             const isSelected = selectedNetwork.name === network.name;
             return (
@@ -83,7 +83,7 @@ export default function AirtimePage() {
                 aria-pressed={isSelected}
               >
                 <span
-                  className={`relative size-16 overflow-hidden rounded-full border-[2.5px] transition-all sm:size-20 ${
+                  className={`relative size-14 overflow-hidden rounded-full border-[2.5px] transition-all sm:size-16 ${
                     isSelected
                       ? "border-primary shadow-[0_0_0_4px_rgb(79_70_229_/_0.18)]"
                       : "border-border hover:border-primary/30"
@@ -94,7 +94,7 @@ export default function AirtimePage() {
                     alt={network.name}
                     fill
                     className="object-cover"
-                    sizes="80px"
+                    sizes="64px"
                   />
                   {isSelected && (
                     <motion.span
@@ -136,7 +136,7 @@ export default function AirtimePage() {
                 setPhone(formatPhoneNumber(event.target.value))
               }
               placeholder="0803 123 4567"
-              className="h-12 w-full rounded-xl border border-input bg-background pl-10 pr-3 outline-none transition focus:border-primary focus:ring-3 focus:ring-primary/15"
+              className="h-[52px] w-full rounded-xl border border-input bg-background pl-10 pr-3 text-base outline-none transition focus:border-primary focus:ring-3 focus:ring-primary/15"
               required
             />
           </span>
@@ -168,7 +168,7 @@ export default function AirtimePage() {
         <p className="text-sm font-medium">
           {service === "airtime" ? "Amount" : "Choose a data plan"}
         </p>
-        <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3">
+        <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3">
           {(service === "airtime"
             ? airtimeData.amounts
             : selectedNetwork.dataPlans
@@ -247,7 +247,7 @@ export default function AirtimePage() {
               size="lg"
               onClick={openPin}
               disabled={!phone || pinOpen}
-              className="mt-5 h-12 w-full rounded-full bg-primary text-primary-foreground hover:bg-primary-hover"
+              className="mt-5 h-12 w-full rounded-xl bg-primary text-primary-foreground hover:bg-primary-hover"
             >
               {service === "airtime" ? "Buy Airtime" : "Buy Data"}
             </Button>
@@ -262,9 +262,9 @@ export default function AirtimePage() {
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: 100, opacity: 0 }}
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            className="fixed inset-x-0 bottom-20 z-30 border-t border-border bg-card/95 px-4 py-4 shadow-[0_-4px_20px_color-mix(in_srgb,var(--foreground)_8%,transparent)] backdrop-blur md:hidden"
+            className="fixed inset-x-0 bottom-[calc(5rem_+_env(safe-area-inset-bottom))] z-30 border-t border-border bg-card/95 px-4 py-3 shadow-[0_-4px_20px_color-mix(in_srgb,var(--foreground)_8%,transparent)] backdrop-blur md:hidden"
           >
-            <div className="mx-auto flex items-center justify-between gap-4">
+            <div className="mx-auto flex w-full max-w-[480px] items-center justify-between gap-4">
               <div className="min-w-0 flex-1">
                 <p className="text-xs text-muted-foreground">Total</p>
                 <p className="font-heading text-xl font-semibold">
@@ -276,7 +276,7 @@ export default function AirtimePage() {
                 size="lg"
                 onClick={openPin}
                 disabled={!phone || pinOpen}
-                className="h-12 shrink-0 rounded-full bg-primary px-6 text-primary-foreground shadow-[0_4px_16px_rgb(79_70_229_/_0.3)] hover:bg-primary-hover"
+                className="h-12 shrink-0 rounded-xl bg-primary px-6 text-primary-foreground shadow-[0_4px_16px_rgb(79_70_229_/_0.3)] hover:bg-primary-hover"
               >
                 {service === "airtime" ? "Buy Airtime" : "Buy Data"}
               </Button>

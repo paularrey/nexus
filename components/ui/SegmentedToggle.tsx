@@ -18,7 +18,7 @@ export function SegmentedToggle<T extends string>({
   return (
     <div
       className={cn(
-        "grid grid-cols-2 rounded-2xl bg-muted p-1",
+        "grid w-full grid-cols-2 rounded-full bg-muted p-1",
         className,
       )}
     >
@@ -27,7 +27,7 @@ export function SegmentedToggle<T extends string>({
           key={option}
           type="button"
           onClick={() => onChange(option)}
-          className={`rounded-xl px-4 py-3 text-sm font-semibold capitalize transition-colors ${
+          className={`rounded-full px-4 py-3 text-sm font-semibold capitalize transition-colors ${
             value === option
               ? "bg-card text-foreground shadow-sm"
               : "text-muted-foreground hover:text-foreground"
