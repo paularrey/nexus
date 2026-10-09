@@ -229,7 +229,7 @@ export function AppShell({ children }: AppShellProps) {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.25, ease: "easeOut" }}
-          className="min-h-[calc(100vh-4rem)] px-4 pb-24 pt-6 md:min-h-[calc(100vh-5rem)] md:px-8 md:pb-8"
+          className="min-h-[calc(100vh-4rem)] px-4 pb-24 pt-3 md:min-h-[calc(100vh-5rem)] md:px-8 md:pb-8 md:pt-6"
         >
           {children}
         </motion.main>
@@ -260,7 +260,7 @@ export function AppShell({ children }: AppShellProps) {
                 />
               )}
               <Icon className={cn("size-5", isActive && "text-primary")} />
-              <span className={cn(isActive && "text-primary")}>
+              <span className={cn("whitespace-nowrap", isActive && "text-primary")}>
                 {navLabels[item.href] ?? item.label}
               </span>
             </Link>

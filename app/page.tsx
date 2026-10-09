@@ -73,7 +73,7 @@ export default function Home() {
   const { hideBalance } = useHideBalance();
 
   return (
-    <div className="mx-auto w-full max-w-7xl space-y-8">
+    <div className="mx-auto w-full max-w-7xl space-y-5 md:space-y-8">
       <section className="rounded-[28px] border border-border bg-surface p-6 md:p-8">
         <div className="flex items-center justify-between gap-4">
           <p className="text-lg font-bold tracking-tight text-foreground">
@@ -112,7 +112,7 @@ export default function Home() {
       </section>
 
       <section>
-        <div className="mb-5">
+        <div className="mb-4">
           <h2 className="font-heading text-2xl font-semibold tracking-tight md:text-3xl">
             What do you need today?
           </h2>
@@ -120,7 +120,7 @@ export default function Home() {
             Built for how you actually live.
           </p>
         </div>
-        <div className="grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4">
+        <div className="grid grid-cols-2 gap-3.5 md:grid-cols-4 md:gap-4">
           {services.map((service, index) => {
             const Icon = service.icon;
             return (
@@ -130,18 +130,15 @@ export default function Home() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.04, duration: 0.3 }}
                 whileTap={{ scale: 0.97 }}
-                className="h-full"
               >
                 <Link
                   href={service.href}
-                  className="group flex h-full min-h-[124px] flex-col rounded-3xl border border-border bg-surface p-4 transition-all hover:-translate-y-1 hover:border-primary/35 hover:shadow-md md:p-5"
+                  className="group flex flex-col rounded-2xl border border-border bg-surface p-4 shadow-sm transition-all hover:border-primary/35 hover:shadow-md"
                 >
-                  <span
-                    className="grid size-11 shrink-0 place-items-center rounded-full bg-primary text-primary-foreground"
-                  >
+                  <span className="grid size-10 shrink-0 place-items-center rounded-full bg-secondary text-primary">
                     <Icon className="size-5" />
                   </span>
-                  <span className="mt-auto pt-4 text-sm font-bold text-foreground md:text-base">
+                  <span className="mt-3 text-sm font-semibold text-foreground">
                     {service.label}
                   </span>
                 </Link>
