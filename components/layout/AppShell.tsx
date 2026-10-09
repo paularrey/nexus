@@ -37,11 +37,7 @@ export function AppShell({ children }: AppShellProps) {
   const labels = translations[language];
   const navLabels: Record<string, string> = {
     "/": labels.home,
-    "/bills": labels.bills,
-    "/airtime": labels.airtime,
     "/profile": labels.profile,
-    "/subscriptions": "Subscriptions",
-    "/history": "History",
   };
 
   useEffect(() => {
@@ -240,7 +236,7 @@ export function AppShell({ children }: AppShellProps) {
       </div>
 
       <nav
-        className="fixed inset-x-0 bottom-0 z-30 grid min-h-20 grid-cols-6 border-t border-border bg-card/95 px-1 pb-[calc(0.5rem_+_env(safe-area-inset-bottom))] pt-1 backdrop-blur md:hidden"
+        className="fixed inset-x-0 bottom-0 z-30 grid min-h-20 grid-cols-2 border-t border-border bg-card/95 px-1 pb-[calc(0.5rem_+_env(safe-area-inset-bottom))] pt-1 backdrop-blur md:hidden"
         aria-label="Mobile navigation"
       >
         {navItems.map((item) => {

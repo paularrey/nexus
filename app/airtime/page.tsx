@@ -47,7 +47,7 @@ export default function AirtimePage() {
   const totalAmount = amount + SERVICE_FEE;
 
   return (
-    <div className="mx-auto w-full max-w-[480px] space-y-6 pb-24 md:pb-8">
+    <div className="mx-auto w-full max-w-[480px] space-y-6">
       <PageHeader
         eyebrow="Airtime & data"
         title={labels.airtimeTitle}
@@ -213,7 +213,7 @@ export default function AirtimePage() {
       </section>
 
       {hasSelection && (
-        <section className="hidden md:block">
+        <section>
           <div className="rounded-[28px] border border-border bg-surface p-6 text-foreground shadow-[0_4px_24px_color-mix(in_srgb,var(--foreground)_6%,transparent)]">
             <p className="text-sm text-muted-foreground">Ready to top up</p>
             <p className="mt-3 font-heading text-3xl font-semibold">
@@ -254,36 +254,6 @@ export default function AirtimePage() {
           </div>
         </section>
       )}
-
-      <AnimatePresence>
-        {hasSelection && (
-          <motion.div
-            initial={{ y: 100, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            exit={{ y: 100, opacity: 0 }}
-            transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            className="fixed inset-x-0 bottom-[calc(5rem_+_env(safe-area-inset-bottom))] z-30 border-t border-border bg-card/95 px-4 py-3 shadow-[0_-4px_20px_color-mix(in_srgb,var(--foreground)_8%,transparent)] backdrop-blur md:hidden"
-          >
-            <div className="mx-auto flex w-full max-w-[480px] items-center justify-between gap-4">
-              <div className="min-w-0 flex-1">
-                <p className="text-xs text-muted-foreground">Total</p>
-                <p className="font-heading text-xl font-semibold">
-                  {formatNaira(totalAmount)}
-                </p>
-              </div>
-              <Button
-                type="button"
-                size="lg"
-                onClick={openPin}
-                disabled={!phone || pinOpen}
-                className="h-12 shrink-0 rounded-xl bg-primary px-6 text-primary-foreground shadow-[0_4px_16px_rgb(79_70_229_/_0.3)] hover:bg-primary-hover"
-              >
-                {service === "airtime" ? "Buy Airtime" : "Buy Data"}
-              </Button>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
 
       <PinModal
         open={pinOpen}
