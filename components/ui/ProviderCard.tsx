@@ -4,11 +4,14 @@ import { motion } from "framer-motion";
 import { Check } from "lucide-react";
 import Image from "next/image";
 
+import type { LucideIcon } from "lucide-react";
+
 type ProviderCardProps = {
   name: string;
   shortName: string;
   color: string;
   image?: string;
+  icon?: LucideIcon;
   subtitle?: string;
   shortNameTextSize?: "sm" | "lg";
   isSelected: boolean;
@@ -20,11 +23,13 @@ export function ProviderCard({
   shortName,
   color,
   image,
+  icon,
   subtitle,
   shortNameTextSize = "sm",
   isSelected,
   onSelect,
 }: ProviderCardProps) {
+  const Icon = icon;
   return (
     <motion.button
       type="button"
@@ -48,6 +53,13 @@ export function ProviderCard({
             height={28}
             className="object-contain"
           />
+        </span>
+      ) : Icon ? (
+        <span
+          className="grid size-10 shrink-0 place-items-center rounded-xl text-white"
+          style={{ backgroundColor: color }}
+        >
+          <Icon className="size-5" />
         </span>
       ) : (
         <span

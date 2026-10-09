@@ -49,11 +49,26 @@ export type BettingPlatform = {
 };
 
 export type Biller = {
+  slug: string;
   name: string;
   shortName: string;
   description: string;
   color: string;
   identifierLabel: string;
+  icon: LucideIcon;
+};
+
+export type Disco = {
+  id: string;
+  name: string;
+};
+
+export type MeterType = "prepaid" | "postpaid";
+
+export type CableProvider = {
+  name: string;
+  shortName: string;
+  color: string;
 };
 
 export type GiftCardBrand = {
@@ -117,6 +132,10 @@ export type FeeBreakdownRow = {
 
 export type BrandPageProps = {
   params: Promise<{ brand: string }>;
+};
+
+export type BillPageProps = {
+  params: Promise<{ category: string }>;
 };
 
 export type ChildrenProps = {
