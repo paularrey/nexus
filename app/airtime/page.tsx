@@ -1,7 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { Check, Phone, Smartphone } from "lucide-react";
+import { Check, Phone, Smartphone, X } from "lucide-react";
 import Image from "next/image";
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
@@ -30,10 +30,12 @@ export default function AirtimePage() {
     airtimeData.networks[0],
   );
   const [amount, setAmount] = useState(1000);
-  const [selectedPlan, setSelectedPlan] = useState(
-    airtimeData.networks[0].dataPlans[1],
+  const [selectedPlanAmount, setSelectedPlanAmount] = useState(
+    airtimeData.networks[0].dataPlans[1].amount,
   );
   const [phone, setPhone] = useState("");
+  const [networkTouched, setNetworkTouched] = useState(false);
+  const [dismissedHintFor, setDismissedHintFor] = useState<string | null>(null);
   const { pinOpen, setPinOpen, openPin } = usePinFlow();
 
   const detectedNetwork = useMemo(() => {
@@ -43,7 +45,21 @@ export default function AirtimePage() {
     );
   }, [phone]);
 
-  const hasSelection = Boolean(selectedNetwork && amount);
+  const activeNetwork = !networkTouched && detectedNetwork
+    ? detectedNetwork
+    : selectedNetwork;
+  const selectedPlan =
+    activeNetwork.dataPlans.find((plan) => plan.amount === selectedPlanAmount) ??
+    activeNetwork.dataPlans[1];
+
+  const showSwitchHint = Boolean(
+    detectedNetwork &&
+      networkTouched &&
+      detectedNetwork.name !== selectedNetwork.name &&
+      dismissedHintFor !== detectedNetwork.name,
+  );
+
+  const hasSelection = Boolean(activeNetwork && amount);
   const totalAmount = amount + SERVICE_FEE;
 
   return (
@@ -69,15 +85,15 @@ export default function AirtimePage() {
         />
         <div className="grid grid-cols-4 gap-3">
           {airtimeData.networks.map((network) => {
-            const isSelected = selectedNetwork.name === network.name;
+            const isSelected = activeNetwork.name === network.name;
             return (
               <motion.button
                 key={network.name}
                 type="button"
                 whileTap={{ scale: 0.93 }}
                 onClick={() => {
+                  setNetworkTouched(true);
                   setSelectedNetwork(network);
-                  setSelectedPlan(network.dataPlans[1]);
                 }}
                 className="relative flex flex-col items-center gap-2.5"
                 aria-pressed={isSelected}
@@ -136,30 +152,64 @@ export default function AirtimePage() {
                 setPhone(formatPhoneNumber(event.target.value))
               }
               placeholder="0803 123 4567"
-              className="h-[52px] w-full rounded-xl border border-input bg-background pl-10 pr-3 text-base outline-none transition focus:border-primary focus:ring-3 focus:ring-primary/15"
+              className="h-[52px] w-full rounded-xl border border-input bg-background pl-10 pr-12 text-base outline-none transition focus:border-primary focus:ring-3 focus:ring-primary/15"
               required
             />
-          </span>
-        </label>
-        <AnimatePresence>
-          {detectedNetwork && (
-            <motion.p
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              exit={{ opacity: 0, height: 0 }}
-              className="mt-3 flex items-center gap-2 overflow-hidden text-sm text-success"
-            >
-              <span className="relative size-5 shrink-0 overflow-hidden rounded-full">
+            {detectedNetwork && (
+              <span className="pointer-events-none absolute right-3 top-1/2 size-6 -translate-y-1/2 overflow-hidden rounded-full border border-border bg-background">
                 <Image
                   src={detectedNetwork.image}
                   alt={detectedNetwork.name}
                   fill
                   className="object-cover"
-                  sizes="20px"
+                  sizes="24px"
                 />
               </span>
-              {detectedNetwork.name} number detected
-            </motion.p>
+            )}
+          </span>
+        </label>
+        <AnimatePresence>
+          {showSwitchHint && detectedNetwork && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              className="mt-3 overflow-hidden"
+            >
+              <div className="flex items-center gap-2 rounded-xl border border-primary/30 bg-primary/5 px-3 py-2.5">
+                <span className="relative size-5 shrink-0 overflow-hidden rounded-full">
+                  <Image
+                    src={detectedNetwork.image}
+                    alt={detectedNetwork.name}
+                    fill
+                    className="object-cover"
+                    sizes="20px"
+                  />
+                </span>
+                <p className="flex-1 text-sm text-foreground">
+                  Looks like a {detectedNetwork.name} number —{" "}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setNetworkTouched(true);
+                      setSelectedNetwork(detectedNetwork);
+                      setDismissedHintFor(detectedNetwork.name);
+                    }}
+                    className="font-semibold text-primary hover:underline"
+                  >
+                    switch?
+                  </button>
+                </p>
+                <button
+                  type="button"
+                  onClick={() => setDismissedHintFor(detectedNetwork.name)}
+                  aria-label="Dismiss network hint"
+                  className="rounded-full p-1 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                >
+                  <X className="size-4" />
+                </button>
+              </div>
+            </motion.div>
           )}
         </AnimatePresence>
       </section>
@@ -171,7 +221,7 @@ export default function AirtimePage() {
         <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3">
           {(service === "airtime"
             ? airtimeData.amounts
-            : selectedNetwork.dataPlans
+            : activeNetwork.dataPlans
           ).map((preset) => {
             const presetAmount =
               typeof preset === "number" ? preset : preset.amount;
@@ -186,7 +236,8 @@ export default function AirtimePage() {
                 whileTap={{ scale: 0.95 }}
                 onClick={() => {
                   setAmount(presetAmount);
-                  if (typeof preset !== "number") setSelectedPlan(preset);
+                  if (typeof preset !== "number")
+                    setSelectedPlanAmount(presetAmount);
                 }}
                 className={`rounded-xl border px-4 py-3.5 text-left text-sm font-medium transition-all ${
                   isSelected
@@ -220,7 +271,7 @@ export default function AirtimePage() {
               {formatNaira(amount)}
             </p>
             <p className="mt-2 text-sm text-muted-foreground">
-              {selectedNetwork.name} ·{" "}
+              {activeNetwork.name} ·{" "}
               {service === "data" ? selectedPlan.label : "Airtime"} ·{" "}
               {phone || "Phone number needed"}
             </p>
@@ -260,7 +311,7 @@ export default function AirtimePage() {
         onOpenChange={setPinOpen}
         onSuccess={() =>
           toast.success("Purchase ready", {
-            description: `Mock ${service} purchase for ${selectedNetwork.name}.`,
+            description: `Mock ${service} purchase for ${activeNetwork.name}.`,
           })
         }
         title={

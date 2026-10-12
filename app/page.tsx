@@ -5,6 +5,8 @@ import {
   ArrowUpRight,
   Bell,
   Clock,
+  Eye,
+  EyeOff,
   Gift,
   Nfc,
   ReceiptText,
@@ -70,7 +72,7 @@ const services: ServiceLink[] = [
 export default function Home() {
   const { language } = usePreferences();
   const labels = translations[language];
-  const { hideBalance } = useHideBalance();
+  const { hideBalance, setHideBalance } = useHideBalance();
 
   return (
     <div className="mx-auto w-full max-w-7xl space-y-5 md:space-y-8">
@@ -86,9 +88,26 @@ export default function Home() {
           <p className="text-sm text-muted-foreground">
             {labels.availableBalance}
           </p>
-          <p className="mt-1 font-heading text-4xl font-bold tracking-tight text-foreground md:text-5xl">
-            {hideBalance ? "₦ ••••••" : formatNaira(dashboardData.balance)}
-          </p>
+          <div className="mt-1 flex items-center gap-3">
+            <p className="font-heading text-4xl font-bold tracking-tight text-foreground md:text-5xl">
+              {hideBalance
+                ? formatNaira(dashboardData.balance).replace(/\d/g, "•")
+                : formatNaira(dashboardData.balance)}
+            </p>
+            <button
+              type="button"
+              onClick={() => setHideBalance(!hideBalance)}
+              aria-label={hideBalance ? "Show balance" : "Hide balance"}
+              aria-pressed={hideBalance}
+              className="grid size-9 shrink-0 place-items-center rounded-full text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
+            >
+              {hideBalance ? (
+                <EyeOff className="size-5" />
+              ) : (
+                <Eye className="size-5" />
+              )}
+            </button>
+          </div>
         </div>
 
         <div className="mt-8 grid grid-cols-2 gap-3">
@@ -133,12 +152,12 @@ export default function Home() {
               >
                 <Link
                   href={service.href}
-                  className="group flex flex-col rounded-2xl border border-border bg-surface p-4 shadow-sm transition-all hover:border-primary/35 hover:shadow-md"
+                  className="group flex min-h-24 flex-col justify-center rounded-2xl border border-border bg-surface p-3.5 shadow-sm transition-all hover:border-primary/35 hover:shadow-md"
                 >
                   <span className="grid size-10 shrink-0 place-items-center rounded-full bg-secondary text-primary">
                     <Icon className="size-5" />
                   </span>
-                  <span className="mt-3 text-sm font-semibold text-foreground">
+                  <span className="mt-2.5 text-sm font-semibold text-foreground">
                     {service.label}
                   </span>
                 </Link>
