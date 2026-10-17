@@ -53,6 +53,9 @@ function AirtimeForm() {
   );
   const [phone, setPhone] = useState(restoredPhone);
   const [phoneError, setPhoneError] = useState<string | null>(null);
+  const [customAmount, setCustomAmount] = useState(() =>
+    airtimeData.amounts.includes(restoredAmount) ? "" : String(restoredAmount),
+  );
   const [networkTouched, setNetworkTouched] = useState(
     Boolean(searchParams.get("network")),
   );
@@ -79,14 +82,25 @@ function AirtimeForm() {
       dismissedHintFor !== detectedNetwork.name,
   );
 
+  const customAmountError =
+    customAmount !== "" && amount < 50
+      ? "Minimum top-up amount is ₦50"
+      : null;
+
+  const handleCustomAmountChange = (value: string) => {
+    const digits = value.replace(/\D/g, "").slice(0, 6);
+    setCustomAmount(digits);
+    setAmount(digits === "" ? 0 : Number.parseInt(digits, 10));
+  };
+
   const handleProceed = () => {
     const digits = phone.replace(/\D/g, "");
     if (digits.length !== 11) {
       setPhoneError("Enter a valid 11-digit phone number");
       return;
     }
-    if (!amount || amount <= 0) {
-      toast.error("Select an amount to continue");
+    if (amount < 50) {
+      toast.error("Enter an amount of at least ₦50");
       return;
     }
     const params = new URLSearchParams({
@@ -281,6 +295,7 @@ function AirtimeForm() {
                 whileTap={{ scale: 0.95 }}
                 onClick={() => {
                   setAmount(presetAmount);
+                  setCustomAmount("");
                   if (typeof preset !== "number")
                     setSelectedPlanAmount(presetAmount);
                 }}
@@ -306,6 +321,40 @@ function AirtimeForm() {
             );
           })}
         </div>
+        {service === "airtime" && (
+          <div className="mt-4">
+            <label
+              className="block text-sm font-medium"
+              htmlFor="airtime-custom-amount"
+            >
+              Custom amount
+            </label>
+            <span className="relative mt-2 block">
+              <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-sm font-semibold text-muted-foreground">
+                ₦
+              </span>
+              <input
+                id="airtime-custom-amount"
+                type="text"
+                inputMode="numeric"
+                value={customAmount}
+                onChange={(event) =>
+                  handleCustomAmountChange(event.target.value)
+                }
+                placeholder="e.g. 2500"
+                aria-invalid={Boolean(customAmountError)}
+                className={`h-[52px] w-full rounded-xl border bg-background pl-8 pr-3 text-base outline-none transition focus:ring-3 ${
+                  customAmountError
+                    ? "border-danger focus:border-danger focus:ring-danger/15"
+                    : "border-input focus:border-primary focus:ring-primary/15"
+                }`}
+              />
+            </span>
+            {customAmountError && (
+              <p className="mt-2 text-sm text-danger">{customAmountError}</p>
+            )}
+          </div>
+        )}
       </section>
 
       <section>
@@ -315,7 +364,7 @@ function AirtimeForm() {
           onClick={handleProceed}
           className="h-12 w-full rounded-xl bg-primary text-primary-foreground hover:bg-primary-hover"
         >
-          Proceed to Checkout
+          Proceed
         </Button>
       </section>
     </div>

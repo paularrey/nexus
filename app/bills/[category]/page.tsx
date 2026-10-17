@@ -3,16 +3,15 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { FileCheck2, ShieldCheck } from "lucide-react";
 import Link from "next/link";
-import { use, useMemo, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Suspense, use, useMemo, useState } from "react";
 import { toast } from "sonner";
 
-import { PinModal } from "@/components/payments/PinModal";
 import { AmountPresets } from "@/components/ui/AmountPresets";
 import { BackLink } from "@/components/ui/BackLink";
 import { Button } from "@/components/ui/Button";
 import { CardSection } from "@/components/ui/CardSection";
 import { EmptyState } from "@/components/ui/EmptyState";
-import { FeeBreakdown } from "@/components/ui/FeeBreakdown";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { SegmentedToggle } from "@/components/ui/SegmentedToggle";
 import {
@@ -24,31 +23,42 @@ import {
 } from "@/components/ui/select";
 import { SuccessBanner } from "@/components/ui/SuccessBanner";
 import { useMockVerification } from "@/lib/hooks/useMockVerification";
-import { usePinFlow } from "@/lib/hooks/usePinFlow";
 import { billsData, getBillerBySlug } from "@/lib/mock-data/bills";
-import { formatNaira } from "@/lib/utils/format";
 import type { BillPageProps, Biller, MeterType } from "@/types";
-
-function generateMeterToken() {
-  return Array.from({ length: 4 }, () =>
-    Math.floor(10000 + Math.random() * 90000),
-  ).join(" ");
-}
 
 function BillerForm({ biller }: { biller: Biller }) {
   const isElectricity = biller.slug === "electricity";
   const isCableTv = biller.slug === "cable-tv";
 
-  const [discoId, setDiscoId] = useState(billsData.discos[0].id);
-  const [meterType, setMeterType] = useState<MeterType>("prepaid");
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const restoredDisco =
+    billsData.discos.find((item) => item.id === searchParams.get("disco")) ??
+    billsData.discos[0];
+  const restoredMeterType: MeterType =
+    searchParams.get("meterType") === "postpaid" ? "postpaid" : "prepaid";
+  const restoredProvider =
+    billsData.cableProviders.find(
+      (item) => item.name === searchParams.get("provider"),
+    ) ?? billsData.cableProviders[0];
+  const restoredIdentifier = searchParams.get("identifier") ?? "";
+  const parsedAmount = Number.parseInt(searchParams.get("amount") ?? "", 10);
+  const restoredAmount =
+    Number.isFinite(parsedAmount) && parsedAmount > 0 ? parsedAmount : 5000;
+
+  const [discoId, setDiscoId] = useState(restoredDisco.id);
+  const [meterType, setMeterType] = useState<MeterType>(restoredMeterType);
   const [cableProviderName, setCableProviderName] = useState(
-    billsData.cableProviders[0].name,
+    restoredProvider.name,
   );
-  const [identifier, setIdentifier] = useState("");
-  const [amount, setAmount] = useState(5000);
-  const [meterToken, setMeterToken] = useState<string | null>(null);
-  const { pinOpen, setPinOpen, openPin } = usePinFlow();
+  const [identifier, setIdentifier] = useState(restoredIdentifier);
+  const [amount, setAmount] = useState(restoredAmount);
+  const [restoredVerified, setRestoredVerified] = useState(
+    searchParams.get("verified") === "1",
+  );
   const { isVerifying, isVerified, verify, reset } = useMockVerification();
+  const verified = isVerified || restoredVerified;
 
   const disco = useMemo(
     () => billsData.discos.find((item) => item.id === discoId),
@@ -60,13 +70,17 @@ function BillerForm({ biller }: { biller: Biller }) {
     [cableProviderName],
   );
 
-  const totalAmount = amount + billsData.serviceFee;
   const serviceDetail =
     isElectricity && disco
       ? `${disco.name} · ${meterType === "prepaid" ? "Prepaid" : "Postpaid"}`
       : isCableTv && cableProvider
         ? cableProvider.name
         : biller.name;
+
+  const clearVerification = () => {
+    reset();
+    setRestoredVerified(false);
+  };
 
   const verifyCustomer = () => {
     verify(Boolean(identifier.trim()), {
@@ -75,22 +89,37 @@ function BillerForm({ biller }: { biller: Biller }) {
     });
   };
 
-  const handlePaymentSuccess = () => {
-    if (isElectricity && meterType === "prepaid") {
-      const token = generateMeterToken();
-      setMeterToken(token);
-      toast.success("Meter token generated", {
-        description: `Mock units purchase from ${disco?.name ?? biller.name}.`,
-      });
+  const handleProceed = () => {
+    const trimmedIdentifier = identifier.trim();
+    if (!trimmedIdentifier) {
+      toast.error(`Enter your ${biller.identifierLabel.toLowerCase()}`);
       return;
     }
-    toast.success("Bill payment ready", {
-      description: `Mock ${biller.name.toLowerCase()} payment prepared.`,
+    if (!verified) {
+      toast.error("Verify your customer details first");
+      return;
+    }
+    if (!amount || amount <= 0) {
+      toast.error("Select an amount to continue");
+      return;
+    }
+    const params = new URLSearchParams({
+      amount: String(amount),
+      identifier: trimmedIdentifier,
+      verified: "1",
     });
+    if (isElectricity && disco) {
+      params.set("disco", disco.id);
+      params.set("meterType", meterType);
+    }
+    if (isCableTv && cableProvider) {
+      params.set("provider", cableProvider.name);
+    }
+    router.push(`/bills/${biller.slug}/summary?${params.toString()}`);
   };
 
   return (
-    <div className="mx-auto w-full max-w-5xl space-y-6">
+    <div className="mx-auto w-full max-w-3xl space-y-6">
       <BackLink href="/bills">All bills</BackLink>
       <PageHeader
         eyebrow="Bills & utilities"
@@ -104,7 +133,7 @@ function BillerForm({ biller }: { biller: Biller }) {
         }
       />
 
-      <section className="grid gap-5 lg:grid-cols-[1.1fr_0.9fr]">
+      <section className="grid gap-5">
         <CardSection>
           {isElectricity && (
             <>
@@ -115,7 +144,7 @@ function BillerForm({ biller }: { biller: Biller }) {
                 value={discoId}
                 onValueChange={(value) => {
                   setDiscoId(value);
-                  reset();
+                  clearVerification();
                 }}
               >
                 <SelectTrigger
@@ -141,7 +170,7 @@ function BillerForm({ biller }: { biller: Biller }) {
                   value={meterType}
                   onChange={(value) => {
                     setMeterType(value);
-                    setMeterToken(null);
+                    clearVerification();
                   }}
                 />
                 <p className="mt-2 text-xs text-muted-foreground">
@@ -163,7 +192,7 @@ function BillerForm({ biller }: { biller: Biller }) {
                 value={cableProviderName}
                 onValueChange={(value) => {
                   setCableProviderName(value);
-                  reset();
+                  clearVerification();
                 }}
               >
                 <SelectTrigger
@@ -208,7 +237,7 @@ function BillerForm({ biller }: { biller: Biller }) {
                   value={identifier}
                   onChange={(event) => {
                     setIdentifier(event.target.value);
-                    reset();
+                    clearVerification();
                   }}
                   placeholder={`Enter ${biller.identifierLabel.toLowerCase()}`}
                   className="h-12 min-w-0 flex-1 rounded-xl border border-input bg-background px-3 text-base outline-none transition focus:border-primary focus:ring-3 focus:ring-primary/15"
@@ -225,7 +254,7 @@ function BillerForm({ biller }: { biller: Biller }) {
               </span>
             </label>
             <AnimatePresence initial={false}>
-              {isVerified && (
+              {verified && (
                 <motion.div
                   initial={{ opacity: 0, height: 0, y: -8 }}
                   animate={{ opacity: 1, height: "auto", y: 0 }}
@@ -242,29 +271,6 @@ function BillerForm({ biller }: { biller: Biller }) {
             </AnimatePresence>
           </div>
 
-          <AnimatePresence initial={false}>
-            {meterToken && (
-              <motion.div
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: "auto" }}
-                exit={{ opacity: 0, height: 0 }}
-                className="overflow-hidden"
-              >
-                <div className="mt-5 rounded-2xl border border-success/30 bg-success/5 p-4">
-                  <p className="text-xs font-medium uppercase tracking-[0.18em] text-success">
-                    Meter token
-                  </p>
-                  <p className="mt-2 font-mono text-lg font-semibold tracking-[0.15em] text-foreground">
-                    {meterToken}
-                  </p>
-                  <p className="mt-1 text-xs text-muted-foreground">
-                    {disco?.name} · {identifier}
-                  </p>
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-
           <div className="mt-8">
             <p className="text-sm font-medium">
               {isElectricity && meterType === "prepaid"
@@ -279,73 +285,16 @@ function BillerForm({ biller }: { biller: Biller }) {
           </div>
         </CardSection>
 
-        <aside className="order-first rounded-[28px] border border-border bg-surface p-4 text-foreground shadow-[0_4px_24px_color-mix(in_srgb,var(--foreground)_6%,transparent)] md:p-6 lg:order-none lg:sticky lg:top-24 lg:p-8">
-          <div className="flex items-start justify-between gap-4">
-            <div>
-              <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
-                Payment summary
-              </p>
-              <p className="mt-3 font-heading text-3xl font-semibold">
-                {formatNaira(amount)}
-              </p>
-            </div>
-            <div
-              className="grid size-10 shrink-0 place-items-center rounded-xl text-white"
-              style={{ backgroundColor: biller.color }}
-            >
-              <biller.icon className="size-5" />
-            </div>
-          </div>
-
-          <div className="mt-5 rounded-2xl border border-border bg-surface-alt p-3">
-            <div className="flex items-center justify-between text-sm text-muted-foreground">
-              <span>Service</span>
-              <span className="text-right font-medium text-foreground">
-                {serviceDetail}
-              </span>
-            </div>
-            <div className="mt-2 flex items-center justify-between text-sm text-muted-foreground">
-              <span>Reference</span>
-              <span className="font-medium text-foreground">
-                {identifier || "Pending"}
-              </span>
-            </div>
-          </div>
-
-          <div className="mt-5 border-y border-border py-3">
-            <FeeBreakdown
-              rows={[
-                {
-                  label: "Service fee",
-                  value: formatNaira(billsData.serviceFee),
-                },
-                {
-                  label: "Total",
-                  value: formatNaira(totalAmount),
-                  emphasis: "strong",
-                },
-              ]}
-            />
-          </div>
-          <Button
-            type="button"
-            size="lg"
-            onClick={openPin}
-            disabled={!identifier || !isVerified || pinOpen}
-            className="mt-6 h-12 w-full rounded-xl bg-primary text-primary-foreground hover:bg-primary-hover"
-          >
-            Pay Bill
-          </Button>
-        </aside>
+        <Button
+          type="button"
+          size="lg"
+          onClick={handleProceed}
+          disabled={isVerifying}
+          className="h-12 w-full rounded-xl bg-primary text-primary-foreground hover:bg-primary-hover"
+        >
+          Proceed
+        </Button>
       </section>
-
-      <PinModal
-        open={pinOpen}
-        onOpenChange={setPinOpen}
-        onSuccess={handlePaymentSuccess}
-        title="Confirm bill payment"
-        amount={formatNaira(totalAmount)}
-      />
     </div>
   );
 }
@@ -370,5 +319,9 @@ export default function BillCategoryPage({ params }: BillPageProps) {
     );
   }
 
-  return <BillerForm biller={biller} />;
+  return (
+    <Suspense fallback={null}>
+      <BillerForm biller={biller} />
+    </Suspense>
+  );
 }
