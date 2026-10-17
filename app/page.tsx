@@ -139,7 +139,7 @@ export default function Home() {
             Built for how you actually live.
           </p>
         </div>
-        <div className="grid grid-cols-2 gap-3.5 md:grid-cols-4 md:gap-4">
+        <div className="grid grid-cols-2 items-start gap-3.5 md:grid-cols-4 md:gap-4">
           {services.map((service, index) => {
             const Icon = service.icon;
             return (
@@ -152,7 +152,7 @@ export default function Home() {
               >
                 <Link
                   href={service.href}
-                  className="group flex min-h-24 flex-col justify-center rounded-2xl border border-border bg-surface p-3.5 shadow-sm transition-all hover:border-primary/35 hover:shadow-md"
+                  className="group flex flex-col rounded-2xl border border-border bg-surface p-4 shadow-sm transition-all hover:border-primary/35 hover:shadow-md"
                 >
                   <span className="grid size-10 shrink-0 place-items-center rounded-full bg-secondary text-primary">
                     <Icon className="size-5" />
