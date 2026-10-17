@@ -3,16 +3,14 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { Check, Phone, Smartphone, X } from "lucide-react";
 import Image from "next/image";
-import { useMemo, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Suspense, useMemo, useState } from "react";
 import { toast } from "sonner";
 
-import { PinModal } from "@/components/payments/PinModal";
 import { Button } from "@/components/ui/Button";
-import { FeeBreakdown } from "@/components/ui/FeeBreakdown";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { SegmentedToggle } from "@/components/ui/SegmentedToggle";
-import { usePinFlow } from "@/lib/hooks/usePinFlow";
 import { airtimeData } from "@/lib/mock-data/airtime";
 import { formatNaira, formatPhoneNumber } from "@/lib/utils/format";
 import {
@@ -20,23 +18,45 @@ import {
   usePreferences,
 } from "@/lib/context/preferences-context";
 
-const SERVICE_FEE = 50;
-
 export default function AirtimePage() {
+  return (
+    <Suspense fallback={null}>
+      <AirtimeForm />
+    </Suspense>
+  );
+}
+
+function AirtimeForm() {
   const { language } = usePreferences();
   const labels = translations[language];
-  const [service, setService] = useState<"airtime" | "data">("airtime");
-  const [selectedNetwork, setSelectedNetwork] = useState(
-    airtimeData.networks[0],
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const restoredNetwork =
+    airtimeData.networks.find(
+      (network) => network.name === searchParams.get("network"),
+    ) ?? airtimeData.networks[0];
+  const restoredService =
+    searchParams.get("service") === "data" ? ("data" as const) : ("airtime" as const);
+  const restoredPhone = formatPhoneNumber(searchParams.get("phone") ?? "");
+  const parsedAmount = Number.parseInt(searchParams.get("amount") ?? "", 10);
+  const restoredAmount =
+    Number.isFinite(parsedAmount) && parsedAmount > 0 ? parsedAmount : 1000;
+
+  const [service, setService] = useState<"airtime" | "data">(restoredService);
+  const [selectedNetwork, setSelectedNetwork] = useState(restoredNetwork);
+  const [amount, setAmount] = useState(restoredAmount);
+  const [selectedPlanAmount, setSelectedPlanAmount] = useState(() =>
+    restoredNetwork.dataPlans.some((plan) => plan.amount === restoredAmount)
+      ? restoredAmount
+      : restoredNetwork.dataPlans[1].amount,
   );
-  const [amount, setAmount] = useState(1000);
-  const [selectedPlanAmount, setSelectedPlanAmount] = useState(
-    airtimeData.networks[0].dataPlans[1].amount,
+  const [phone, setPhone] = useState(restoredPhone);
+  const [phoneError, setPhoneError] = useState<string | null>(null);
+  const [networkTouched, setNetworkTouched] = useState(
+    Boolean(searchParams.get("network")),
   );
-  const [phone, setPhone] = useState("");
-  const [networkTouched, setNetworkTouched] = useState(false);
   const [dismissedHintFor, setDismissedHintFor] = useState<string | null>(null);
-  const { pinOpen, setPinOpen, openPin } = usePinFlow();
 
   const detectedNetwork = useMemo(() => {
     const digits = phone.replace(/\D/g, "");
@@ -59,8 +79,24 @@ export default function AirtimePage() {
       dismissedHintFor !== detectedNetwork.name,
   );
 
-  const hasSelection = Boolean(activeNetwork && amount);
-  const totalAmount = amount + SERVICE_FEE;
+  const handleProceed = () => {
+    const digits = phone.replace(/\D/g, "");
+    if (digits.length !== 11) {
+      setPhoneError("Enter a valid 11-digit phone number");
+      return;
+    }
+    if (!amount || amount <= 0) {
+      toast.error("Select an amount to continue");
+      return;
+    }
+    const params = new URLSearchParams({
+      service,
+      network: activeNetwork.name,
+      phone: digits,
+      amount: String(amount),
+    });
+    router.push(`/airtime/summary?${params.toString()}`);
+  };
 
   return (
     <div className="mx-auto w-full max-w-[480px] space-y-6">
@@ -148,11 +184,17 @@ export default function AirtimePage() {
               type="tel"
               inputMode="numeric"
               value={phone}
-              onChange={(event) =>
-                setPhone(formatPhoneNumber(event.target.value))
-              }
+              onChange={(event) => {
+                setPhone(formatPhoneNumber(event.target.value));
+                setPhoneError(null);
+              }}
               placeholder="0803 123 4567"
-              className="h-[52px] w-full rounded-xl border border-input bg-background pl-10 pr-12 text-base outline-none transition focus:border-primary focus:ring-3 focus:ring-primary/15"
+              aria-invalid={Boolean(phoneError)}
+              className={`h-[52px] w-full rounded-xl border bg-background pl-10 pr-12 text-base outline-none transition focus:ring-3 ${
+                phoneError
+                  ? "border-danger focus:border-danger focus:ring-danger/15"
+                  : "border-input focus:border-primary focus:ring-primary/15"
+              }`}
               required
             />
             {detectedNetwork && (
@@ -168,6 +210,9 @@ export default function AirtimePage() {
             )}
           </span>
         </label>
+        {phoneError && (
+          <p className="mt-2 text-sm text-danger">{phoneError}</p>
+        )}
         <AnimatePresence>
           {showSwitchHint && detectedNetwork && (
             <motion.div
@@ -263,64 +308,16 @@ export default function AirtimePage() {
         </div>
       </section>
 
-      {hasSelection && (
-        <section>
-          <div className="rounded-[28px] border border-border bg-surface p-6 text-foreground shadow-[0_4px_24px_color-mix(in_srgb,var(--foreground)_6%,transparent)]">
-            <p className="text-sm text-muted-foreground">Ready to top up</p>
-            <p className="mt-3 font-heading text-3xl font-semibold">
-              {formatNaira(amount)}
-            </p>
-            <p className="mt-2 text-sm text-muted-foreground">
-              {activeNetwork.name} ·{" "}
-              {service === "data" ? selectedPlan.label : "Airtime"} ·{" "}
-              {phone || "Phone number needed"}
-            </p>
-
-            <div className="mt-5 border-t border-border pt-4">
-              <FeeBreakdown
-                rows={[
-                  { label: "Airtime", value: formatNaira(amount) },
-                  {
-                    label: "Service fee",
-                    value: formatNaira(SERVICE_FEE),
-                  },
-                  {
-                    label: "Total",
-                    value: formatNaira(totalAmount),
-                    emphasis: "strong",
-                  },
-                ]}
-              />
-            </div>
-
-            <Button
-              type="button"
-              size="lg"
-              onClick={openPin}
-              disabled={!phone || pinOpen}
-              className="mt-5 h-12 w-full rounded-xl bg-primary text-primary-foreground hover:bg-primary-hover"
-            >
-              {service === "airtime" ? "Buy Airtime" : "Buy Data"}
-            </Button>
-          </div>
-        </section>
-      )}
-
-      <PinModal
-        open={pinOpen}
-        onOpenChange={setPinOpen}
-        onSuccess={() =>
-          toast.success("Purchase ready", {
-            description: `Mock ${service} purchase for ${activeNetwork.name}.`,
-          })
-        }
-        title={
-          service === "airtime"
-            ? "Confirm airtime purchase"
-            : "Confirm data purchase"
-        }
-        amount={formatNaira(totalAmount)}
-      />
+      <section>
+        <Button
+          type="button"
+          size="lg"
+          onClick={handleProceed}
+          className="h-12 w-full rounded-xl bg-primary text-primary-foreground hover:bg-primary-hover"
+        >
+          Proceed to Checkout
+        </Button>
+      </section>
     </div>
   );
 }
